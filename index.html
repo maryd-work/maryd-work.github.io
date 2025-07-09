@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MARYD - Custom Jewelry</title>
     <style>
+        html,
         body {
             margin: 0;
             padding: 0;
@@ -14,6 +15,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            letter-spacing: 0.05em;
         }
         .container {
             width: 100vw;
@@ -24,17 +27,17 @@
             justify-content: flex-start;
         }
         .logo-box {
-            margin-top: 48px;
-            margin-bottom: 32px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: absolute;
+            top: 33.33%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
         }
         .logo-img {
-            width: 120px;
-            height: 120px;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
-            margin-bottom: 16px;
+            opacity: 0.6;
         }
         .main-video {
             width: 340px;
@@ -67,7 +70,7 @@
             font-size: 1.1rem;
             font-weight: 300;
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 4cm;
         }
         .desc-box {
             color: #fff;
@@ -83,12 +86,12 @@
         }
         .slide-track {
             display: flex;
-            width: calc(350px * 8);
-            animation: scroll 20s linear infinite;
+            width: calc(450px * 8);
+            animation: scroll 40s linear infinite;
         }
         .slide {
-            width: 350px;
-            height: 400px;
+            width: 450px;
+            height: 500px;
             margin: 0 18px;
         }
         .slide img {
@@ -102,7 +105,7 @@
                 transform: translateX(0);
             }
             100% {
-                transform: translateX(calc(-386px * 4));
+                transform: translateX(calc(-486px * 4));
             }
         }
         .footer-desc {
@@ -115,8 +118,9 @@
         .footer-bar {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-end;
             margin-bottom: 32px;
+            width: 100%;
         }
         .maryd-btn {
             background: none;
@@ -189,19 +193,19 @@
                 width: 100%;
             }
             .slide-track {
-                width: calc(280px * 8);
-                animation: scroll-mobile 20s linear infinite;
+                width: calc(350px * 8);
+                animation: scroll-mobile 40s linear infinite;
             }
             .slide {
-                width: 280px;
-                height: 320px;
+                width: 350px;
+                height: 400px;
             }
             @keyframes scroll-mobile {
                 0% {
                     transform: translateX(0);
                 }
                 100% {
-                    transform: translateX(calc(-316px * 4));
+                    transform: translateX(calc(-386px * 4));
                 }
             }
         }
@@ -230,11 +234,12 @@
 </head>
 <body>
     <div class="container">
-        <div class="logo-box">
-            <img src="images/logo.png" alt="MARYD 로고" class="logo-img" />
-        </div>
+        
         <!-- 동영상 위에 겹쳐진 로고 제거, 동영상만 보이게 -->
         <div class="video-container">
+            <div class="logo-box">
+                <img src="images/logo.png" alt="MARYD 로고" class="logo-img" />
+            </div>
             <video class="main-video-player" src="임시 동영상.mp4" autoplay muted loop playsinline></video>
         </div>
         <div class="slogan-en">We offer an experience beyond jewelry.</div>
@@ -279,13 +284,15 @@
             AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해, 세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
         </div>
         <div class="footer-bar" style="position:relative;">
-            <a href="request.html" style="display:inline-block;text-decoration:none;">
-                <svg width="240" height="96" viewBox="0 0 240 96" style="display:block;" xmlns="http://www.w3.org/2000/svg">
-                    <polygon points="70,20 170,20 200,40 120,86 40,40" fill="none" stroke="#fff" stroke-width="2"/>
-                    <text x="120" y="50" text-anchor="middle" fill="#fff" font-size="18" font-family="'Noto Sans KR', 'Noto Serif', sans-serif" font-weight="500">Let’s MARYD</text>
-                </svg>
-            </a>
-            <div class="sns-bar" style="margin-top:24px; display:flex; justify-content:flex-end; width:100vw; margin-right:100px;">
+            <div style="width: 100%; text-align: center;">
+                <a href="request.html" style="display:inline-block;text-decoration:none;">
+                    <svg width="240" height="96" viewBox="0 0 240 96" style="display:block;" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="70,20 170,20 200,40 120,86 40,40" fill="none" stroke="#fff" stroke-width="2"/>
+                        <text x="120" y="50" text-anchor="middle" fill="#fff" font-size="18" font-family="'Noto Sans KR', 'Noto Serif', sans-serif" font-weight="500">Let’s MARYD</text>
+                    </svg>
+                </a>
+            </div>
+            <div class="sns-bar" style="margin-top:24px; display:flex; justify-content:flex-end; padding-right: 30px;">
                 <a href="https://www.instagram.com/maryd.work/" class="sns-icon" target="_blank" rel="noopener" title="Instagram">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
                 </a>
