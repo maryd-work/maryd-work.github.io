@@ -166,6 +166,24 @@
             width: 24px;
             height: 24px;
         }
+        .video-container {
+            position: relative;
+            width: 100vw;
+            max-width: 100vw;
+            aspect-ratio: 16/9;
+            margin-bottom: 32px;
+            background: #000;
+            overflow: hidden;
+        }
+        .main-video-player {
+            position: absolute;
+            left: -120px;
+            top: -98px;
+            width: calc(100% + 240px);
+            height: calc(100% + 190px);
+            object-fit: cover;
+            display: block;
+        }
         @media (max-width: 900px) {
             .slider {
                 width: 100%;
@@ -216,8 +234,8 @@
             <img src="images/logo.png" alt="MARYD 로고" class="logo-img" />
         </div>
         <!-- 동영상 위에 겹쳐진 로고 제거, 동영상만 보이게 -->
-        <div style="position:relative;width:100vw;max-width:100vw;aspect-ratio:16/9;margin-bottom:32px;background:#000;overflow:hidden;">
-            <video src="임시 동영상.mp4" autoplay muted loop playsinline style="position:absolute;left:-120px;top:-98px;width:calc(100% + 240px);height:calc(100% + 190px);object-fit:cover;display:block;"></video>
+        <div class="video-container">
+            <video class="main-video-player" src="임시 동영상.mp4" autoplay muted loop playsinline></video>
         </div>
         <div class="slogan-en">We offer an experience beyond jewelry.</div>
         <div class="slogan-kr">메리드는 단순히 주얼리를 판매하지 않습니다</div>
