@@ -3,183 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GemCraft - Custom Jewelry</title>
+    <title>MARYD - Custom Jewelry</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
+            background: #4B2323;
+            color: #fff;
+            font-family: 'Noto Sans KR', 'Noto Serif', -apple-system, Roboto, Helvetica, sans-serif;
             min-height: 100vh;
-            font-family: 'Noto Serif', -apple-system, Roboto, Helvetica, sans-serif;
+            display: flex;
+            flex-direction: column;
         }
-        @media (max-width: 600px) {
-            body {
-                padding: 0 !important;
+        .container {
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .logo-box {
+            margin-top: 48px;
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo-img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 16px;
+        }
+        .main-video {
+            width: 340px;
+            height: 200px;
+            background: #eee;
+            border-radius: 8px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .main-video iframe {
+            width: 100%;
+            height: 100%;
+        }
+        .slogan-en {
+            font-size: 2rem;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .slogan-kr {
+            font-size: 1.1rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .slogan-kr-2 {
+            font-size: 1.1rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .desc-box {
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 32px;
+            line-height: 1.7;
+        }
+        .slider {
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        .slide-track {
+            display: flex;
+            width: calc(350px * 8);
+            animation: scroll 20s linear infinite;
+        }
+        .slide {
+            width: 350px;
+            height: 400px;
+            margin: 0 18px;
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
             }
-            div[layer-name="Depth 0, Frame 0"],
-            div[layer-name="Depth 1, Frame 0"],
-            div[layer-name="Depth 2, Frame 0"],
-            div[layer-name="Depth 2, Frame 1"],
-            div[layer-name="Depth 3, Frame 0"] {
-                min-width: 0 !important;
-                width: 100% !important;
-                max-width: 100vw !important;
-                padding: 0 !important;
+            100% {
+                transform: translateX(calc(-386px * 4));
             }
-            div[layer-name="Depth 4, Frame 0"] {
-                min-width: 0 !important;
-                width: 100% !important;
-                height: 180px !important;
-                padding: 0 !important;
+        }
+        .footer-desc {
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 24px;
+            margin-top: 24px;
+        }
+        .footer-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .maryd-btn {
+            background: none;
+            border: 2px solid #fff;
+            color: #fff;
+            border-radius: 32px;
+            padding: 12px 36px;
+            font-size: 1.1rem;
+            font-family: inherit;
+            font-weight: 600;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            position: relative;
+        }
+        .maryd-btn:hover {
+            background: #fff;
+            color: #4B2323;
+        }
+        .maryd-btn-shape {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .sns-bar {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .sns-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: box-shadow 0.2s;
+        }
+        .sns-icon:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+        .sns-icon img {
+            width: 24px;
+            height: 24px;
+        }
+        @media (max-width: 900px) {
+            .slider {
+                width: 100%;
             }
-            div[layer-name="Depth 4, Frame 2"] {
-                flex-direction: column !important;
-                gap: 8px !important;
-                padding: 8px 4vw !important;
-                width: 100% !important;
-                max-width: 100% !important;
+            .slide-track {
+                width: calc(280px * 8);
+                animation: scroll-mobile 20s linear infinite;
             }
-            div[layer-name="Depth 4, Frame 3"] {
-                flex-direction: column !important;
-                padding: 8px 4vw !important;
-                width: 100% !important;
-                max-width: 100% !important;
+            .slide {
+                width: 280px;
+                height: 320px;
             }
-            div[layer-name="Depth 5, Frame 0"] {
-                width: 100% !important;
-                min-width: 0 !important;
+            @keyframes scroll-mobile {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(calc(-316px * 4));
+                }
             }
-            img, iframe {
-                width: 100% !important;
-                height: auto !important;
-                max-width: 100vw !important;
-                border-radius: 8px !important;
+        }
+        @media (max-width: 768px) {
+            .slogan-en, .slogan-kr, .slogan-kr-2 {
+                margin-left: 0;
+                padding: 0 16px;
+                text-align: center;
             }
-            textarea {
-                width: 100% !important;
-                min-width: 0 !important;
-                font-size: 15px !important;
+            .slogan-en {
+                font-size: 1.5rem;
             }
-            a, button, [layer-name="Custom Jewelry Design"] {
-                width: 100% !important;
-                min-width: 0 !important;
-                max-width: 100vw !important;
-                display: block !important;
+            .slogan-kr, .slogan-kr-2 {
+                font-size: 1rem;
+            }
+            .desc-box {
+                padding: 0 16px;
+            }
+            .footer-bar .sns-bar {
+                width: 100%;
+                margin-right: 0;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-<!-- Figma selected node: Depth 0, Frame 0 -->
-<div layer-name="Depth 0, Frame 0" style="display:flex;min-height:800px;flex-direction:column;align-items:flex-start;align-self:stretch;background:#FFF;position:relative">
-    <div layer-name="Depth 1, Frame 0" style="display:flex;flex-direction:column;align-items:flex-start;align-self:stretch;position:relative">
-        <div layer-name="Depth 2, Frame 0" style="display:flex;padding:12px 40px;justify-content:space-between;align-items:center;align-self:stretch;border-bottom:1px solid #E5E8EB;position:relative">
-            <div layer-name="Depth 3, Frame 0" style="display:flex;align-items:center;gap:16px;position:relative">
-                <div layer-name="Depth 4, Frame 0" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-                    <div layer-name="Depth 5, Frame 0" style="width:16px;flex:1 0 0;position:relative">
-                        <svg id="1:9" style="width:16px;height:16px;fill:#171712;position:absolute;left:0px;top:0px" width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M6 0.333333H0V4.77777V9.22223H6V13.6667H12V9.22223V4.77777H6V0.333333Z" fill="#171712"/>
-                        </svg>
-                        <div layer-name="Depth 6, Frame 0" style="display:flex;width:12px;height:13px;flex-direction:column;align-items:flex-start;position:absolute;left:-40px;top:-24px"></div>
-                    </div>
-                </div>
-                <div layer-name="Depth 4, Frame 1" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-                    <div layer-name="GemCraft" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:18px;font-style:normal;font-weight:700;line-height:23px /* 127.778% */;position:relative">
-                        <span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 700; font-size: 18px; color: rgba(23,23,18,1);">GemCraft</span>
-                    </div>
-                </div>
-            </div>
-            <div layer-name="Depth 3, Frame 1" style="display:flex;justify-content:flex-end;align-items:flex-start;gap:32px;flex:1 0 0;position:relative">
-                <div layer-name="Depth 4, Frame 0" style="display:flex;height:40px;align-items:center;gap:36px;position:relative">
-                    <div layer-name="Depth 5, Frame 0" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-                        <div layer-name="Shop" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:14px;font-style:normal;font-weight:500;line-height:21px /* 150% */;position:relative">
-                            <span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 400; font-size: 14px; color: rgba(23,23,18,1);">Shop</span>
-                        </div>
-                    </div>
-                    <div layer-name="Depth 5, Frame 1" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-                        <div layer-name="Design" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:14px;font-style:normal;font-weight:500;line-height:21px /* 150% */;position:relative">
-                            <span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 400; font-size: 14px; color: rgba(23,23,18,1);">Design</span>
-                        </div>
-                    </div>
-                    <div layer-name="Depth 5, Frame 2" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-                        <div layer-name="About" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:14px;font-style:normal;font-weight:500;line-height:21px /* 150% */;position:relative">
-                            <span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 400; font-size: 14px; color: rgba(23,23,18,1);">About</span>
-                        </div>
-                    </div>
-                    <div layer-name="Depth 5, Frame 3" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-                        <div layer-name="Contact" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:14px;font-style:normal;font-weight:500;line-height:21px /* 150% */;position:relative">
-                            <span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 400; font-size: 14px; color: rgba(23,23,18,1);">Contact</span>
-                        </div>
-                    </div>
-                </div>
-                <div layer-name="Depth 4, Frame 1" style="display:flex;align-items:flex-start;gap:8px;position:relative">
-                    <div layer-name="Depth 5, Frame 0" style="display:flex;height:40px;max-width:480px;padding:0px 10px;justify-content:center;align-items:center;gap:8px;border-radius:12px;background:#F5F2F0;position:relative">
-                        <div layer-name="Depth 6, Frame 0" style="display:flex;flex-direction:column;align-items:center;flex:1 0 0;position:relative">
-                            <div layer-name="Depth 7, Frame 0" style="flex:1 0 0;align-self:stretch;position:relative">
-                                <svg id="1:27" style="width:20px;height:20px;fill:#171712;position:absolute;left:0px;top:0px" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9422 16.0578L13.0305 12.1469C15.3858 9.3192 15.1004 5.13911 12.3826 2.65779C9.66485 0.176469 5.47612 0.271665 2.87389 2.87389C0.271665 5.47612 0.176469 9.66485 2.65779 12.3826C5.13911 15.1004 9.3192 15.3858 12.1469 13.0305L16.0578 16.9422C16.302 17.1864 16.698 17.1864 16.9422 16.9422C17.1864 16.698 17.1864 16.302 16.9422 16.0578ZM2.125 7.75C2.125 4.6434 4.6434 2.125 7.75 2.125C10.8566 2.125 13.375 4.6434 13.375 7.75C13.375 10.8566 10.8566 13.375 7.75 13.375C4.64483 13.3716 2.12844 10.8552 2.125 7.75Z" fill="#171712"/>
-                                </svg>
-                                <div layer-name="Depth 8, Frame 0" style="display:flex;width:16px;height:16px;flex-direction:column;align-items:center;position:absolute;left:-1090px;top:-22px"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div layer-name="Depth 5, Frame 1" style="display:flex;height:40px;max-width:480px;padding:0px 10px;justify-content:center;align-items:center;gap:8px;border-radius:12px;background:#F5F2F0;position:relative">
-                        <div layer-name="Depth 6, Frame 0" style="display:flex;flex-direction:column;align-items:center;flex:1 0 0;position:relative">
-                            <div layer-name="Depth 7, Frame 0" style="flex:1 0 0;align-self:stretch;position:relative">
-                                <svg id="1:32" style="width:20px;height:20px;fill:#171712;position:absolute;left:0px;top:0px" width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.0406 15.5625C15.8508 13.5055 14.0172 12.0305 11.8773 11.3313C14.053 10.0361 15.0951 7.44698 14.4235 5.00575C13.7518 2.56451 11.5319 0.872875 9 0.872875C6.46806 0.872875 4.24816 2.56451 3.57652 5.00575C2.90487 7.44698 3.94704 10.0361 6.12266 11.3313C3.98281 12.0297 2.14922 13.5047 0.959375 15.5625C0.840586 15.7562 0.836273 15.9991 0.948109 16.1969C1.05995 16.3947 1.27031 16.5162 1.49752 16.5142C1.72473 16.5123 1.93298 16.3872 2.04141 16.1875C3.51328 13.6438 6.11484 12.125 9 12.125C11.8852 12.125 14.4867 13.6438 15.9586 16.1875C16.067 16.3872 16.2753 16.5123 16.5025 16.5142C16.7297 16.5162 16.9401 16.3947 17.0519 16.1969C17.1637 15.9991 17.1594 15.7562 17.0406 15.5625ZM4.625 6.5C4.625 4.08375 6.58375 2.125 9 2.125C11.4162 2.125 13.375 4.08375 13.375 6.5C13.375 8.91625 11.4162 10.875 9 10.875C6.58483 10.8724 4.62758 8.91517 4.625 6.5Z" fill="#171712"/>
-                                </svg>
-                                <div layer-name="Depth 8, Frame 0" style="display:flex;width:16px;height:16px;flex-direction:column;align-items:center;position:absolute;left:-1138px;top:-22px"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <img layer-name="Depth 4, Frame 2" style="width:40px;height:40px;border-radius:20px;position:relative" src="" alt="">
+    <div class="container">
+        <div class="logo-box">
+            <img src="images/logo.png" alt="MARYD 로고" class="logo-img" />
         </div>
-        <div layer-name="Depth 2, Frame 1" style="display:flex;padding:20px 160px;justify-content:center;align-items:flex-start;flex:1 0 0;align-self:stretch;position:relative">
-            <div layer-name="Depth 3, Frame 0" style="display:flex;max-width:960px;flex-direction:column;align-items:flex-start;flex:1 0 0;position:relative">
-                <div layer-name="Depth 4, Frame 0" style="display:flex;height:540px;justify-content:center;align-items:center;align-self:stretch;background:#171712;position:relative">
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/jhzUUBHf3ow?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <!-- 동영상 위에 겹쳐진 로고 제거, 동영상만 보이게 -->
+        <div style="position:relative;width:100vw;max-width:100vw;aspect-ratio:16/9;margin-bottom:32px;background:#000;overflow:hidden;">
+            <video src="임시 동영상.mp4" autoplay muted loop playsinline style="position:absolute;left:-120px;top:-98px;width:calc(100% + 240px);height:calc(100% + 190px);object-fit:cover;display:block;"></video>
+        </div>
+        <div class="slogan-en">We offer an experience beyond jewelry.</div>
+        <div class="slogan-kr">메리드는 단순히 주얼리를 판매하지 않습니다</div>
+        <div class="slogan-kr-2">— 상상을 현실로 만드는 경험을 제공합니다.</div>
+        <div class="desc-box">
+            여러분이 직접 디자인한 주얼리를 일상 속에서<br>
+            24시간, 365일 착용할 수 있는 형태로 정성스럽게 구현해드립니다.<br>
+            메리드의 모든 주얼리는 단순한 액세서리가 아니라,<br>
+            여러분만의 이야기를 담은 특별한 작품입니다.
+        </div>
+        <div class="slider">
+            <div class="slide-track">
+                <div class="slide">
+                    <img src="images/1.jpg.jpg" alt="">
                 </div>
-                <div layer-name="Depth 4, Frame 1" style="display:flex;height:60px;padding:20px 16px 12px 16px;flex-direction:column;align-items:flex-start;align-self:stretch;position:relative">
-                    <div layer-name="Crafting Your Vision" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:22px;font-style:normal;font-weight:700;line-height:28px /* 127.273% */;position:relative">
-                        <span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 700; font-size: 22px; color: rgba(23,23,18,1);">Crafting Your Vision</span>
-                    </div>
+                <div class="slide">
+                    <img src="images/2.jpg.jpg" alt="">
                 </div>
-                <div layer-name="Depth 4, Frame 2" style="display:flex;padding:4px 16px 12px 16px;flex-direction:column;align-items:center;align-self:stretch;position:relative">
-                    <div layer-name="At GemCraft, we believe that jewelry is more than just an accessory; it's a reflection of your unique story. Our passion lies in transforming your ideas into exquisite, handcrafted pieces that capture the essence of your individuality. With meticulous attention to detail and a commitment to quality, we bring your vision to life, creating timeless treasures that you'll cherish for generations." style="align-self:stretch;color:#171712;text-align:center;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:16px;font-style:normal;font-weight:400;line-height:24px /* 150% */;position:relative">
-                        <span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 400; font-size: 16px; color: rgba(23,23,18,1);">At GemCraft, we believe that jewelry is more than just an accessory; it's a reflection of your unique story. Our passion lies in transforming your ideas into exquisite, handcrafted pieces that capture the essence of your individuality. With meticulous attention to detail and a commitment to quality, we bring your vision to life, creating timeless treasures that you'll cherish for generations.</span>
-                    </div>
-                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: stretch; gap: 5px; margin-top: 16px; width: 100%;">
-                        <img src="https://i.ytimg.com/vi/n178uEcz2BA/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLB7Dcx-sfOvvdhACSpHOSILev9aoQ" alt="5부 프롱 세팅 약혼반지" style="width: 50%; height: 240px; object-fit: cover; border-radius: 0 0 0 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                        <img src="https://i.ytimg.com/vi/paGXEs0gSAE/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLCvKaU5moie8U7UxSuEMDyQDL8RlA" alt="마퀴즈 앙고리 팬던트 만들기" style="width: 50%; height: 240px; object-fit: cover; border-radius: 0 0 8px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                    </div>
+                <div class="slide">
+                    <img src="images/3.jpg.jpg" alt="">
                 </div>
-                <div layer-name="Depth 4, Frame 3" style="display:flex;padding:16px;align-items:flex-start;align-self:stretch;background:#FFF;position:relative">
-                    <div layer-name="Depth 5, Frame 0" style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;flex:1 0 0;border-radius:12px;background:#FFF;position:relative">
-                        <div layer-name="Depth 6, Frame 0" style="display:flex;align-items:flex-start;gap:8px;flex:1 0 0;align-self:stretch;position:relative">
-                            <img layer-name="Depth 7, Frame 0" style="width:456px;align-self:stretch;position:relative" src="" alt="">
-                            <img layer-name="Depth 7, Frame 1" style="width:228px;align-self:stretch;position:relative" src="" alt="">
-                        </div>
-                        <div layer-name="Depth 6, Frame 1" style="display:flex;align-items:flex-start;gap:8px;flex:1 0 0;align-self:stretch;position:relative"></div>
-                    </div>
+                <div class="slide">
+                    <img src="images/4.jpg.jpg" alt="">
                 </div>
-                <div layer-name="Depth 4, Frame 4" style="display:flex;padding:12px 16px;justify-content:center;align-items:flex-start;align-self:stretch;position:relative">
-                    <div layer-name="Depth 5, Frame 0" style="display:flex;height:40px;min-width:84px;max-width:480px;padding:0px 16px;justify-content:center;align-items:center;border-radius:12px;background:#F5F2F0;position:relative">
-                        <a href="request.html" style="text-decoration: none; width: 100%;">
-                            <div layer-name="Depth 6, Frame 0" style="display:flex;flex-direction:column;align-items:center;position:relative">
-                                <div layer-name="Custom Jewelry Design" style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;align-self:stretch;overflow:hidden;color:#171712;text-align:center;font-feature-settings:'dlig' on;text-overflow:ellipsis;font-family:'Noto Serif';font-size:14px;font-style:normal;font-weight:700;line-height:21px /* 150% */;position:relative">
-                                    <span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 700; font-size: 14px; color: rgba(23,23,18,1);">Custom Jewelry Design</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                <!-- Duplicate slides for seamless looping -->
+                <div class="slide">
+                    <img src="images/1.jpg.jpg" alt="">
                 </div>
+                <div class="slide">
+                    <img src="images/2.jpg.jpg" alt="">
+                </div>
+                <div class="slide">
+                    <img src="images/3.jpg.jpg" alt="">
+                </div>
+                <div class="slide">
+                    <img src="images/4.jpg.jpg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="footer-desc">
+            AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해, 세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+        </div>
+        <div class="footer-bar" style="position:relative;">
+            <a href="request.html" style="display:inline-block;text-decoration:none;">
+                <svg width="240" height="96" viewBox="0 0 240 96" style="display:block;" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="70,20 170,20 200,40 120,86 40,40" fill="none" stroke="#fff" stroke-width="2"/>
+                    <text x="120" y="50" text-anchor="middle" fill="#fff" font-size="18" font-family="'Noto Sans KR', 'Noto Serif', sans-serif" font-weight="500">Let’s MARYD</text>
+                </svg>
+            </a>
+            <div class="sns-bar" style="margin-top:24px; display:flex; justify-content:flex-end; width:100vw; margin-right:100px;">
+                <a href="https://www.instagram.com/maryd.work/" class="sns-icon" target="_blank" rel="noopener" title="Instagram">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
+                </a>
+                <a href="https://www.youtube.com/playlist?list=PLaWW74xLaCGXyNU0hH_qXIgQJiiAwdV5R" class="sns-icon" target="_blank" rel="noopener" title="YouTube">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube" />
+                </a>
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>

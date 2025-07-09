@@ -3,119 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SparkleCraft - Custom Jewelry</title>
+    <title>MARYD - Custom Jewelry Request</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
+            background: #4B2323;
+            color: #fff;
+            font-family: 'Noto Sans KR', 'Noto Serif', -apple-system, Roboto, Helvetica, sans-serif;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        @media (max-width: 600px) {
-            body > div[layer-name="Stitch Design"] {
-                width: 100vw !important;
-                min-width: 0 !important;
-                height: auto !important;
-                padding: 0 !important;
+        .container {
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 24px;
+            box-sizing: border-box;
+        }
+        .logo-box {
+            margin-top: 48px;
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo-img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 16px;
+        }
+        .request-form {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+        .request-form h1 {
+            font-size: 2rem;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .request-form p {
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 32px;
+            line-height: 1.7;
+        }
+        .request-form textarea {
+            width: 100%;
+            min-height: 150px;
+            resize: vertical;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #fff;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+            margin-bottom: 24px;
+        }
+        .request-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .submit-btn {
+            background: #fff;
+            border: 2px solid #fff;
+            color: #4B2323;
+            border-radius: 32px;
+            padding: 12px 36px;
+            font-size: 1.1rem;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            display: block;
+            margin: 0 auto;
+        }
+        .submit-btn:hover {
+            background: transparent;
+            color: #fff;
+        }
+        .footer-desc {
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 24px;
+            margin-top: 24px;
+        }
+        .footer-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .sns-bar {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .sns-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: box-shadow 0.2s;
+        }
+        .sns-icon:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+        .sns-icon img {
+            width: 24px;
+            height: 24px;
+        }
+        @media (max-width: 768px) {
+            .request-form h1 {
+                font-size: 1.5rem;
             }
-            div[layer-name="Depth 2, Frame 0"],
-            div[layer-name="Depth 1, Frame 0"],
-            div[layer-name="Depth 0, Frame 0"] {
-                min-width: 0 !important;
-                width: 100% !important;
-                padding: 0 !important;
-            }
-            div[layer-name="Depth 2, Frame 1"],
-            div[layer-name="Depth 3, Frame 0"] {
-                max-width: 100% !important;
-                width: 100% !important;
-                padding: 0 !important;
-            }
-            div[layer-name="Depth 4, Frame 2"] {
-                padding-bottom: 4px !important;
-                margin-bottom: 0 !important;
-            }
-            div[layer-name="Depth 4, Frame 3"] {
-                padding-top: 0 !important;
-                margin-top: 0 !important;
-            }
-            div[layer-name="Depth 5, Frame 0"] {
-                width: 100% !important;
-                min-width: 0 !important;
-            }
-            textarea {
-                width: 100% !important;
-                min-width: 0 !important;
-                font-size: 15px !important;
-            }
-            div[layer-name="Depth 5, Frame 0"][style*='background:#F2C233'] {
-                margin-top: 8px !important;
+            .footer-bar .sns-bar {
+                width: 100%;
+                margin-right: 0;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-<!-- Figma selected node: Stitch Design -->
-<div layer-name="Stitch Design" style="display:flex;width:1280px;flex-direction:column;align-items:flex-start;background:#FFF;height:800px">
-<div layer-name="Depth 0, Frame 0" style="display:flex;min-height:800px;flex-direction:column;align-items:flex-start;align-self:stretch;background:#FFF;position:relative">
-<div layer-name="Depth 1, Frame 0" style="display:flex;flex-direction:column;align-items:flex-start;align-self:stretch;position:relative">
-<div layer-name="Depth 2, Frame 0" style="display:flex;padding:12px 40px;justify-content:space-between;align-items:center;align-self:stretch;border-bottom:1px solid #E5E8EB;position:relative">
-<div layer-name="Depth 3, Frame 0" style="display:flex;align-items:center;gap:16px;position:relative">
-<div layer-name="Depth 4, Frame 0" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-<div layer-name="Depth 5, Frame 0" style="width:16px;flex:1 0 0;position:relative">
-<svg id="1:65" style="width:16px;height:16px;fill:#171712;position:absolute;left:0px;top:0px" width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M6 0.333333H12V4.77777V9.22223H6V13.6667H0V9.22223V4.77777H6V0.333333Z" fill="#171712"/>
-</svg>
-<div layer-name="Depth 6, Frame 0" style="display:flex;width:12px;height:13px;flex-direction:column;align-items:flex-start;position:absolute;left:-1492px;top:-24px"></div></div></div>
-<div layer-name="Depth 4, Frame 1" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-<div layer-name="SparkleCraft" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:18px;font-style:normal;font-weight:700;line-height:23px /* 127.778% */;position:relative">
-<span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 700; font-size: 18px; color: rgba(23,23,18,1);">SparkleCraft</span></div></div></div>
-<div layer-name="Depth 3, Frame 1" style="display:flex;justify-content:flex-end;align-items:flex-start;gap:32px;flex:1 0 0;position:relative">
-<div layer-name="Depth 4, Frame 0" style="display:flex;height:40px;align-items:center;gap:36px;position:relative">
-<div layer-name="Depth 5, Frame 0" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-<div layer-name="Shop" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:14px;font-style:normal;font-weight:500;line-height:21px /* 150% */;position:relative">
-<span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 400; font-size: 14px; color: rgba(23,23,18,1);">Shop</span></div></div>
-<div layer-name="Depth 5, Frame 1" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-<div layer-name="About" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:14px;font-style:normal;font-weight:500;line-height:21px /* 150% */;position:relative">
-<span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 400; font-size: 14px; color: rgba(23,23,18,1);">About</span></div></div>
-<div layer-name="Depth 5, Frame 2" style="display:flex;flex-direction:column;align-items:flex-start;position:relative">
-<div layer-name="Contact" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:14px;font-style:normal;font-weight:500;line-height:21px /* 150% */;position:relative">
-<span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 400; font-size: 14px; color: rgba(23,23,18,1);">Contact</span></div></div></div>
-<div layer-name="Depth 4, Frame 1" style="display:flex;align-items:flex-start;gap:8px;position:relative">
-<div layer-name="Depth 5, Frame 0" style="display:flex;width:84px;height:40px;min-width:84px;max-width:480px;padding:0px 16px;justify-content:center;align-items:center;border-radius:12px;background:#F5F2F0;position:relative">
-<div layer-name="Depth 6, Frame 0" style="display:flex;flex-direction:column;align-items:center;position:relative">
-<div layer-name="Sign in" style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;align-self:stretch;overflow:hidden;color:#171712;text-align:center;font-feature-settings:'dlig' on;text-overflow:ellipsis;font-family:'Noto Serif';font-size:14px;font-style:normal;font-weight:700;line-height:21px /* 150% */;position:relative">
-<span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 700; font-size: 14px; color: rgba(23,23,18,1);">Sign in</span></div></div></div>
-<div layer-name="Depth 5, Frame 1" style="display:flex;height:40px;max-width:480px;padding:0px 10px;justify-content:center;align-items:center;gap:8px;border-radius:12px;background:#F5F2F0;position:relative">
-<div layer-name="Depth 6, Frame 0" style="display:flex;flex-direction:column;align-items:center;flex:1 0 0;position:relative">
-<div layer-name="Depth 7, Frame 0" style="flex:1 0 0;align-self:stretch;position:relative">
-<svg id="1:84" style="width:20px;height:20px;fill:#171712;position:absolute;left:0px;top:0px" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M16.9422 16.0578L13.0305 12.1469C15.3858 9.3192 15.1004 5.13911 12.3826 2.65779C9.66485 0.176469 5.47612 0.271665 2.87389 2.87389C0.271665 5.47612 0.176469 9.66485 2.65779 12.3826C5.13911 15.1004 9.3192 15.3858 12.1469 13.0305L16.0578 16.9422C16.302 17.1864 16.698 17.1864 16.9422 16.9422C17.1864 16.698 17.1864 16.302 16.9422 16.0578ZM2.125 7.75C2.125 4.6434 4.6434 2.125 7.75 2.125C10.8566 2.125 13.375 4.6434 13.375 7.75C13.375 10.8566 10.8566 13.375 7.75 13.375C4.64483 13.3716 2.12844 10.8552 2.125 7.75Z" fill="#171712"/>
-</svg>
-<div layer-name="Depth 8, Frame 0" style="display:flex;width:16px;height:16px;flex-direction:column;align-items:center;position:absolute;left:-2662px;top:-22px"></div></div></div></div></div></div></div>
-<div layer-name="Depth 2, Frame 1" style="display:flex;padding:20px 160px;justify-content:center;align-items:flex-start;flex:1 0 0;align-self:stretch;position:relative">
-<div layer-name="Depth 3, Frame 0" style="display:flex;height:695px;max-width:960px;flex-direction:column;align-items:flex-start;flex:1 0 0;position:relative">
-<div layer-name="Depth 4, Frame 0" style="display:flex;padding:16px;justify-content:space-between;align-items:flex-start;align-content:flex-start;row-gap:12px;align-self:stretch;flex-wrap:wrap;position:relative">
-<div layer-name="Depth 5, Frame 0" style="display:flex;height:40px;min-width:288px;flex-direction:column;align-items:flex-start;position:relative">
-<div layer-name="Custom Jewelry Quote Request" style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:32px;font-style:normal;font-weight:700;line-height:40px /* 125% */;position:relative">
-<span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 700; font-size: 32px; color: rgba(23,23,18,1);">Custom Jewelry Quote Request</span></div></div></div>
-<div layer-name="Depth 4, Frame 1" style="display:flex;padding:4px 16px 12px 16px;flex-direction:column;align-items:flex-start;align-self:stretch;position:relative">
-<div layer-name="Use the API window below to input your jewelry design specifications. You can describe your desired piece, including materials, dimensions, and any specific design elements. Once submitted, our team will review your request and provide a detailed quote." style="align-self:stretch;color:#171712;font-feature-settings:'dlig' on;font-family:'Noto Serif';font-size:16px;font-style:normal;font-weight:400;line-height:24px /* 150% */;position:relative">
-<span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 400; font-size: 16px; color: rgba(23,23,18,1);">Use the API window below to input your jewelry design specifications. You can describe your desired piece, including materials, dimensions, and any specific design elements. Once submitted, our team will review your request and provide a detailed quote.</span></div></div>
-<div layer-name="Depth 4, Frame 2" style="display:flex;width:100%;padding:12px 16px;align-items:flex-end;align-content:flex-end;gap:16px;flex-wrap:wrap;position:relative">
-<div layer-name="Depth 5, Frame 0" style="display:flex;width:100%;min-width:160px;flex-direction:column;align-items:flex-start;flex:1 0 0;position:relative">
-    <textarea style="width:100%;min-height:120px;resize:vertical;padding:12px;border-radius:8px;border:1px solid #E5E3DB;font-size:16px;font-family:'Noto Serif', -apple-system, Roboto, Helvetica, sans-serif;box-sizing:border-box;" placeholder="원하시는 악세서리 디자인을 자유롭게 입력해 주세요."></textarea>
-</div></div></div>
-<div layer-name="Depth 4, Frame 3" style="display:flex;padding:12px 16px;justify-content:flex-end;align-items:flex-end;align-self:stretch;position:relative">
-<div layer-name="Depth 5, Frame 0" style="display:flex;height:40px;min-width:84px;max-width:480px;padding:0px 16px;justify-content:center;align-items:center;border-radius:12px;background:#F2C233;position:relative">
-<div layer-name="Depth 6, Frame 0" style="display:flex;flex-direction:column;align-items:center;position:relative">
-<div layer-name="Submit Request" style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;align-self:stretch;overflow:hidden;color:#171712;text-align:center;font-feature-settings:'dlig' on;text-overflow:ellipsis;font-family:'Noto Serif';font-size:14px;font-style:normal;font-weight:700;line-height:21px /* 150% */;position:relative">
-<span style="font-family: Noto Serif, -apple-system, Roboto, Helvetica, sans-serif; font-weight: 700; font-size: 14px; color: rgba(23,23,18,1);">Submit Request</span></div></div></div></div></div></div></div></div></div>
-</div>
-</div>
-</div>
-</div>
-</div>
+    <div class="container">
+        <div class="logo-box">
+            <a href="index.html"><img src="images/logo.png" alt="MARYD 로고" class="logo-img" /></a>
+        </div>
+
+        <div class="request-form">
+            <h1>Custom Jewelry Quote Request</h1>
+            <p>
+                원하시는 악세서리 디자인을 자유롭게 입력해 주세요.<br>
+                재료, 크기, 특정 디자인 요소 등 상세히 설명해주시면<br>
+                검토 후 상세 견적을 보내드립니다.
+            </p>
+            <textarea placeholder="원하시는 악세서리 디자인을 자유롭게 입력해 주세요."></textarea>
+            <button class="submit-btn">Submit Request</button>
+        </div>
+
+        <div class="footer-desc">
+            AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해, 세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+        </div>
+        <div class="footer-bar" style="position:relative;">
+            <a href="index.html" style="display:inline-block;text-decoration:none;">
+                <svg width="240" height="96" viewBox="0 0 240 96" style="display:block;" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="70,20 170,20 200,40 120,86 40,40" fill="none" stroke="#fff" stroke-width="2"/>
+                    <text x="120" y="50" text-anchor="middle" fill="#fff" font-size="18" font-family="'Noto Sans KR', 'Noto Serif', sans-serif" font-weight="500">Back to Home</text>
+                </svg>
+            </a>
+            <div class="sns-bar" style="margin-top:24px;">
+                <a href="https://www.instagram.com/maryd.work/" class="sns-icon" target="_blank" rel="noopener" title="Instagram">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
+                </a>
+                <a href="https://www.youtube.com/playlist?list=PLaWW74xLaCGXyNU0hH_qXIgQJiiAwdV5R" class="sns-icon" target="_blank" rel="noopener" title="YouTube">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube" />
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
