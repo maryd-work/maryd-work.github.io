@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MARYD - Custom Jewelry Request</title>
     <style>
+        html,
         body {
             margin: 0;
             padding: 0;
@@ -14,6 +15,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            letter-spacing: 0.05em;
         }
         .container {
             width: 100vw;
@@ -22,7 +25,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 0 24px;
             box-sizing: border-box;
         }
         .logo-box {
@@ -42,6 +44,7 @@
             width: 100%;
             max-width: 600px;
             margin-bottom: 40px;
+            padding: 0 24px;
         }
         .request-form h1 {
             font-size: 2rem;
@@ -102,6 +105,7 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 32px;
+            width: 100%;
         }
         .sns-bar {
             display: flex;
@@ -129,10 +133,15 @@
             .request-form h1 {
                 font-size: 1.5rem;
             }
+            .request-form {
+                /* Removed margin */
+            }
+            .container {
+                padding: 0 16px;
+            }
             .footer-bar .sns-bar {
                 width: 100%;
                 margin-right: 0;
-                justify-content: center;
             }
         }
     </style>
@@ -158,13 +167,15 @@
             AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해, 세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
         </div>
         <div class="footer-bar" style="position:relative;">
-            <a href="index.html" style="display:inline-block;text-decoration:none;">
-                <svg width="240" height="96" viewBox="0 0 240 96" style="display:block;" xmlns="http://www.w3.org/2000/svg">
-                    <polygon points="70,20 170,20 200,40 120,86 40,40" fill="none" stroke="#fff" stroke-width="2"/>
-                    <text x="120" y="50" text-anchor="middle" fill="#fff" font-size="18" font-family="'Noto Sans KR', 'Noto Serif', sans-serif" font-weight="500">Back to Home</text>
-                </svg>
-            </a>
-            <div class="sns-bar" style="margin-top:24px;">
+            <div style="width: 100%; text-align: center;">
+                <a href="index.html" style="display:inline-block;text-decoration:none;">
+                    <svg width="240" height="96" viewBox="0 0 240 96" style="display:block;" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="70,20 170,20 200,40 120,86 40,40" fill="none" stroke="#fff" stroke-width="2"/>
+                        <text x="120" y="50" text-anchor="middle" fill="#fff" font-size="18" font-family="'Noto Sans KR', 'Noto Serif', sans-serif" font-weight="500">Back to Home</text>
+                    </svg>
+                </a>
+            </div>
+            <div class="sns-bar" style="margin-top:24px; display:flex; justify-content:flex-end; padding-right: 30px;">
                 <a href="https://www.instagram.com/maryd.work/" class="sns-icon" target="_blank" rel="noopener" title="Instagram">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
                 </a>
