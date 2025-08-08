@@ -231,7 +231,7 @@
                     <input type="text" id="q5" name="q5" placeholder="예: 밤하늘의 별">
                 </div>
             </div>
-            <button class="submit-btn" id="generate-btn">디자인 생성하기</button>
+            
             <div id="loading" style="display: none; text-align: center; margin-top: 20px;">
                 <p>디자인을 생성하는 중입니다. 잠시만 기다려 주세요...</p>
             </div>
@@ -240,8 +240,8 @@
                 <img id="result-image" src="" alt="AI가 생성한 주얼리 디자인 이미지" style="width: 100%; max-width: 512px; height: auto; aspect-ratio: 1 / 1; object-fit: contain; border-radius: 8px; background: #333; display: block; margin: 0 auto;">
                 <p id="result-text" style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 16px;"></p>
                 <div id="contact-form" style="margin-top: 20px; text-align:left; max-width: 512px; margin-left:auto; margin-right:auto; display:none;">
-                    <label style="display:block; margin-bottom:6px; color: rgba(255,255,255,0.9);">연락처(이메일 또는 전화)</label>
-                    <input type="text" id="contact" placeholder="예: name@example.com 또는 010-0000-0000" style="width:100%; padding:12px; border-radius:8px; border:1px solid #fff; background: rgba(255,255,255,0.1); color:#fff; margin-bottom:12px;"/>
+                    <label style="display:block; margin-bottom:6px; color: rgba(255,255,255,0.9);">연락처(전화번호)</label>
+                    <input type="tel" id="contact" style="width:100%; padding:12px; border-radius:8px; border:1px solid #fff; background: rgba(255,255,255,0.1); color:#fff; margin-bottom:12px;"/>
                     <label style="display:block; margin-bottom:6px; color: rgba(255,255,255,0.9);">추가 요청사항</label>
                     <textarea id="notes" placeholder="사이즈, 예산, 납기 등 추가 요청사항을 적어주세요" style="width:100%; min-height:120px; padding:12px; border-radius:8px; border:1px solid #fff; background: rgba(255,255,255,0.1); color:#fff;"></textarea>
                                          <button id="send-request" class="submit-btn" style="margin-top:14px;">요청하기</button>
@@ -287,6 +287,15 @@
         const chatInput = document.getElementById('chat-input');
         const chatSend = document.getElementById('chat-send');
 
+        function smoothScrollToLoading() {
+            const el = document.getElementById('loading');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        function smoothScrollToResult() {
+            const el = document.getElementById('result-container');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         function appendMessage(text, role = 'bot') {
             const div = document.createElement('div');
             div.className = `message ${role}`;
@@ -295,7 +304,7 @@
             messagesEl.scrollTop = messagesEl.scrollHeight;
         }
 
-        function askNext() {
+        async function askNext() {
             const idx = chatAnswers.length;
             if (idx < chatQuestions.length) {
                 appendMessage(chatQuestions[idx], 'bot');
@@ -310,7 +319,11 @@
                 document.getElementById('q4').value = chatAnswers[3] || '';
                 document.getElementById('q5').value = chatAnswers[4] || '';
                 appendMessage('답변 감사합니다. 디자인을 생성합니다...', 'bot');
-                document.getElementById('generate-btn').click();
+                // 로딩 표시로 스크롤 이동
+                document.getElementById('loading').style.display = 'block';
+                smoothScrollToLoading();
+                // 직접 생성 함수 트리거
+                await generateDesign();
             }
         }
 
@@ -383,7 +396,7 @@
 
         document.getElementById('send-request').addEventListener('click', sendRequestEmail);
 
-        document.getElementById('generate-btn').addEventListener('click', async () => {
+        async function generateDesign() {
             const q1 = document.getElementById('q1').value;
             const q2 = document.getElementById('q2').value;
             const q3 = document.getElementById('q3').value;
@@ -395,15 +408,17 @@
                 return;
             }
 
-            const generateBtn = document.getElementById('generate-btn');
             const loading = document.getElementById('loading');
             const resultContainer = document.getElementById('result-container');
             const resultText = document.getElementById('result-text');
             const resultImage = document.getElementById('result-image');
 
-            generateBtn.disabled = true;
+            // 채팅 입력 잠시 비활성화
+            chatSend.disabled = true;
+            chatInput.disabled = true;
             loading.style.display = 'block';
             resultContainer.style.display = 'none';
+            smoothScrollToLoading();
 
             try {
                 const isStatic = location.hostname.endsWith('github.io') || location.protocol === 'file:';
@@ -447,6 +462,7 @@
                 resultText.innerText = data.description;
                 resultContainer.style.display = 'block';
                 document.getElementById('contact-form').style.display = 'block';
+                smoothScrollToResult();
 
             } catch (error) {
                 console.error('Error:', error);
@@ -499,10 +515,11 @@
                 
                 document.body.appendChild(errorDiv);
             } finally {
-                generateBtn.disabled = false;
+                chatSend.disabled = false;
+                chatInput.disabled = false;
                 loading.style.display = 'none';
             }
-        });
+        }
     </script>
 </body>
 </html>
