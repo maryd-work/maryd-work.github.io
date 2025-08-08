@@ -274,6 +274,8 @@
     </div>
 
     <script>
+        // Google Apps Script Web App URL (설정 시 시트로 저장됩니다). 비워두면 mailto 폴백 사용
+        const SUBMIT_ENDPOINT = "";
         // Simple chat wizard questions
         const chatQuestions = [
             '어떤 종류의 액세서리를 원하시나요? (예: 반지, 목걸이, 귀걸이)',
@@ -360,37 +362,53 @@
             }
 
             try {
-                if (location.hostname.endsWith('github.io') || location.protocol === 'file:') {
-                    // Static hosting: use mailto fallback
-                    const subject = encodeURIComponent('[MARYD 요청] 커스텀 디자인 문의');
-                    const body = encodeURIComponent(`연락처: ${contact}\n\n추가 요청사항:\n${notes}\n\n입력: ${q1}, ${q2}, ${q3}, ${q4}, ${q5}\n\n이미지 URL: ${imageUrl}`);
-                    window.location.href = `mailto:maryd.co.kr@gmail.com?subject=${subject}&body=${body}`;
-                    return;
-                }
-
-                const resp = await fetch('/send-request', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contact, notes, imageUrl, q1, q2, q3, q4, q5 })
-                });
-                const json = await resp.json();
-                if (json.fallback) {
-                    const subject = encodeURIComponent('[MARYD 요청] 커스텀 디자인 문의');
-                    const body = encodeURIComponent(`연락처: ${contact}\n\n추가 요청사항:\n${notes}\n\n입력: ${q1}, ${q2}, ${q3}, ${q4}, ${q5}\n\n이미지 URL: ${imageUrl}`);
-                    window.location.href = `mailto:maryd.co.kr@gmail.com?subject=${subject}&body=${body}`;
-                    // 성공 표시
+                const showSuccess = () => {
                     document.getElementById('request-success').style.display = 'block';
                     document.getElementById('send-request').textContent = '요청 완료';
                     document.getElementById('send-request').disabled = true;
-                    return;
+                };
+                const mailtoFallback = () => {
+                    const subject = encodeURIComponent('[MARYD 요청] 커스텀 디자인 문의');
+                    const body = encodeURIComponent(`연락처: ${contact}\n\n추가 요청사항:\n${notes}\n\n입력: ${q1}, ${q2}, ${q3}, ${q4}, ${q5}\n\n이미지 URL: ${imageUrl}`);
+                    window.location.href = `mailto:maryd.co.kr@gmail.com?subject=${subject}&body=${body}`;
+                    showSuccess();
+                };
+
+                // 1) Google Apps Script(Web App) 우선 사용 (설정된 경우)
+                if (SUBMIT_ENDPOINT) {
+                    try {
+                        const resp = await fetch(SUBMIT_ENDPOINT, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ contact, notes, imageUrl, q1, q2, q3, q4, q5 })
+                        });
+                        if (resp.ok) { showSuccess(); return; }
+                    } catch {}
                 }
-                if (!resp.ok || !json.ok) throw new Error('메일 전송 실패');
-                // 성공 표시
+
+                // 2) 자체 서버 엔드포인트 시도
+                if (!(location.hostname.endsWith('github.io') || location.protocol === 'file:')) {
+                    try {
+                        const resp = await fetch('/send-request', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ contact, notes, imageUrl, q1, q2, q3, q4, q5 })
+                        });
+                        const json = await resp.json().catch(() => ({}));
+                        if (resp.ok && json.ok && !json.fallback) { showSuccess(); return; }
+                    } catch {}
+                }
+
+                // 3) 최종 mailto 폴백
+                mailtoFallback();
+            } catch (e) {
+                // 최종 폴백
+                const subject = encodeURIComponent('[MARYD 요청] 커스텀 디자인 문의');
+                const body = encodeURIComponent(`연락처: ${contact}\n\n추가 요청사항:\n${notes}\n\n입력: ${q1}, ${q2}, ${q3}, ${q4}, ${q5}\n\n이미지 URL: ${imageUrl}`);
+                window.location.href = `mailto:maryd.co.kr@gmail.com?subject=${subject}&body=${body}`;
                 document.getElementById('request-success').style.display = 'block';
                 document.getElementById('send-request').textContent = '요청 완료';
                 document.getElementById('send-request').disabled = true;
-            } catch (e) {
-                alert('요청 전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             }
         }
 
