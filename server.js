@@ -1,3 +1,4 @@
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const express = require('express');
 const dotenv = require('dotenv');
 const OpenAI = require('openai');
@@ -11,6 +12,14 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static('.'));
+
+if (!process.env.GOOGLE_API_KEY || process.env.GOOGLE_API_KEY === 'your_google_api_key_here') {
+    console.error('❌ GOOGLE_API_KEY가 설정되지 않았습니다!');
+    console.error('📝 .env 파일을 생성하고 GOOGLE_API_KEY=your_actual_api_key를 추가해주세요.');
+}
+
+// --- Initialize Gemini Client ---
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 // --- Check if OpenAI API key is configured ---
 if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your_openai_api_key_here') {
@@ -168,6 +177,94 @@ app.post('/generate-image', async (req, res) => {
         res.status(500).json({ 
             error: errorMessage,
             details: errorDetails
+        });
+    }
+});
+
+app.post('/describe-image-gemini', async (req, res) => {
+    try {
+        const { imageUrl, q1, q2, q3, q4, q5 } = req.body || {};
+        if (!imageUrl) {
+            return res.status(400).json({ error: 'imageUrl이 필요합니다.' });
+        }
+        // If API key not configured, return fallback description
+        if (!process.env.GOOGLE_API_KEY || process.env.GOOGLE_API_KEY === 'your_google_api_key_here') {
+            return res.status(200).json({
+                description: `${q2 || ''} 소재의 ${q1 || ''}에 ${q3 || ''} 포인트를 더해 ${q4 || ''} 무드로 완성했습니다. '${q5 || ''}'에서 영감을 받아 형태와 광택을 세심하게 다듬어, 일상과 특별한 순간 모두에 조화롭게 어울립니다.`.trim()
+            });
+        }
+
+        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+
+        const prompt = `다음 이미지는 맞춤 주얼리 제품 사진입니다. 사용자가 입력한 컨텍스트를 반영해 한국어로 2문장 이내의 세련된 상품 설명을 작성하세요. 과장된 표현은 피하고, 소재/포인트/무드를 자연스럽게 녹여주세요.\n- 종류: ${q1}\n- 소재: ${q2}\n- 포인트: ${q3}\n- 스타일: ${q4}\n- 영감: ${q5}\n출력은 문장만 주세요.`;
+
+        const imageResponse = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        const imageBase64 = Buffer.from(imageResponse.data, 'binary').toString('base64');
+
+        const imagePart = {
+            inlineData: {
+                data: imageBase64,
+                mimeType: imageResponse.headers['content-type']
+            },
+        };
+
+        const result = await model.generateContent([prompt, imagePart]);
+        const response = await result.response;
+        const description = response.text();
+
+        if (!description) throw new Error('No description');
+
+        return res.json({ description });
+    } catch (error) {
+        console.error('describe-image-gemini error:', error);
+        return res.status(200).json({
+            description: '세련된 광택과 균형 잡힌 비율로 완성된 디자인으로, 일상과 특별한 순간 모두에 자연스럽게 어울립니다.'
+        });
+    }
+});
+
+app.post('/describe-image', async (req, res) => {
+    try {
+        const { imageUrl, q1, q2, q3, q4, q5 } = req.body || {};
+        if (!imageUrl) {
+            return res.status(400).json({ error: 'imageUrl이 필요합니다.' });
+        }
+        // If API key not configured, return fallback description
+        if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your_openai_api_key_here') {
+            return res.status(200).json({
+                description: `${q2 || ''} 소재의 ${q1 || ''}에 ${q3 || ''} 포인트를 더해 ${q4 || ''} 무드로 완성했습니다. '${q5 || ''}'에서 영감을 받아 형태와 광택을 세심하게 다듬어, 일상과 특별한 순간 모두에 조화롭게 어울립니다.`.trim()
+            });
+        }
+
+        // Use GPT-4o-mini to describe the image with context
+        const prompt = `다음 이미지는 맞춤 주얼리 제품 사진입니다. 사용자가 입력한 컨텍스트를 반영해 한국어로 2문장 이내의 세련된 상품 설명을 작성하세요. 과장된 표현은 피하고, 소재/포인트/무드를 자연스럽게 녹여주세요.
+- 종류: ${q1}
+- 소재: ${q2}
+- 포인트: ${q3}
+- 스타일: ${q4}
+- 영감: ${q5}
+출력은 문장만 주세요.`;
+
+        const completion = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            temperature: 0.6,
+            messages: [
+                { role: 'system', content: '당신은 럭셔리 주얼리 카피라이터입니다.' },
+                { role: 'user', content: [
+                    { type: 'text', text: prompt },
+                    { type: 'image_url', image_url: { url: imageUrl } }
+                ]}
+            ]
+        });
+
+        const description = completion.choices?.[0]?.message?.content?.trim();
+        if (!description) throw new Error('No description');
+
+        return res.json({ description });
+    } catch (error) {
+        console.error('describe-image error:', error);
+        return res.status(200).json({
+            description: '세련된 광택과 균형 잡힌 비율로 완성된 디자인으로, 일상과 특별한 순간 모두에 자연스럽게 어울립니다.'
         });
     }
 });

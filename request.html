@@ -246,7 +246,7 @@
                     <textarea id="notes" placeholder="사이즈, 예산, 납기 등 추가 요청사항을 적어주세요" style="width:100%; min-height:120px; padding:12px; border-radius:8px; border:1px solid #fff; background: rgba(255,255,255,0.1); color:#fff;"></textarea>
                                          <button id="send-request" class="submit-btn" style="margin-top:14px;">요청하기</button>
                  </div>
-                 <div id="request-success" style="display:none; margin-top:12px; padding:12px; border:1px solid #4caf50; border-radius:8px; background:rgba(76,175,80,0.15); color:#d8ffd8; text-align:center; max-width:512px; margin-left:auto; margin-right:auto;">요청이 접수되었습니다. 곧 연락드릴게요!</div>
+
             </div>
         </div>
 
@@ -276,6 +276,88 @@
     <script>
         // Google Apps Script Web App URL (설정 시 시트로 저장됩니다). 비워두면 mailto 폴백 사용
         const SUBMIT_ENDPOINT = "";
+
+        function generateKoreanDescription({ q1, q2, q3, q4, q5 }) {
+        }
+
+        async function refineDescriptionWithGemini({ imageUrl, q1, q2, q3, q4, q5 }) {
+            // 서버가 있을 때만 시도 (GitHub Pages 등 정적 환경에서는 생략)
+            if (location.hostname.endsWith('github.io') || location.protocol === 'file:') return;
+            try {
+                const resp = await fetch('/describe-image-gemini', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ imageUrl, q1, q2, q3, q4, q5 })
+                });
+                if (!resp.ok) return;
+                const json = await resp.json();
+                if (json && json.description) {
+                    document.getElementById('result-text').innerText = json.description;
+                }
+            } catch {}
+        }
+
+        async function refineDescriptionWithChatGPT({ imageUrl, q1, q2, q3, q4, q5 }) {
+            // 서버가 있을 때만 시도 (GitHub Pages 등 정적 환경에서는 생략)
+            if (location.hostname.endsWith('github.io') || location.protocol === 'file:') return;
+            try {
+                const resp = await fetch('/describe-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ imageUrl, q1, q2, q3, q4, q5 })
+                });
+                if (!resp.ok) return;
+                const json = await resp.json();
+                if (json && json.description) {
+                    document.getElementById('result-text').innerText = json.description;
+                }
+            } catch {}
+        }
+
+        function generateKoreanDescription({ q1, q2, q3, q4, q5 }) {
+            const trimAll = (s) => (s || "").toString().trim();
+            q1 = trimAll(q1); q2 = trimAll(q2); q3 = trimAll(q3); q4 = trimAll(q4); q5 = trimAll(q5);
+
+            const openers = [
+                `${q2} 소재로 제작한 ${q1}`,
+                `${q1}에 ${q2}의 질감을 살린 디자인`,
+                `고급스러운 ${q2} ${q1}`
+            ];
+            const focuses = [
+                `${q3}를 핵심 포인트로`,
+                `${q3} 디테일을 중심으로`,
+                `${q3}의 아름다움을 강조하여`
+            ];
+            const styles = [
+                `${q4} 무드로`,
+                `${q4} 감성을 담아`,
+                `${q4} 분위기를 유지하며`
+            ];
+            const inspirations = [
+                `'${q5}'에서 영감을 받아`,
+                `'${q5}' 모티프를 반영해`,
+                `'${q5}'의 이미지로부터 착안해`
+            ];
+            const finishes = [
+                `라인과 비율을 균형 있게 조정해 손끝에서 느껴지는 완성도를 높였습니다.`,
+                `착용 시 편안함과 존재감이 조화를 이루도록 구조와 광택을 세심히 다듬었습니다.`,
+                `일상과 특별한 순간 모두에서 자연스럽게 빛나도록 표면 처리와 형태를 정교하게 설계했습니다.`
+            ];
+
+            const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            const parts = [
+                pick(openers),
+                pick(focuses),
+                pick(styles),
+                pick(inspirations)
+            ];
+            // 문장 구성
+            const sentence1 = `${parts[0]}으로, ${parts[1]} ${parts[2]} ${parts[3]} 디자인했습니다.`
+                .replace(/\s+/g, ' ').replace(/\s,/, ',');
+            const sentence2 = pick(finishes);
+
+            return `${sentence1} ${sentence2}`;
+        }
         // Simple chat wizard questions
         const chatQuestions = [
             '어떤 종류의 액세서리를 원하시나요? (예: 반지, 목걸이, 귀걸이)',
@@ -363,7 +445,6 @@
 
             try {
                 const showSuccess = () => {
-                    document.getElementById('request-success').style.display = 'block';
                     document.getElementById('send-request').textContent = '요청 완료';
                     document.getElementById('send-request').disabled = true;
                 };
@@ -406,7 +487,6 @@
                 const subject = encodeURIComponent('[MARYD 요청] 커스텀 디자인 문의');
                 const body = encodeURIComponent(`연락처: ${contact}\n\n추가 요청사항:\n${notes}\n\n입력: ${q1}, ${q2}, ${q3}, ${q4}, ${q5}\n\n이미지 URL: ${imageUrl}`);
                 window.location.href = `mailto:maryd.co.kr@gmail.com?subject=${subject}&body=${body}`;
-                document.getElementById('request-success').style.display = 'block';
                 document.getElementById('send-request').textContent = '요청 완료';
                 document.getElementById('send-request').disabled = true;
             }
@@ -450,7 +530,7 @@
                     const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${width}&height=${height}&nologo=true&seed=${seed}`;
                     data = {
                         imageUrl,
-                        description: `${q2} 소재의 ${q1}로, ${q3}를 중심 포인트로 한 ${q4} 디자인입니다. '${q5}'에서 영감을 받아 조형과 디테일을 정교하게 다듬었으며, 일상과 특별한 순간 모두에 어울리는 고급스러운 분위기를 연출합니다.`
+                        description: generateKoreanDescription({ q1, q2, q3, q4, q5 })
                     };
                 } else {
                     // Use server when available (local dev / own hosting)
@@ -471,7 +551,7 @@
                         const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${width}&height=${height}&nologo=true&seed=${seed}`;
                         data = {
                             imageUrl,
-                            description: `${q2} 소재의 ${q1}로, ${q3}를 중심 포인트로 한 ${q4} 디자인입니다. '${q5}'에서 영감을 받아 조형과 디테일을 정교하게 다듬었으며, 일상과 특별한 순간 모두에 어울리는 고급스러운 분위기를 연출합니다.`
+                            description: generateKoreanDescription({ q1, q2, q3, q4, q5 })
                         };
                     }
                 }
@@ -481,6 +561,10 @@
                 resultContainer.style.display = 'block';
                 document.getElementById('contact-form').style.display = 'block';
                 smoothScrollToResult();
+                // 가능하다면 Gemini API로 설명 보정 시도
+                refineDescriptionWithGemini({ 
+                    imageUrl: data.imageUrl, q1, q2, q3, q4, q5 
+                });
 
             } catch (error) {
                 console.error('Error:', error);
