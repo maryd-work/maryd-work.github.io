@@ -176,6 +176,18 @@
                 /* Removed width and margin-right */
             }
         }
+            /* Chat UI */
+        .chat-wrapper { width: 100%; max-width: 600px; margin: 0 auto 24px; padding: 0 0; }
+        .messages { display: flex; flex-direction: column; gap: 10px; max-height: 50vh; overflow-y: auto; padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; }
+        .message { max-width: 80%; padding: 10px 14px; border-radius: 14px; line-height: 1.5; font-size: 0.95rem; word-break: break-word; }
+        .message.bot { background: rgba(255,255,255,0.12); color: #fff; align-self: flex-start; border-top-left-radius: 6px; }
+        .message.user { background: #fff; color: #4B2323; align-self: flex-end; border-top-right-radius: 6px; }
+        .input-row { display: flex; gap: 8px; margin-top: 12px; }
+        .input-row input { flex: 1; padding: 12px; border-radius: 24px; border: 1px solid #fff; background: rgba(255,255,255,0.1); color: #fff; font-size: 1rem; }
+        .input-row input::placeholder { color: rgba(255,255,255,0.6); }
+        .input-row button { background: #fff; color: #4B2323; border: none; border-radius: 24px; padding: 10px 16px; font-weight: 600; cursor: pointer; }
+        .message img { max-width: 220px; border-radius: 8px; display: block; }
+        @media (max-width: 768px) { .messages { max-height: 46vh; } .message img { max-width: 60vw; } }
     </style>
 </head>
 <body>
@@ -185,6 +197,13 @@
         </div>
 
         <div class="request-form">
+            <div class="chat-wrapper" id="chat">
+                <div class="messages" id="messages"></div>
+                <div class="input-row">
+                    <input id="chat-input" type="text" placeholder="메시지를 입력하세요" />
+                    <button id="chat-send" type="button">전송</button>
+                </div>
+            </div>
             <h1>AI Custom Jewelry Design</h1>
             <p>
                 아래 5가지 질문에 답변해주시면<br>
@@ -247,6 +266,62 @@
     </div>
 
     <script>
+        // Simple chat wizard questions
+        const chatQuestions = [
+            '어떤 종류의 액세서리를 원하시나요? (예: 반지, 목걸이, 귀걸이)',
+            '주된 재료는 무엇으로 할까요? (예: 금, 은, 원석)',
+            '디자인의 핵심 포인트나 장식은 무엇인가요? (예: 탄생석, 특정 문양)',
+            '전체적인 스타일은 어떤 느낌이었으면 하나요? (예: 심플, 화려, 빈티지)',
+            '디자인에 영감을 줄 만한 것이 있나요? (예: 좋아하는 영화, 특정 장소)'
+        ];
+        const chatAnswers = [];
+        const messagesEl = document.getElementById('messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatSend = document.getElementById('chat-send');
+
+        function appendMessage(text, role = 'bot') {
+            const div = document.createElement('div');
+            div.className = `message ${role}`;
+            div.textContent = text;
+            messagesEl.appendChild(div);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function askNext() {
+            const idx = chatAnswers.length;
+            if (idx < chatQuestions.length) {
+                appendMessage(chatQuestions[idx], 'bot');
+                chatInput.placeholder = '답변을 입력하세요';
+                chatInput.value = '';
+                chatInput.focus();
+            } else {
+                // Fill form inputs and trigger generate
+                document.getElementById('q1').value = chatAnswers[0] || '';
+                document.getElementById('q2').value = chatAnswers[1] || '';
+                document.getElementById('q3').value = chatAnswers[2] || '';
+                document.getElementById('q4').value = chatAnswers[3] || '';
+                document.getElementById('q5').value = chatAnswers[4] || '';
+                appendMessage('답변 감사합니다. 디자인을 생성합니다...', 'bot');
+                document.getElementById('generate-btn').click();
+            }
+        }
+
+        function submitChat() {
+            const value = chatInput.value.trim();
+            if (!value) return;
+            appendMessage(value, 'user');
+            chatAnswers.push(value);
+            askNext();
+        }
+
+        chatSend.addEventListener('click', submitChat);
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') submitChat();
+        });
+
+        // Boot chat
+        appendMessage('안녕하세요! 몇 가지 질문에 답해주시면 맞춤 디자인을 만들어 드릴게요.', 'bot');
+        askNext();
         document.getElementById('generate-btn').addEventListener('click', async () => {
             const q1 = document.getElementById('q1').value;
             const q2 = document.getElementById('q2').value;
