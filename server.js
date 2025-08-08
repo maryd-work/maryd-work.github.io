@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const OpenAI = require('openai');
 const axios = require('axios');
+const nodemailer = require('nodemailer');
 
 dotenv.config();
 
@@ -168,6 +169,57 @@ app.post('/generate-image', async (req, res) => {
             error: errorMessage,
             details: errorDetails
         });
+    }
+});
+
+app.post('/send-request', async (req, res) => {
+    try {
+        const { contact, notes, imageUrl, q1, q2, q3, q4, q5 } = req.body;
+        if (!contact || !imageUrl) {
+            return res.status(400).json({ error: '연락처와 이미지가 필요합니다.' });
+        }
+
+        if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+            return res.status(200).json({
+                fallback: true,
+                message: 'SMTP 환경변수가 없어 mailto 링크로 전송하세요.'
+            });
+        }
+
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: Number(process.env.SMTP_PORT || 587),
+            secure: false,
+            auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+        });
+
+        const subject = `[MARYD 요청] ${contact}님의 커스텀 디자인 요청`;
+        const html = `
+            <h2>커스텀 디자인 요청</h2>
+            <p><strong>연락처:</strong> ${contact}</p>
+            <p><strong>추가 요청사항:</strong><br>${(notes || '').replace(/\n/g,'<br>')}</p>
+            <p><strong>디자인 입력:</strong><br>
+            - q1: ${q1 || ''}<br>
+            - q2: ${q2 || ''}<br>
+            - q3: ${q3 || ''}<br>
+            - q4: ${q4 || ''}<br>
+            - q5: ${q5 || ''}</p>
+            <p><strong>생성 이미지:</strong></p>
+            <p><img src="${imageUrl}" style="max-width:600px;border-radius:8px" /></p>
+            <p>이미지 링크: <a href="${imageUrl}">${imageUrl}</a></p>
+        `;
+
+        await transporter.sendMail({
+            from: process.env.SMTP_FROM || process.env.SMTP_USER,
+            to: 'maryd.co.kr@gmail.com',
+            subject,
+            html
+        });
+
+        res.json({ ok: true });
+    } catch (e) {
+        console.error('send-request error:', e);
+        res.status(500).json({ error: '요청 전송에 실패했습니다.' });
     }
 });
 

@@ -209,7 +209,7 @@
                 아래 5가지 질문에 답변해주시면<br>
                 AI가 세상에 단 하나뿐인 액세서리 디자인을 제안해 드립니다.
             </p>
-            <div class="form-grid">
+            <div class="form-grid" style="display:none;">
                 <div class="form-group">
                     <label for="q1">어떤 종류의 액세서리를 원하시나요? (예: 반지, 목걸이, 귀걸이)</label>
                     <input type="text" id="q1" name="q1" placeholder="예: 반지">
@@ -239,6 +239,14 @@
                 <h3 style="margin-bottom: 16px;">AI가 생성한 디자인</h3>
                 <img id="result-image" src="" alt="AI가 생성한 주얼리 디자인 이미지" style="width: 100%; max-width: 512px; height: auto; aspect-ratio: 1 / 1; object-fit: contain; border-radius: 8px; background: #333; display: block; margin: 0 auto;">
                 <p id="result-text" style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 16px;"></p>
+                <div id="contact-form" style="margin-top: 20px; text-align:left; max-width: 512px; margin-left:auto; margin-right:auto; display:none;">
+                    <label style="display:block; margin-bottom:6px; color: rgba(255,255,255,0.9);">연락처(이메일 또는 전화)</label>
+                    <input type="text" id="contact" placeholder="예: name@example.com 또는 010-0000-0000" style="width:100%; padding:12px; border-radius:8px; border:1px solid #fff; background: rgba(255,255,255,0.1); color:#fff; margin-bottom:12px;"/>
+                    <label style="display:block; margin-bottom:6px; color: rgba(255,255,255,0.9);">추가 요청사항</label>
+                    <textarea id="notes" placeholder="사이즈, 예산, 납기 등 추가 요청사항을 적어주세요" style="width:100%; min-height:120px; padding:12px; border-radius:8px; border:1px solid #fff; background: rgba(255,255,255,0.1); color:#fff;"></textarea>
+                                         <button id="send-request" class="submit-btn" style="margin-top:14px;">요청하기</button>
+                 </div>
+                 <div id="request-success" style="display:none; margin-top:12px; padding:12px; border:1px solid #4caf50; border-radius:8px; background:rgba(76,175,80,0.15); color:#d8ffd8; text-align:center; max-width:512px; margin-left:auto; margin-right:auto;">요청이 접수되었습니다. 곧 연락드릴게요!</div>
             </div>
         </div>
 
@@ -322,6 +330,59 @@
         // Boot chat
         appendMessage('안녕하세요! 몇 가지 질문에 답해주시면 맞춤 디자인을 만들어 드릴게요.', 'bot');
         askNext();
+
+        async function sendRequestEmail() {
+            const contact = document.getElementById('contact').value.trim();
+            const notes = document.getElementById('notes').value.trim();
+            const imageUrl = document.getElementById('result-image').src;
+            const q1 = document.getElementById('q1').value;
+            const q2 = document.getElementById('q2').value;
+            const q3 = document.getElementById('q3').value;
+            const q4 = document.getElementById('q4').value;
+            const q5 = document.getElementById('q5').value;
+
+            if (!contact) {
+                alert('연락처를 입력해주세요.');
+                return;
+            }
+
+            try {
+                if (location.hostname.endsWith('github.io') || location.protocol === 'file:') {
+                    // Static hosting: use mailto fallback
+                    const subject = encodeURIComponent('[MARYD 요청] 커스텀 디자인 문의');
+                    const body = encodeURIComponent(`연락처: ${contact}\n\n추가 요청사항:\n${notes}\n\n입력: ${q1}, ${q2}, ${q3}, ${q4}, ${q5}\n\n이미지 URL: ${imageUrl}`);
+                    window.location.href = `mailto:maryd.co.kr@gmail.com?subject=${subject}&body=${body}`;
+                    return;
+                }
+
+                const resp = await fetch('/send-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contact, notes, imageUrl, q1, q2, q3, q4, q5 })
+                });
+                const json = await resp.json();
+                if (json.fallback) {
+                    const subject = encodeURIComponent('[MARYD 요청] 커스텀 디자인 문의');
+                    const body = encodeURIComponent(`연락처: ${contact}\n\n추가 요청사항:\n${notes}\n\n입력: ${q1}, ${q2}, ${q3}, ${q4}, ${q5}\n\n이미지 URL: ${imageUrl}`);
+                    window.location.href = `mailto:maryd.co.kr@gmail.com?subject=${subject}&body=${body}`;
+                    // 성공 표시
+                    document.getElementById('request-success').style.display = 'block';
+                    document.getElementById('send-request').textContent = '요청 완료';
+                    document.getElementById('send-request').disabled = true;
+                    return;
+                }
+                if (!resp.ok || !json.ok) throw new Error('메일 전송 실패');
+                // 성공 표시
+                document.getElementById('request-success').style.display = 'block';
+                document.getElementById('send-request').textContent = '요청 완료';
+                document.getElementById('send-request').disabled = true;
+            } catch (e) {
+                alert('요청 전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            }
+        }
+
+        document.getElementById('send-request').addEventListener('click', sendRequestEmail);
+
         document.getElementById('generate-btn').addEventListener('click', async () => {
             const q1 = document.getElementById('q1').value;
             const q2 = document.getElementById('q2').value;
@@ -385,6 +446,7 @@
                 resultImage.src = data.imageUrl;
                 resultText.innerText = data.description;
                 resultContainer.style.display = 'block';
+                document.getElementById('contact-form').style.display = 'block';
 
             } catch (error) {
                 console.error('Error:', error);
