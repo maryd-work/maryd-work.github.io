@@ -129,6 +129,39 @@
             width: 24px;
             height: 24px;
         }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #fff;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        .form-group input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
         @media (max-width: 768px) {
             .request-form h1 {
                 font-size: 1.5rem;
@@ -152,14 +185,42 @@
         </div>
 
         <div class="request-form">
-            <h1>Custom Jewelry Quote Request</h1>
+            <h1>AI Custom Jewelry Design</h1>
             <p>
-                원하시는 악세서리 디자인을 자유롭게 입력해 주세요.<br>
-                재료, 크기, 특정 디자인 요소 등 상세히 설명해주시면<br>
-                검토 후 상세 견적을 보내드립니다.
+                아래 5가지 질문에 답변해주시면<br>
+                AI가 세상에 단 하나뿐인 액세서리 디자인을 제안해 드립니다.
             </p>
-            <textarea placeholder="원하시는 악세서리 디자인을 자유롭게 입력해 주세요."></textarea>
-            <button class="submit-btn">Submit Request</button>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="q1">어떤 종류의 액세서리를 원하시나요? (예: 반지, 목걸이, 귀걸이)</label>
+                    <input type="text" id="q1" name="q1" placeholder="예: 반지">
+                </div>
+                <div class="form-group">
+                    <label for="q2">주된 재료는 무엇으로 할까요? (예: 금, 은, 원석)</label>
+                    <input type="text" id="q2" name="q2" placeholder="예: 은">
+                </div>
+                <div class="form-group">
+                    <label for="q3">디자인의 핵심 포인트나 장식은 무엇인가요? (예: 탄생석, 특정 문양)</label>
+                    <input type="text" id="q3" name="q3" placeholder="예: 푸른 토파즈">
+                </div>
+                <div class="form-group">
+                    <label for="q4">전체적인 스타일은 어떤 느낌이었으면 하나요? (예: 심플, 화려, 빈티지)</label>
+                    <input type="text" id="q4" name="q4" placeholder="예: 심플하고 모던하게">
+                </div>
+                <div class="form-group">
+                    <label for="q5">디자인에 영감을 줄 만한 것이 있나요? (예: 좋아하는 영화, 특정 장소)</label>
+                    <input type="text" id="q5" name="q5" placeholder="예: 밤하늘의 별">
+                </div>
+            </div>
+            <button class="submit-btn" id="generate-btn">디자인 생성하기</button>
+            <div id="loading" style="display: none; text-align: center; margin-top: 20px;">
+                <p>디자인을 생성하는 중입니다. 잠시만 기다려 주세요...</p>
+            </div>
+            <div id="result-container" style="margin-top: 30px; display: none; text-align: center;">
+                <h3 style="margin-bottom: 16px;">AI가 생성한 디자인</h3>
+                <img id="result-image" src="" alt="AI가 생성한 주얼리 디자인 이미지" style="max-width: 100%; width: 512px; height: 512px; border-radius: 8px; background: #333;">
+                <p id="result-text" style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 16px;"></p>
+            </div>
         </div>
 
         <div class="footer-desc">
@@ -184,5 +245,104 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('generate-btn').addEventListener('click', async () => {
+            const q1 = document.getElementById('q1').value;
+            const q2 = document.getElementById('q2').value;
+            const q3 = document.getElementById('q3').value;
+            const q4 = document.getElementById('q4').value;
+            const q5 = document.getElementById('q5').value;
+
+            if (!q1 || !q2 || !q3 || !q4 || !q5) {
+                alert('모든 질문에 답변해주세요.');
+                return;
+            }
+
+            const generateBtn = document.getElementById('generate-btn');
+            const loading = document.getElementById('loading');
+            const resultContainer = document.getElementById('result-container');
+            const resultText = document.getElementById('result-text');
+            const resultImage = document.getElementById('result-image');
+
+            generateBtn.disabled = true;
+            loading.style.display = 'block';
+            resultContainer.style.display = 'none';
+
+            try {
+                const response = await fetch('/generate-image', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ q1, q2, q3, q4, q5 }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to generate design.');
+                }
+
+                const data = await response.json();
+                
+                resultImage.src = data.imageUrl;
+                resultText.innerText = data.description;
+                resultContainer.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error:', error);
+                let errorMessage = '디자인 생성에 실패했습니다. 다시 시도해주세요.';
+                
+                // Try to get more specific error message from response
+                if (error.response) {
+                    try {
+                        const errorData = await error.response.json();
+                        errorMessage = errorData.error || errorMessage;
+                        if (errorData.details) {
+                            errorMessage += '\n\n상세 정보: ' + errorData.details;
+                        }
+                    } catch (e) {
+                        // If we can't parse the error response, use the default message
+                    }
+                }
+                
+                // 더 나은 에러 표시를 위해 모달 스타일로 변경
+                const errorDiv = document.createElement('div');
+                errorDiv.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #4B2323;
+                    border: 2px solid #fff;
+                    border-radius: 12px;
+                    padding: 24px;
+                    max-width: 400px;
+                    width: 90%;
+                    z-index: 1000;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                `;
+                
+                errorDiv.innerHTML = `
+                    <h3 style="margin: 0 0 16px 0; color: #fff;">⚠️ 오류 발생</h3>
+                    <p style="margin: 0 0 16px 0; color: #fff; line-height: 1.5;">${errorMessage}</p>
+                    <button onclick="this.parentElement.remove()" style="
+                        background: #fff;
+                        color: #4B2323;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 8px 16px;
+                        cursor: pointer;
+                        font-weight: 600;
+                    ">확인</button>
+                `;
+                
+                document.body.appendChild(errorDiv);
+            } finally {
+                generateBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
