@@ -270,20 +270,30 @@
             resultContainer.style.display = 'none';
 
             try {
-                const response = await fetch('/generate-image', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ q1, q2, q3, q4, q5 }),
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to generate design.');
+                const isStatic = location.hostname.endsWith('github.io') || location.protocol === 'file:';
+                let data;
+                if (isStatic) {
+                    // Direct client-side generation for GitHub Pages / static hosting
+                    const prompt = `A beautiful ${q1} made of ${q2} featuring ${q3}, ${q4} style, inspired by ${q5}, professional jewelry photography`;
+                    const seed = Math.floor(Math.random() * 1_000_000);
+                    const width = 1024;
+                    const height = 1024;
+                    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${width}&height=${height}&nologo=true&seed=${seed}`;
+                    data = {
+                        imageUrl,
+                        description: `${q2} 소재의 ${q1}로, ${q3}를 중심 포인트로 한 ${q4} 디자인입니다. '${q5}'에서 영감을 받아 조형과 디테일을 정교하게 다듬었으며, 일상과 특별한 순간 모두에 어울리는 고급스러운 분위기를 연출합니다.`
+                    };
+                } else {
+                    // Use server when available (local dev / own hosting)
+                    const response = await fetch('/generate-image', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ q1, q2, q3, q4, q5 })
+                    });
+                    if (!response.ok) throw new Error('Server generation failed');
+                    data = await response.json();
                 }
 
-                const data = await response.json();
-                
                 resultImage.src = data.imageUrl;
                 resultText.innerText = data.description;
                 resultContainer.style.display = 'block';
