@@ -225,9 +225,9 @@ app.post('/send-request', async (req, res) => {
         }
 
         if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-            return res.status(200).json({
-                fallback: true,
-                message: 'SMTP 환경변수가 없어 mailto 링크로 전송하세요.'
+            return res.status(500).json({
+                error: '메일 전송 실패',
+                details: '서버에 메일 설정이 되어있지 않습니다. 관리자에게 문의하세요.'
             });
         }
 

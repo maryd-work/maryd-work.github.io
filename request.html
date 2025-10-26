@@ -446,64 +446,55 @@
                 return;
             }
 
-            console.log("Attempting to send request...");
+            const sendButton = document.getElementById('send-request');
+            sendButton.disabled = true;
+            sendButton.textContent = '전송 중...';
 
             try {
-                const showSuccess = () => {
-                    document.getElementById('send-request').textContent = '요청 완료';
-                    document.getElementById('send-request').disabled = true;
-                    console.log("Request sent successfully or fallback initiated.");
-                };
-                const mailtoFallback = () => {
-                    console.log("Falling back to mailto...");
-                    const subject = encodeURIComponent('[MARYD 요청] 커스텀 디자인 문의');
-                    const body = encodeURIComponent(`연락처: ${contact}\n\n추가 요청사항:\n${notes}\n\n입력: ${q1}, ${q2}, ${q3}, ${q4}, ${q5}\n\n이미지 URL: ${imageUrl}`);
-                    window.location.href = `mailto:maryd.co.kr@gmail.com?subject=${subject}&body=${body}`;
-                    showSuccess();
-                };
-
-                // 1) Google Apps Script(Web App) 우선 사용 (설정된 경우)
+                // 1. Google Apps Script (SUBMIT_ENDPOINT)
                 if (SUBMIT_ENDPOINT) {
-                    console.log("SUBMIT_ENDPOINT is set. Trying Google Apps Script...");
-                    try {
-                        const resp = await fetch(SUBMIT_ENDPOINT, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ contact, notes, imageUrl, q1, q2, q3, q4, q5 })
-                        });
-                        if (resp.ok) { showSuccess(); return; }
-                    } catch (e) {
-                        console.error("Google Apps Script failed:", e);
-                    }
+                    console.log("Attempting to send via Google Apps Script...");
+                    // Google Apps Script는 보통 redirect 응답을 하므로, 'no-cors' 모드로 요청하고 응답을 기다리지 않습니다.
+                    await fetch(SUBMIT_ENDPOINT, {
+                        method: 'POST',
+                        mode: 'no-cors', 
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contact, notes, imageUrl, q1, q2, q3, q4, q5 })
+                    });
+                    
+                    // 성공으로 간주하고 UI 처리
+                    sendButton.textContent = '요청 완료';
+                    alert('요청이 성공적으로 전송되었습니다.');
+                    return;
                 }
 
-                // 2) 자체 서버 엔드포인트 시도
+                // 2. Local Node.js Server (개발 환경용)
                 if (!(location.hostname.endsWith('github.io') || location.protocol === 'file:')) {
-                    console.log("Trying local server endpoint /send-request...");
-                    try {
-                        const resp = await fetch('/send-request', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ contact, notes, imageUrl, q1, q2, q3, q4, q5 })
-                        });
-                        const json = await resp.json().catch(() => ({}));
-                        if (resp.ok && json.ok && !json.fallback) { showSuccess(); return; }
-                        console.log("Local server request failed or returned fallback:", json);
-                    } catch (e) {
-                        console.error("Local server request failed:", e);
+                    console.log("Attempting to send via local server...");
+                    const response = await fetch('/send-request', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contact, notes, imageUrl, q1, q2, q3, q4, q5 })
+                    });
+
+                    if (response.ok) {
+                        sendButton.textContent = '요청 완료';
+                        alert('요청이 성공적으로 전송되었습니다.');
+                        return;
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.details || '로컬 서버에서 요청 처리에 실패했습니다.');
                     }
                 }
+                
+                // 3. 모든 방법 실패 시 최종 폴백
+                throw new Error('메일 전송 기능이 설정되지 않았습니다. maryd.co.kr@gmail.com 으로 직접 문의해주세요.');
 
-                // 3) 최종 mailto 폴백
-                mailtoFallback();
-            } catch (e) {
-                console.error("sendRequestEmail outer catch:", e);
-                // 최종 폴백
-                const subject = encodeURIComponent('[MARYD 요청] 커스텀 디자인 문의');
-                const body = encodeURIComponent(`연락처: ${contact}\n\n추가 요청사항:\n${notes}\n\n입력: ${q1}, ${q2}, ${q3}, ${q4}, ${q5}\n\n이미지 URL: ${imageUrl}`);
-                window.location.href = `mailto:maryd.co.kr@gmail.com?subject=${subject}&body=${body}`;
-                document.getElementById('send-request').textContent = '요청 완료';
-                document.getElementById('send-request').disabled = true;
+            } catch (error) {
+                console.error('sendRequestEmail error:', error);
+                alert(`오류가 발생했습니다: ${error.message}`);
+                sendButton.disabled = false;
+                sendButton.textContent = '요청하기';
             }
         }
 
