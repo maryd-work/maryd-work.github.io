@@ -62,19 +62,7 @@ app.post('/generate-image', async (req, res) => {
         }
 
         // --- Create a detailed prompt for DALL-E 3 ---
-        const prompt = `
-        Create a photorealistic, high-quality product shot of a piece of jewelry.
-        The image should be in a clean, professional studio setting with soft, elegant lighting.
-        
-        **Jewelry Details:**
-        - **Type:** A beautiful ${q1}.
-        - **Main Material:** Crafted from polished ${q2}.
-        - **Key Feature:** Featuring a stunning ${q3} as the centerpiece.
-        - **Style:** The overall design is ${q4}.
-        - **Inspiration:** Inspired by the theme of '${q5}'.
-        
-        The final image should look like a professional photograph for a luxury brand catalog. Do not include any text or logos.
-        `;
+        const prompt = `A professional studio photograph of a single piece of jewelry: a ${q4} style ${q1} made of ${q2}, with a ${q3} centerpiece. The design is inspired by '${q5}'. The background is a clean, solid light color.`;
 
         console.log("Sending prompt to DALL-E 3:", prompt);
 
@@ -85,7 +73,7 @@ app.post('/generate-image', async (req, res) => {
         try {
             // --- Try DALL-E 3 API first ---
             const response = await openai.images.generate({
-                model: "dall-e-3",
+                model: "dall-e-2",
                 prompt: prompt,
                 n: 1,
                 size: "1024x1024",
