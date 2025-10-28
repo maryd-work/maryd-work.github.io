@@ -246,7 +246,7 @@ app.post('/send-request', async (req, res) => {
         `;
 
         await transporter.sendMail({
-            from: `"MARYD" <${fromEmail}>`,
+            from: fromEmail,
             to: 'maryd.co.kr@gmail.com',
             subject,
             html
@@ -256,8 +256,8 @@ app.post('/send-request', async (req, res) => {
     } catch (e) {
         console.error('send-request error:', e);
         let details = e.message;
-        if (e.message && e.message.includes("pattern")) {
-            details = `메일 주소 형식 오류: '${process.env.SMTP_FROM || process.env.SMTP_USER}'가 유효한 이메일 주소인지 확인해주세요. (e.g., user@example.com). 에러 메시지: ${e.message}`;
+        if (e.message && e.message.toLowerCase().includes("pattern")) {
+            details = `메일 주소 형식 오류: 전송에 사용된 이메일 주소(환경 변수 SMTP_USER 또는 SMTP_FROM 값: '${process.env.SMTP_FROM || process.env.SMTP_USER}')가 유효한 형식이 아닙니다. 실제 존재하는 이메일 주소(예: user@example.com)인지 확인해주세요. 상세 에러: ${e.message}`;
         }
         res.status(500).json({ error: '요청 전송에 실패했습니다.', details: details });
     }
