@@ -222,9 +222,12 @@ app.post('/send-request', async (req, res) => {
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: Number(process.env.SMTP_PORT || 587),
-            secure: false,
+            secure: (Number(process.env.SMTP_PORT) === 465),
             auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
         });
+
+        const fromEmail = process.env.SMTP_FROM || process.env.SMTP_USER;
+        console.log(`Attempting to send email from: ${fromEmail}`);
 
         const subject = `[MARYD 요청] ${contact}님의 커스텀 디자인 요청`;
         const html = `
@@ -243,7 +246,7 @@ app.post('/send-request', async (req, res) => {
         `;
 
         await transporter.sendMail({
-            from: process.env.SMTP_FROM || process.env.SMTP_USER,
+            from: `"MARYD" <${fromEmail}>`,
             to: 'maryd.co.kr@gmail.com',
             subject,
             html
@@ -252,7 +255,11 @@ app.post('/send-request', async (req, res) => {
         res.json({ ok: true });
     } catch (e) {
         console.error('send-request error:', e);
-        res.status(500).json({ error: '요청 전송에 실패했습니다.', details: e.message });
+        let details = e.message;
+        if (e.message && e.message.includes("pattern")) {
+            details = `메일 주소 형식 오류: '${process.env.SMTP_FROM || process.env.SMTP_USER}'가 유효한 이메일 주소인지 확인해주세요. (e.g., user@example.com). 에러 메시지: ${e.message}`;
+        }
+        res.status(500).json({ error: '요청 전송에 실패했습니다.', details: details });
     }
 });
 
