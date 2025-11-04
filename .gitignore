@@ -115,3 +115,4 @@ Thumbs.db
 
 # Server logs
 server.log 
+.DS_Store
