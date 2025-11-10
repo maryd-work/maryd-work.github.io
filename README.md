@@ -1,95 +1,38 @@
-# MARYD - AI Custom Jewelry Design
+# maryd.kr
+http://maryd.kr
 
-AI 기반 맞춤 주얼리 디자인 생성 웹 애플리케이션입니다.
+동생이 악세사리 서비스를 만드는데 필요한 웹사이트 버전1을 AI를 이용해 개발했었다. http://maryd.kr
 
-## 🚀 설치 및 실행
+피그마로 디자인을 전달받았는데 버전 2로 아래 피그마 링크를 참고해 웹 프론트앤드 개발한다.(HTML, CSS, JS 활용)
 
-### 1. 의존성 설치
-```bash
-npm install
-```
+https://www.figma.com/design/lSR7e6mrnKEKPKxiWozJjn/매리드-웹디?node-id=15-2&t=KXQHda4t6xN0EugK-0
 
-### 2. OpenAI API 키 설정
-1. [OpenAI Platform](https://platform.openai.com/api-keys)에서 API 키를 발급받으세요.
-2. 프로젝트 루트에 `.env` 파일을 생성하고 다음 내용을 추가하세요:
-```env
-OPENAI_API_KEY=your_actual_api_key_here
-PORT=3000
-```
+Step1: 상단 화면 표시
 
-### 3. 서버 실행
-```bash
-node server.js
-```
+<img width="862" height="485" alt="image" src="https://github.com/user-attachments/assets/04cde55f-dcb7-4216-abf8-c4e54db764a8" />
 
-서버가 `http://localhost:3000`에서 실행됩니다.
+Step2: 초기 화면에서 아래로 스크롤하면 동영상을 전체 화면으로 표시
 
-## 📁 프로젝트 구조
+<img width="862" height="485" alt="image" src="https://github.com/user-attachments/assets/48ccec9e-891f-42d8-b4b5-b2f49745ad88" />
 
-```
-maryd/
-├── index.html          # 메인 페이지
-├── request.html        # AI 디자인 요청 페이지
-├── server.js           # Express 서버
-├── package.json        # 프로젝트 의존성
-├── .env               # 환경 변수 (API 키 등)
-└── images/            # 이미지 파일들
-    ├── logo.png
-    └── ...
-```
+Step3: 레퍼런스 사이트를 참고해 아래로 스크롤하면 조금씩 가운데 영상이 커져서 전체 화면으로 표시
 
-## 🔧 주요 기능
+레퍼런스 사이트 : https://bleedingdisorders.junction.care
 
-- **AI 주얼리 디자인 생성**: DALL-E 3를 사용한 맞춤 주얼리 이미지 생성
-- **사용자 친화적 인터페이스**: 직관적인 질문 기반 디자인 요청
-- **실시간 에러 처리**: 명확한 에러 메시지와 해결 방법 안내
+Step4: 영상에서 아래로 스크롤 시 사진이 보이는 화면을 구성
 
-## 🛠️ 기술 스택
+<img width="862" height="485" alt="image" src="https://github.com/user-attachments/assets/e831dba0-6fbd-4097-81bd-db6a6d1c724a" />
 
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **Backend**: Node.js, Express.js
-- **AI**: OpenAI DALL-E 3 API
-- **Styling**: Custom CSS with responsive design
+Step5: 레퍼런스 사이트를 참고해 사진이 위 아래로 움직이도록 구성
 
-## ❗ 문제 해결
+https://www.ever.co.id/
 
-### "OpenAI API 키가 설정되지 않았습니다" 에러
-1. `.env` 파일이 프로젝트 루트에 있는지 확인
-2. `OPENAI_API_KEY=your_actual_api_key_here`에서 `your_actual_api_key_here`를 실제 API 키로 교체
-3. 서버를 재시작
+Step6: 사진 화면이 지나가면 가장 아래 화면을 구성
 
-### "API 요청 한도를 초과했습니다" 에러
-- OpenAI API 사용량 한도에 도달했습니다
-- 잠시 후 다시 시도하거나 새로운 API 키를 사용하세요
+<img width="862" height="634" alt="image" src="https://github.com/user-attachments/assets/23860fc8-a724-44e7-a676-38aaabd13dc1" />
 
-### "OpenAI API 결제 한도에 도달했습니다" 에러
-- OpenAI 계정의 결제 한도에 도달했습니다
-- [OpenAI Platform](https://platform.openai.com/account/billing)에서 결제 설정을 확인하세요
-- 새로운 API 키를 발급받거나 결제 한도를 늘려주세요
+Step7: 아래 화면에서 CHECK ALL SERVICES 대신에 LET'S MARYD 텍스트를 표시하고 버튼 클릭 시 요청 페이지로 이동
 
-### "네트워크 연결에 실패했습니다" 에러
-- 인터넷 연결을 확인하세요
-- 방화벽 설정을 확인하세요
+Step8: 모바일에 맞춘 디자인 적용
 
-## 📝 사용 방법
-
-1. `http://localhost:3000`에 접속
-2. "AI Custom Jewelry Design" 페이지로 이동
-3. 5가지 질문에 답변:
-   - 액세서리 종류 (반지, 목걸이, 귀걸이 등)
-   - 주된 재료 (금, 은, 원석 등)
-   - 핵심 포인트 (탄생석, 특정 문양 등)
-   - 전체적인 스타일 (심플, 화려, 빈티지 등)
-   - 디자인 영감 (좋아하는 영화, 특정 장소 등)
-4. "디자인 생성하기" 버튼 클릭
-5. AI가 생성한 맞춤 주얼리 디자인 확인
-
-## 🔒 보안 주의사항
-
-- `.env` 파일을 Git에 커밋하지 마세요
-- API 키를 공개 저장소에 노출하지 마세요
-- `.gitignore`에 `.env`를 추가하는 것을 권장합니다
-
-## 📞 지원
-
-문제가 발생하면 서버 로그를 확인하거나 GitHub Issues를 통해 문의해주세요. 
+<img width="181" height="1024" alt="image" src="https://github.com/user-attachments/assets/24e342c5-8669-45c7-8f42-4932c7f44bfe" />

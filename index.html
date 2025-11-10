@@ -1,299 +1,627 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARYD - Custom Jewelry</title>
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            background: #4B2323;
-            color: #fff;
-            font-family: 'Noto Sans KR', 'Noto Serif', -apple-system, Roboto, Helvetica, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            letter-spacing: 0.05em;
-        }
-        .container {
-            width: 100vw;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-        }
-        .logo-box {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-        }
-        .logo-img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            opacity: 0.7;
-        }
-        .main-video {
-            width: 340px;
-            height: 200px;
-            background: #eee;
-            border-radius: 8px;
-            margin-bottom: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .main-video iframe {
-            width: 100%;
-            height: 100%;
-        }
-        .slogan-en {
-            font-size: 2rem;
-            font-weight: 400;
-            text-align: center;
-            margin-bottom: 16px;
-            margin-top: 4cm;
-        }
-        .slogan-kr {
-            font-size: 1.1rem;
-            font-weight: 300;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-        .slogan-kr-2 {
-            font-size: 1.1rem;
-            font-weight: 300;
-            text-align: center;
-            margin-bottom: 4cm;
-        }
-        .desc-box {
-            color: #fff;
-            font-size: 1rem;
-            text-align: center;
-            margin-bottom: 4cm;
-            line-height: 1.7;
-        }
-        .slider {
-            width: 100%;
-            overflow: hidden;
-            margin-bottom: 40px;
-        }
-        .slide-track {
-            display: flex;
-            width: calc(450px * 8);
-            animation: scroll 40s linear infinite;
-        }
-        .slide {
-            width: 450px;
-            height: 500px;
-            margin: 0 18px;
-        }
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
             }
-            100% {
-                transform: translateX(calc(-486px * 4));
-            }
-        }
-        .footer-desc {
-            color: #fff;
-            font-size: 1rem;
-            text-align: center;
-            margin-bottom: 24px;
-            margin-top: 24px;
-        }
-        .footer-bar {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            margin-bottom: 32px;
-            width: 100%;
-        }
-        .maryd-btn {
-            background: none;
-            border: 2px solid #fff;
-            color: #fff;
-            border-radius: 32px;
-            padding: 12px 36px;
-            font-size: 1.1rem;
-            font-family: inherit;
-            font-weight: 600;
-            margin-bottom: 16px;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-            position: relative;
-        }
-        .maryd-btn:hover {
-            background: #fff;
-            color: #4B2323;
-        }
-        .maryd-btn-shape {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .sns-bar {
-            display: flex;
-            gap: 16px;
-            margin-top: 8px;
-        }
-        .sns-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: box-shadow 0.2s;
-        }
-        .sns-icon:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-        }
-        .sns-icon img {
-            width: 24px;
-            height: 24px;
-        }
-        .video-container {
-            position: relative;
-            width: 100%;
-            margin-bottom: 32px;
-            background: #000;
-        }
-        .main-video-player {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        @media (max-width: 900px) {
-            .slider {
+
+            .top-band {
                 width: 100%;
-            }
-            .slide-track {
-                width: calc(350px * 8);
-                animation: scroll-mobile 40s linear infinite;
-            }
-            .slide {
-                width: 350px;
-                height: 400px;
-            }
-            @keyframes scroll-mobile {
-                0% {
-                    transform: translateX(0);
-                }
-                100% {
-                    transform: translateX(calc(-386px * 4));
-                }
-            }
-        }
-        @media (max-width: 768px) {
-            .slogan-en, .slogan-kr, .slogan-kr-2 {
-                margin-left: 0;
-                padding: 0 16px;
+                height: 108px;
+                background-color: #500000;
                 text-align: center;
             }
-            .slogan-en {
-                font-size: 1.5rem;
+            .top-image {
+                margin-top: 23px;
             }
-            .slogan-kr, .slogan-kr-2 {
-                font-size: 1rem;
-            }
-            .desc-box {
-                padding: 0 16px;
-            }
-            .footer-bar .sns-bar {
-                width: 100%;
-                margin-right: 0;
+            .top-request-button {
+                position: absolute;
+                right: 57px;
+                top: 22px;
+                width: 221px;
+                height: 65px;
+                display: block;
+                background-color: #FEFCEC;
+                border-radius: 51.5px;
+                display: flex;
                 justify-content: center;
+                align-items: center;
+                border: none;
+                cursor: pointer;
+                text-decoration: none;
             }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
+
+            
+            .top-request-text {
+                display: block;
+                width: auto;
+                height: auto;
+                text-align: left;
+                max-width: 800px; 
+
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 28px;
+                line-height: 1.5;
+                
+                letter-spacing: 0;
+                text-transform: uppercase;
+                color: #662423;
+            }
+            .maryd-logo {
+                text-align: center;
+                margin-top: 82px;
+            }
+            .where-jewelry-meets-meaning {
+                text-align: center;
+                margin-top: 93px;
+            }
+            .video-thumbnail {
+                text-align: center;
+                margin-top: 90px;
+                position: relative; 
+                z-index: 100;
+            }
+            .video-thumbnail-image {
+                width: 640px;
+                height: 360px;
+                transition: transform 0.1s ease-in-out;
+            }
+            .dgodic-image {
+                position: absolute;
+                top: 50%;            
+                transform: translateY(-50%);
+                right: 80px;
+                transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+            }
+            .where-imagination-becomes-reality {
+                text-align: center;
+                margin-top: 100px;                
+            }
+            .dcursive-image {
+                position: absolute;
+                left: 80px;
+                top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
+                transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+            }
+            .dgodic-image {
+                position: absolute;
+                top: 50%;            
+                transform: translateY(-50%);
+                right: 80px;
+                transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+            }
+            .where-imagination-becomes-reality {
+                text-align: center;
+                margin-top: 100px;                
+            }
+            .dcursive-image {
+                position: absolute;
+                left: 80px;
+                top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
+                transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+            }
+            
+            .new-section {
+                position: relative;
+                height: 1307px;
+                background: #662423;
+                text-align: center;
+                padding-top: 515px;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+
+            .new-section-content {
+                position: relative;
+                z-index: 2;
+            }
+
+            .parallax-image {
+                position: absolute;
+                z-index: 1;
+                transition: transform 0.1s ease-out;
+                filter: grayscale(100%) brightness(0.7) sepia(0.3) hue-rotate(-10deg);
+                opacity: 0.8;
+            }
+            
+            .parallax-1 { width: 200px; height: 200px; top: 10%; left: 5%; background-image: url('images/1.png'); background-size: cover; }
+            .parallax-2 { width: 300px; height: 300px; top: 0%; right: 5%; background-image: url('images/2.png'); background-size: cover; }
+            .parallax-3 { width: 250px; height: 350px; bottom: 20%; left: 10%; background-image: url('images/3.png'); background-size: cover; }
+            .parallax-4 { width: 280px; height: 400px; bottom: 5%; right: 10%; background-image: url('images/4.png'); background-size: cover; }
+            .parallax-5 { width: 350px; height: 250px; top: -10%; left: 20%; background-image: url('images/5.png'); background-size: cover; }
+            .parallax-6 { width: 320px; height: 220px; top: 30%; right: -5%; background-image: url('images/6.png'); background-size: cover; }
+
+            .last-section {
+                position: relative;
+                height: 1162px;
+                background: #FEFCEC;
+            }
+
+            .last-image {
+                position: absolute;
+                top: 105px;
+                left: 80px;
+            }
+
+            .we-offer-an-experience-beyond-jewelry {
+                position: absolute;
+                top: 105px;
+                right: 79px;
+            }
+
+            .last-section-text {
+                position: absolute;
+                top: 794px;
+                left: 970px;
+                text-align: left;
+                max-width: 800px; 
+
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 28px;
+                line-height: 1.5;
+
+                letter-spacing: 0;
+                text-transform: uppercase;
+                color: #662423;
+            }
+
+            .request-button {
+                position: absolute;
+                top: 991px;
+                left: 970px;
+                z-index: 10;
+                display: block;
+                width: 221px;
+                height: 65px;
+                background-color: #662423;
+                border-radius: 51.5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: none;
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+            .request-text {
+                display: block;
+                width: auto;
+                height: auto;
+                text-align: left;
+                max-width: 800px; 
+
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 28px;
+                line-height: 1.5;
+                
+                letter-spacing: 0;
+                text-transform: uppercase;
+                color: #FEFCEC;
+            }
+
+            .bottom-band {
+                width: 100%;
+                height: 248px;
+                background-color: #662423;
+                position: relative;
+            }
+
+            .bottom-logo {
+                position: absolute;
+                left: 80px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .bottom-section-text {
+                position: absolute;
+                top: 95px;
+                left: 377px; 
+                text-align: left;
+                max-width: 800px;
+
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 25px;
+                line-height: 1.3;
+
+                letter-spacing: 0;
+                text-transform: uppercase;
+                color: #FEFCEC;
+            }
+
+            .youtube-button {
+                position: absolute;
+                right: 57px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 221px;
+                height: 51px;
+                background-color: #FEFCEC;
+                border-radius: 51.5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: none;
+                cursor: pointer;
+            }
+
+            .youtube-button img {
+                max-width: 100%;
+                max-height: 100%;
+                display: block;
+            }
+
+            .instagram-button {
+                position: absolute;
+                right: 305px; /* 57px (YouTube right) + 27px (gap) + 221px (this button's width) */
+                top: 50%;
+                transform: translateY(-50%);
+                width: 221px;
+                height: 51px;
+                background-color: #FEFCEC;
+                border-radius: 51.5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: none;
+                cursor: pointer;
+            }
+
+            .instagram-button img {
+                max-width: 100%;
+                max-height: 100%;
+                display: block;
+            }
+            
+        </style>
+        <style>
+            @media (max-width: 768px) {
+                body {
+                    overflow-x: hidden;
+                }
+
+                .top-band {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    height: 80px;
+                    padding: 0 20px;
+                    box-sizing: border-box;
+                }
+
+                .top-image {
+                    margin-top: 0;
+                    height: 40px;
+                    order: 1;
+                }
+
+                .top-request-button {
+                    position: static;
+                    order: 2;
+                    width: 120px;
+                    height: 50px;
+                }
+
+                .top-request-text {
+                    font-size: 16px;
+                    text-align: center;
+                    width: 100%;
+                }
+
+                .maryd-logo {
+                    margin-top: 60px;
+                }
+
+                .maryd-logo-image {
+                    width: 80%;
+                }
+
+                .where-jewelry-meets-meaning {
+                    margin-top: 40px;
+                }
+
+                .where-jewelry-meets-meaning-image {
+                    width: 80%;
+                }
+
+                .video-thumbnail {
+                    margin-top: 60px;
+                    width: 100%;
+                }
+
+                .video-thumbnail-image {
+                    width: 100%;
+                    height: auto;
+                }
+
+                .dcursive-image, .dgodic-image {
+                    display: none;
+                }
+
+                .where-imagination-becomes-reality {
+                    margin-top: 60px;
+                }
+
+                .where-imagination-becomes-reality-image {
+                    width: 80%;
+                }
+
+                .new-section {
+                    height: auto;
+                    padding: 100px 0;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .new-section-content {
+                    position: relative;
+                    z-index: 2;
+                }
+                
+                .new-section-content > div > img {
+                    width: 90%;
+                }
+
+                .parallax-image {
+                    display: block;
+                    position: absolute;
+                    z-index: 1;
+                    opacity: 0.3;
+                }
+
+                .parallax-1 { width: 100px; height: 100px; top: 5%; left: 5%; }
+                .parallax-2 { width: 150px; height: 150px; top: 10%; right: 5%; }
+                .parallax-3 { width: 120px; height: 180px; bottom: 15%; left: 10%; }
+                .parallax-4 { width: 140px; height: 200px; bottom: 10%; right: 10%; }
+                .parallax-5 { width: 180px; height: 120px; top: 20%; left: 20%; }
+                .parallax-6 { width: 160px; height: 110px; top: 50%; right: 15%; }
+
+
+                .last-section {
+                    height: auto;
+                    padding: 80px 0;
+                }
+
+                .last-image {
+                    position: static;
+                    display: block;
+                    margin: 0 auto 40px;
+                    width: 80%;
+                }
+
+                .we-offer-an-experience-beyond-jewelry {
+                    position: static;
+                    display: block;
+                    margin: 0 auto 40px;
+                    width: 80%;
+                }
+
+                .last-section-text {
+                    position: static;
+                    width: 80%;
+                    margin: 0 auto 40px;
+                    text-align: center;
+                    font-size: 18px;
+                }
+
+                .request-button {
+                    position: static;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 0 auto;
+                    width: 180px;
+                    height: 50px;
+                }
+
+                .request-text {
+                    font-size: 16px;
+                    text-align: center;
+                    width: 100%;
+                }
+
+                .bottom-band {
+                    height: auto;
+                    padding: 40px 20px;
+                    box-sizing: border-box;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .bottom-logo {
+                    position: static;
+                    display: block;
+                    margin: 0 auto 30px;
+                    transform: none;
+                }
+
+                .bottom-section-text {
+                    position: static;
+                    width: 80%;
+                    margin: 0 auto 30px;
+                    text-align: center;
+                    font-size: 16px;
+                }
+
+                .instagram-button, .youtube-button {
+                    position: static;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 0 auto 15px;
+                    transform: none;
+                    width: 180px;
+                    height: 40px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top-band">
+            <img src="images/headerLogo.png" alt="top-image" class="top-image">
+            <a href="request.html" class="top-request-button">
+                <div class="top-request-text">견적 요청하기</div>
+            </a>
+        </div>
+        <div class="maryd-logo">
+            <img src="images/MARY'D.png" alt="MARY'D" class="maryd-logo-image">
+        </div>
+        <div class="where-jewelry-meets-meaning">
+            <img src="images/Where Jewelry Meets Meaning.png" alt="Where Jewelry Meets Meaning" class="where-jewelry-meets-meaning-image">
+        </div>
+        <div class="video-thumbnail">
+            <video src="images/video.mp4" autoplay loop muted playsinline class="video-thumbnail-image"></video>
+            <img src="images/DCursive.png" alt="DCursive" class="dcursive-image">
+            <img src="images/DGodic.png" alt="DGodic" class="dgodic-image">
+        </div>
+        <div class="where-imagination-becomes-reality">
+            <img src="images/Where imagination becomes reality.png" alt="Where imagination becomes reality" class="where-imagination-becomes-reality-image">
+        </div>
         
-        <div class="video-container">
-            <div class="logo-box">
-                <img src="images/logo.png" alt="MARYD 로고" class="logo-img" />
-            </div>
-            <video class="main-video-player" src="video.mp4" autoplay muted loop playsinline></video>
-        </div>
-        <div class="slogan-en">We offer an experience beyond jewelry.</div>
-        <div class="slogan-kr">메리드는 단순히 주얼리를 판매하지 않습니다</div>
-        <div class="slogan-kr-2">— 상상을 현실로 만드는 경험을 제공합니다.</div>
-        <div class="desc-box">
-            여러분이 직접 디자인한 주얼리를 일상 속에서<br>
-            24시간, 365일 착용할 수 있는 형태로 정성스럽게 구현해드립니다.<br>
-            메리드의 모든 주얼리는 단순한 액세서리가 아니라,<br>
-            여러분만의 이야기를 담은 특별한 작품입니다.
-        </div>
-        <div class="slider">
-            <div class="slide-track">
-                <div class="slide">
-                    <img src="images/1.jpg.jpg" alt="">
-                </div>
-                <div class="slide">
-                    <img src="images/2.jpg.jpg" alt="">
-                </div>
-                <div class="slide">
-                    <img src="images/3.jpg.jpg" alt="">
-                </div>
-                <div class="slide">
-                    <img src="images/4.jpg.jpg" alt="">
-                </div>
-                <!-- Duplicate slides for seamless looping -->
-                <div class="slide">
-                    <img src="images/1.jpg.jpg" alt="">
-                </div>
-                <div class="slide">
-                    <img src="images/2.jpg.jpg" alt="">
-                </div>
-                <div class="slide">
-                    <img src="images/3.jpg.jpg" alt="">
-                </div>
-                <div class="slide">
-                    <img src="images/4.jpg.jpg" alt="">
-                </div>
+        <div class="new-section">
+            <div class="parallax-image parallax-1"></div>
+            <div class="parallax-image parallax-2"></div>
+            <div class="parallax-image parallax-3"></div>
+            <div class="parallax-image parallax-4"></div>
+            <div class="parallax-image parallax-5"></div>
+            <div class="parallax-image parallax-6"></div>
+            
+            <div class="new-section-content">
+                <div><img src="images/We offer an experience beyond jewelry..png" alt="We offer an experience beyond jewelry."></div>
+                <div style="margin-top: 20px;"><img src="images/메리드는 단순히 주얼리를 판매하지 않습니다 상상을 현실로 만드는 경험….png" alt="메리드는 단순히 주얼리를 판매하지 않습니다 상상을 현실로 만드는 경험"></div>
             </div>
         </div>
-        <div class="footer-desc">
-            AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해, 세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
-        </div>
-        <div class="footer-bar" style="position:relative;">
-            <div style="width: 100%; text-align: center;">
-                <a href="request.html" style="display:inline-block;text-decoration:none;">
-                    <svg width="240" height="96" viewBox="0 0 240 96" style="display:block;" xmlns="http://www.w3.org/2000/svg">
-                        <polygon points="70,20 170,20 200,40 120,86 40,40" fill="none" stroke="#fff" stroke-width="2"/>
-                        <text x="120" y="50" text-anchor="middle" fill="#fff" font-size="18" font-family="'Noto Sans KR', 'Noto Serif', sans-serif" font-weight="500">Let’s MARYD</text>
-                    </svg>
-                </a>
+        <div class="last-section">
+            <img src="images/lastImage.png" class="last-image">
+            <img src="images/We offer an experience beyond jewelry.-2.png" class="we-offer-an-experience-beyond-jewelry">
+            <div class="last-section-text">
+                여러분이 직접 디자인한 주얼리를 일상 속에서<br>
+                24시간, 365일 착용할 수 있는 형태로 정성스럽게 구현해드립니다.<br>
+                메리드의 모든 주얼리는 단순한 액세서리가 아니라,<br>
+                여러분만의 이야기를 담은 특별한 작품입니다.
             </div>
-            <div class="sns-bar" style="margin-top:24px; display:flex; justify-content:flex-end; padding-right: 30px;">
-                <a href="https://www.instagram.com/maryd.work/" class="sns-icon" target="_blank" rel="noopener" title="Instagram">
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
-                </a>
-                <a href="https://www.youtube.com/playlist?list=PLaWW74xLaCGXyNU0hH_qXIgQJiiAwdV5R" class="sns-icon" target="_blank" rel="noopener" title="YouTube">
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube" />
-                </a>
-            </div>
+            <a href="request.html" class="request-button">
+                <div class="request-text">
+                    견적 요청하기
+                </div>
+            </a>
         </div>
-    </div>
-</body>
+        
+        <script>
+            const dgodicImage = document.querySelector('.dgodic-image');
+            const dcursiveImage = document.querySelector('.dcursive-image');
+            const video = document.querySelector('.video-thumbnail-image');
+            const videoContainer = document.querySelector('.video-thumbnail');
+            
+            const parallaxImages = document.querySelectorAll('.parallax-image');
+            const parallaxSpeedFactors = [0.3, 0.6, 0.15, -0.3, 0.45, -0.15];
+
+            const dgodicInitialRect = dgodicImage.getBoundingClientRect();
+            const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
+            const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
+            const meetingMoveAmount = initialGap / 2 - 50;
+
+            let disappearanceTimeout = null;
+            let hasMetAndWaiting = false;
+            let hasDisappeared = false;
+
+            const endScroll = meetingMoveAmount / 2.5;
+            
+            const videoContainerTop = videoContainer.offsetTop;
+            const startScroll = videoContainerTop - window.innerHeight / 2;
+
+            let finalScaleX = window.innerWidth / 640;
+            let finalScaleY = window.innerHeight / 360;
+
+            if (window.innerWidth <= 768) {
+                finalScaleX = 1;
+                finalScaleY = 1;
+            }
+
+
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                const moveAmount = scrollY * 2.5;
+                
+                if (moveAmount >= meetingMoveAmount) {
+                    dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
+                    dgodicImage.style.transform = `translateY(-50%) translateX(-${meetingMoveAmount}px)`;
+                    
+                    if (!hasMetAndWaiting && !hasDisappeared) {
+                        hasMetAndWaiting = true;
+                        if (disappearanceTimeout) {
+                            clearTimeout(disappearanceTimeout);
+                        }
+                        disappearanceTimeout = setTimeout(() => {
+                            dgodicImage.style.opacity = '0';
+                            dcursiveImage.style.opacity = '0';
+                            hasDisappeared = true;
+                            hasMetAndWaiting = false;
+                        }, 1000);
+                    }
+                    
+                    if (!hasDisappeared) {
+                        dgodicImage.style.opacity = '1';
+                        dcursiveImage.style.opacity = '1';
+                    }
+
+                } else {
+                    dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
+                    dgodicImage.style.transform = `translateY(-50%) translateX(-${moveAmount}px)`;
+                    dgodicImage.style.opacity = '1';
+                    dcursiveImage.style.opacity = '1';
+
+                    if (disappearanceTimeout) {
+                        clearTimeout(disappearanceTimeout);
+                        disappearanceTimeout = null;
+                    }
+                    hasMetAndWaiting = false;
+                    hasDisappeared = false;
+                }
+
+                if (scrollY >= startScroll && scrollY <= endScroll) {
+                    const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
+                    const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
+                    const scaleY = 1 + (finalScaleY - 1) * scrollFraction;
+                    video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
+                } else if (scrollY < startScroll) {
+                    video.style.transform = 'scale(1)';
+                } else {
+                    video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
+                }
+                
+                parallaxImages.forEach((piece, index) => {
+                    const speed = parallaxSpeedFactors[index] || 0;
+                    const moveY = scrollY * speed;
+                    piece.style.transform = `translateY(${moveY}px)`;
+                });
+            });
+        </script>
+        <div class="bottom-band">
+            <img src="images/MARY'D BOTTOM.png" alt="MARY'D BOTTOM" class="bottom-logo">
+            <div class="bottom-section-text">
+                AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해,<br>
+                세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+            </div>
+            <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
+                <img src="images/instagram.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
+                <img src="images/youtube.png" alt="YouTube">
+            </a>
+        </div>
+    </body>
 </html>
