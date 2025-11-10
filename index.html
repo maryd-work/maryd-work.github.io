@@ -21,9 +21,9 @@
             .top-request-button {
                 position: absolute;
                 right: 57px;
-                top: 22px;
+                top: 29px;
                 width: 221px;
-                height: 65px;
+                height: 51px;
                 display: block;
                 background-color: #FEFCEC;
                 border-radius: 51.5px;
@@ -34,24 +34,10 @@
                 cursor: pointer;
                 text-decoration: none;
             }
-
             
-            .top-request-text {
-                display: block;
-                width: auto;
-                height: auto;
-                text-align: left;
-                max-width: 800px; 
-
-                font-family: 'Pretendard', sans-serif;
-                font-weight: 500;
-                font-style: normal;
-                font-size: 28px;
-                line-height: 1.5;
-                
-                letter-spacing: 0;
-                text-transform: uppercase;
-                color: #662423;
+            .lets-maryd {
+                width: 161px;
+                height: 18px;
             }
             .maryd-logo {
                 text-align: center;
@@ -64,8 +50,8 @@
             .video-thumbnail {
                 text-align: center;
                 margin-top: 90px;
-                position: relative; 
-                z-index: 100;
+                position: relative;
+                z-index: 3;
             }
             .video-thumbnail-image {
                 width: 640px;
@@ -75,13 +61,17 @@
             .dgodic-image {
                 position: absolute;
                 top: 50%;            
-                transform: translateY(-50%);
                 right: 80px;
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
             }
+            .dgodic-text {
+                position: absolute;
+                top: calc(50% + 55px);
+                right: 80px;
+            }
             .where-imagination-becomes-reality {
                 text-align: center;
-                margin-top: 100px;                
+                margin-top: 100px;              
             }
             .dcursive-image {
                 position: absolute;
@@ -89,12 +79,20 @@
                 top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
             }
+            .dcursive-text {
+                position: absolute;
+                left: 80px;
+                top: calc(50% + 55px);
+            }
             .dgodic-image {
                 position: absolute;
                 top: 50%;            
                 transform: translateY(-50%);
                 right: 80px;
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+            }
+            .dgodic-text {
+                
             }
             .where-imagination-becomes-reality {
                 text-align: center;
@@ -120,6 +118,21 @@
             .new-section-content {
                 position: relative;
                 z-index: 2;
+            }
+
+            .maryd-support-text {
+                text-align: center;
+                max-width: 800px;
+                width: 100%;
+                margin: 0 auto;
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 600;
+                font-style: SemiBold;
+                font-size: 28px;
+                line-height: 1.3;
+
+                letter-spacing: 0;
+                color: #FEFCEC;
             }
 
             .parallax-image {
@@ -152,7 +165,25 @@
             .we-offer-an-experience-beyond-jewelry {
                 position: absolute;
                 top: 105px;
-                right: 79px;
+                left: 970px;
+            }
+
+            .last-section-first-text {
+                position: absolute;
+                top: 400px;
+                left: 970px;
+                text-align: left;
+                max-width: 800px; 
+
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 28px;
+                line-height: 1.5;
+
+                letter-spacing: 0;
+                text-transform: uppercase;
+                color: #662423;
             }
 
             .last-section-text {
@@ -177,36 +208,15 @@
                 position: absolute;
                 top: 991px;
                 left: 970px;
-                z-index: 10;
                 display: block;
-                width: 221px;
+                width: 337px;
                 height: 65px;
-                background-color: #662423;
-                border-radius: 51.5px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 border: none;
                 cursor: pointer;
                 text-decoration: none;
-            }
-
-            .request-text {
-                display: block;
-                width: auto;
-                height: auto;
-                text-align: left;
-                max-width: 800px; 
-
-                font-family: 'Pretendard', sans-serif;
-                font-weight: 500;
-                font-style: normal;
-                font-size: 28px;
-                line-height: 1.5;
-                
-                letter-spacing: 0;
-                text-transform: uppercase;
-                color: #FEFCEC;
             }
 
             .bottom-band {
@@ -299,6 +309,7 @@
                     height: 80px;
                     padding: 0 20px;
                     box-sizing: border-box;
+                    display: none;
                 }
 
                 .top-image {
@@ -312,6 +323,7 @@
                     order: 2;
                     width: 120px;
                     height: 50px;
+                    display: none;
                 }
 
                 .top-request-text {
@@ -368,6 +380,22 @@
                 .new-section-content {
                     position: relative;
                     z-index: 2;
+                }
+
+                .maryd-support-text {
+                    position: absolute;
+                    text-align: center;
+                    max-width: 800px;
+
+                    font-family: 'Pretendard', sans-serif;
+                    font-weight: 600;
+                    font-style: normal;
+                    font-size: 28px;
+                    line-height: 1.3;
+
+                    letter-spacing: 0;
+                    text-transform: uppercase;
+                    color: #FEFCEC;
                 }
                 
                 .new-section-content > div > img {
@@ -426,12 +454,6 @@
                     height: 50px;
                 }
 
-                .request-text {
-                    font-size: 16px;
-                    text-align: center;
-                    width: 100%;
-                }
-
                 .bottom-band {
                     height: auto;
                     padding: 40px 20px;
@@ -473,7 +495,7 @@
         <div class="top-band">
             <img src="images/headerLogo.png" alt="top-image" class="top-image">
             <a href="request.html" class="top-request-button">
-                <div class="top-request-text">견적 요청하기</div>
+                <img src="images/lET’S MARY’D.png" class="lets-maryd">
             </a>
         </div>
         <div class="maryd-logo">
@@ -483,9 +505,13 @@
             <img src="images/Where Jewelry Meets Meaning.png" alt="Where Jewelry Meets Meaning" class="where-jewelry-meets-meaning-image">
         </div>
         <div class="video-thumbnail">
+            <img src="images/What you imagine,.png" class="dcursive-text">
+            <img src="images/we bring to life..png" class="dgodic-text">
             <video src="images/video.mp4" autoplay loop muted playsinline class="video-thumbnail-image"></video>
-            <img src="images/DCursive.png" alt="DCursive" class="dcursive-image">
-            <img src="images/DGodic.png" alt="DGodic" class="dgodic-image">
+            <img src="images/DCursive.png" class="dcursive-image">
+            
+            <img src="images/DGodic.png" class="dgodic-image">
+            
         </div>
         <div class="where-imagination-becomes-reality">
             <img src="images/Where imagination becomes reality.png" alt="Where imagination becomes reality" class="where-imagination-becomes-reality-image">
@@ -501,28 +527,36 @@
             
             <div class="new-section-content">
                 <div><img src="images/We offer an experience beyond jewelry..png" alt="We offer an experience beyond jewelry."></div>
-                <div style="margin-top: 20px;"><img src="images/메리드는 단순히 주얼리를 판매하지 않습니다 상상을 현실로 만드는 경험….png" alt="메리드는 단순히 주얼리를 판매하지 않습니다 상상을 현실로 만드는 경험"></div>
+                <div style="margin-top: 20px;">
+                    <div class="maryd-support-text">
+                        매리드는 단순히 주얼리를 판매하지 않습니다.<br>상상을 현실로 만드는 경험을 제공합니다.
+                    </div>
+                </div>
             </div>
         </div>
         <div class="last-section">
             <img src="images/lastImage.png" class="last-image">
-            <img src="images/We offer an experience beyond jewelry.-2.png" class="we-offer-an-experience-beyond-jewelry">
+            <img src="images/Jewelry that reflects you..png" class="we-offer-an-experience-beyond-jewelry">
+            <div class="last-section-first-text">
+                24시간, 365일 나와 가장 가깝게 있는 주얼리<br>
+                그 주얼리에 나만의 의미를 담는일. 멋질 것 같지 않으신가요?
+            </div>
             <div class="last-section-text">
                 여러분이 직접 디자인한 주얼리를 일상 속에서<br>
-                24시간, 365일 착용할 수 있는 형태로 정성스럽게 구현해드립니다.<br>
-                메리드의 모든 주얼리는 단순한 액세서리가 아니라,<br>
+                착용할 수 있는 형태로 정성스럽게 구현해드립니다.<br>
+                매리드의 모든 주얼리는 단순한 액세서리가 아니라,<br>
                 여러분만의 이야기를 담은 특별한 작품입니다.
             </div>
             <a href="request.html" class="request-button">
-                <div class="request-text">
-                    견적 요청하기
-                </div>
+                <img src="images/CHECK ALL SERVICES.png" class="check">
             </a>
         </div>
         
         <script>
             const dgodicImage = document.querySelector('.dgodic-image');
+            const dgodicText = document.querySelector('.dgodic-text');
             const dcursiveImage = document.querySelector('.dcursive-image');
+            const dcursiveText = document.querySelector('.dcursive-text');
             const video = document.querySelector('.video-thumbnail-image');
             const videoContainer = document.querySelector('.video-thumbnail');
             
@@ -567,7 +601,9 @@
                         }
                         disappearanceTimeout = setTimeout(() => {
                             dgodicImage.style.opacity = '0';
+                            dgodicText.style.opacity = '0';
                             dcursiveImage.style.opacity = '0';
+                            dcursiveText.style.opacity = '0';
                             hasDisappeared = true;
                             hasMetAndWaiting = false;
                         }, 1000);
@@ -575,14 +611,18 @@
                     
                     if (!hasDisappeared) {
                         dgodicImage.style.opacity = '1';
+                        dgodicText.style.opacity = '1';
                         dcursiveImage.style.opacity = '1';
+                        dcursiveText.style.opacity = '1';
                     }
 
                 } else {
                     dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
                     dgodicImage.style.transform = `translateY(-50%) translateX(-${moveAmount}px)`;
                     dgodicImage.style.opacity = '1';
+                    dgodicText.style.opacity = '1';
                     dcursiveImage.style.opacity = '1';
+                    dcursiveText.style.opacity = '1';
 
                     if (disappearanceTimeout) {
                         clearTimeout(disappearanceTimeout);
