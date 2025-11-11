@@ -7,6 +7,7 @@
             body {
                 margin: 0;
                 padding: 0;
+                background-color: #FEFCEC;
             }
 
             .top-band {
@@ -58,12 +59,6 @@
                 height: 360px;
                 transition: transform 0.1s ease-in-out;
             }
-            .dgodic-image {
-                position: absolute;
-                top: 50%;            
-                right: 80px;
-                transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
-            }
             .dgodic-text {
                 position: absolute;
                 top: calc(50% + 55px);
@@ -90,9 +85,6 @@
                 transform: translateY(-50%);
                 right: 80px;
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
-            }
-            .dgodic-text {
-                
             }
             .where-imagination-becomes-reality {
                 text-align: center;
@@ -139,7 +131,6 @@
                 position: absolute;
                 z-index: 1;
                 transition: transform 0.1s ease-out;
-                filter: grayscale(100%) brightness(0.7) sepia(0.3) hue-rotate(-10deg);
                 opacity: 0.8;
             }
             
@@ -294,6 +285,10 @@
                 max-height: 100%;
                 display: block;
             }
+
+            .mobile-image {
+                display: none;
+            }
             
         </style>
         <style>
@@ -333,7 +328,9 @@
                 }
 
                 .maryd-logo {
-                    margin-top: 60px;
+                    width: 257px;
+                    height: 47px;
+                    margin: 42px auto;
                 }
 
                 .maryd-logo-image {
@@ -341,37 +338,80 @@
                 }
 
                 .where-jewelry-meets-meaning {
-                    margin-top: 40px;
+                    margin: 37px auto;
+                    width: 121px;
+                    height: 52px;
                 }
 
                 .where-jewelry-meets-meaning-image {
-                    width: 80%;
+                    width: 100%;
                 }
 
                 .video-thumbnail {
                     margin-top: 60px;
                     width: 100%;
+                    height: 300px;
                 }
 
                 .video-thumbnail-image {
+                    margin-top: 120px;
                     width: 100%;
                     height: auto;
+                    transition: transform 0.1s ease-in-out;
                 }
 
-                .dcursive-image, .dgodic-image {
-                    display: none;
+                .dcursive-image {
+                    position: absolute;
+                    width: 48px;
+                    height: 41px;
+                    left: 20px;
+                    top: 0px;
+                    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+                }
+                .dcursive-text {
+                    position: absolute;
+                    left: 25px;
+                    top: 60px;
+                    width: 51px;
+                    height: 34px
+                }
+                .dgodic-image {
+                    position: absolute;
+                    top: 16px;
+                    right: 20px;
+                    width: 41px;
+                    height: 41px;
+                    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+                }
+                .dgodic-text {
+                    position: absolute;
+                    top: 60px;
+                    right: 24px;
+                    width: 51px;
+                    height: 34px;
                 }
 
                 .where-imagination-becomes-reality {
                     margin-top: 60px;
+                    padding-bottom: 20px;
                 }
 
                 .where-imagination-becomes-reality-image {
-                    width: 80%;
+                    width: 124px;
+                    height: 36px;
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                .desktop-image {
+                    display: none;
+                }
+                .mobile-image {
+                    display: block;
                 }
 
                 .new-section {
-                    height: auto;
+                    height: 576px;
                     padding: 100px 0;
                     position: relative;
                     overflow: hidden;
@@ -388,9 +428,9 @@
                     max-width: 800px;
 
                     font-family: 'Pretendard', sans-serif;
-                    font-weight: 600;
+                    font-weight: 300;
                     font-style: normal;
-                    font-size: 28px;
+                    font-size: 15px;
                     line-height: 1.3;
 
                     letter-spacing: 0;
@@ -399,64 +439,103 @@
                 }
                 
                 .new-section-content > div > img {
-                    width: 90%;
+                    padding-top: 100px;
+                    width: 262px;
+                    height: 108px;
                 }
 
                 .parallax-image {
                     display: block;
                     position: absolute;
                     z-index: 1;
-                    opacity: 0.3;
+                    opacity: 0.5;
                 }
 
                 .parallax-1 { width: 100px; height: 100px; top: 5%; left: 5%; }
-                .parallax-2 { width: 150px; height: 150px; top: 10%; right: 5%; }
+                .parallax-2 { width: 150px; height: 150px; top: 0%; right: 5%; }
                 .parallax-3 { width: 120px; height: 180px; bottom: 15%; left: 10%; }
-                .parallax-4 { width: 140px; height: 200px; bottom: 10%; right: 10%; }
+                .parallax-4 { width: 140px; height: 200px; bottom: 10%; right: 0%; }
                 .parallax-5 { width: 180px; height: 120px; top: 20%; left: 20%; }
-                .parallax-6 { width: 160px; height: 110px; top: 50%; right: 15%; }
+                .parallax-6 { width: 160px; height: 110px; top: 80%; right: 15%; }
 
 
                 .last-section {
-                    height: auto;
-                    padding: 80px 0;
+                    height: 425px;
                 }
 
                 .last-image {
-                    position: static;
-                    display: block;
-                    margin: 0 auto 40px;
-                    width: 80%;
+                    top: 21.49px;
+                    left: 16px;
+                    width: 40%;
+                    height: auto;
                 }
 
                 .we-offer-an-experience-beyond-jewelry {
-                    position: static;
-                    display: block;
-                    margin: 0 auto 40px;
-                    width: 80%;
+                    width: 60%;
+                    height: auto;
+                    top: 86px;
+                    left: 30%;
+                }
+
+                .last-section-first-text {
+                    position: absolute;
+                    text-align: left;
+                    max-width: 800px;
+
+                    top: 250px;
+                    left: 15px;
+
+                    text-align: left;
+                    font-family: 'Pretendard', sans-serif;
+                    font-weight: 300;
+                    font-style: normal;
+                    font-size: 13px;
+                    line-height: 1;
+
+                    letter-spacing: 0;
+                    text-transform: uppercase;
+                    color: #662423;
                 }
 
                 .last-section-text {
-                    position: static;
-                    width: 80%;
-                    margin: 0 auto 40px;
-                    text-align: center;
-                    font-size: 18px;
+                    position: absolute;
+                    text-align: left;
+                    max-width: 800px;
+
+                    top: 300px;
+                    left: 15px;
+
+                    text-align: left;
+                    font-family: 'Pretendard', sans-serif;
+                    font-weight: 300;
+                    font-style: normal;
+                    font-size: 13px;
+                    line-height: 1;
+
+                    letter-spacing: 0;
+                    text-transform: uppercase;
+                    color: #662423;
                 }
 
                 .request-button {
-                    position: static;
-                    display: flex;
+                    position: absolute;
+                    top: 362px;
+                    left: 15px;
+                    display: block;
                     justify-content: center;
                     align-items: center;
-                    margin: 0 auto;
-                    width: 180px;
-                    height: 50px;
+                    border: none;
+                    cursor: pointer;
+                    text-decoration: none;
+                }
+
+                .check {
+                    width: 175px;
+                    height: 30px;
                 }
 
                 .bottom-band {
                     height: auto;
-                    padding: 40px 20px;
                     box-sizing: border-box;
                     display: flex;
                     flex-direction: column;
@@ -466,16 +545,34 @@
                 .bottom-logo {
                     position: static;
                     display: block;
-                    margin: 0 auto 30px;
+                    margin: 21px auto 12px;
+                    width: 101px;
+                    height: 18px;
                     transform: none;
                 }
 
                 .bottom-section-text {
                     position: static;
                     width: 80%;
-                    margin: 0 auto 30px;
+                    margin: 0 auto 16px;
                     text-align: center;
-                    font-size: 16px;
+                    
+
+                    font-family: 'Pretendard', sans-serif;
+                    font-weight: 300;
+                    font-style: normal;
+                    font-size: 8.68px;
+                    line-height: 1.3;
+
+                    letter-spacing: 0;
+                    text-transform: uppercase;
+                    color: #FEFCEC;
+                }
+
+                .bottom-buttons-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
 
                 .instagram-button, .youtube-button {
@@ -483,10 +580,22 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    margin: 0 auto 15px;
+                    margin: 0 10px 21px;
                     transform: none;
-                    width: 180px;
-                    height: 40px;
+                    width: 80px;
+                    height: 30px;
+                }
+
+                .instagram-button img {
+                    max-width: 80%;
+                    max-height: 100%;
+                    display: block;
+                }
+                
+                .youtube-button img {
+                    max-width: 70%;
+                    max-height: 100%;
+                    display: block;
                 }
             }
         </style>
@@ -514,7 +623,8 @@
             
         </div>
         <div class="where-imagination-becomes-reality">
-            <img src="images/Where imagination becomes reality.png" alt="Where imagination becomes reality" class="where-imagination-becomes-reality-image">
+            <img src="images/Where imagination becomes reality.png" alt="Where imagination becomes reality" class="where-imagination-becomes-reality-image desktop-image">
+            <img src="images/Where imagination becomes reality-2.png" alt="Where imagination becomes reality" class="where-imagination-becomes-reality-image mobile-image">
         </div>
         
         <div class="new-section">
@@ -535,7 +645,8 @@
             </div>
         </div>
         <div class="last-section">
-            <img src="images/lastImage.png" class="last-image">
+            <img src="images/lastImage.png" class="last-image desktop-image">
+            <img src="images/lastImageMobile.png" class="last-image mobile-image">
             <img src="images/Jewelry that reflects you..png" class="we-offer-an-experience-beyond-jewelry">
             <div class="last-section-first-text">
                 24시간, 365일 나와 가장 가깝게 있는 주얼리<br>
@@ -588,61 +699,90 @@
 
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
-                const moveAmount = scrollY * 2.5;
-                
-                if (moveAmount >= meetingMoveAmount) {
-                    dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
-                    dgodicImage.style.transform = `translateY(-50%) translateX(-${meetingMoveAmount}px)`;
-                    
-                    if (!hasMetAndWaiting && !hasDisappeared) {
-                        hasMetAndWaiting = true;
-                        if (disappearanceTimeout) {
-                            clearTimeout(disappearanceTimeout);
-                        }
-                        disappearanceTimeout = setTimeout(() => {
-                            dgodicImage.style.opacity = '0';
-                            dgodicText.style.opacity = '0';
-                            dcursiveImage.style.opacity = '0';
-                            dcursiveText.style.opacity = '0';
-                            hasDisappeared = true;
-                            hasMetAndWaiting = false;
-                        }, 1000);
+
+                // 'D' images animation
+                if (window.innerWidth <= 768) { // Mobile
+                    const moveMultiplier = 2.5;
+                    const moveAmount = scrollY * moveMultiplier;
+                    const mobileMeetingMoveAmount = meetingMoveAmount + 74
+                    if (moveAmount >= mobileMeetingMoveAmount) {
+                        // Merged and fixed state at the top of the video
+                        dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
+                        dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
+                    } else {
+                        // Approaching state
+                        dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
+                        dgodicImage.style.transform = `translateX(-${moveAmount}px)`;
                     }
                     
-                    if (!hasDisappeared) {
+                    if (disappearanceTimeout) clearTimeout(disappearanceTimeout);
+                    hasMetAndWaiting = false;
+                    hasDisappeared = false;
+
+                } else { // Desktop
+                    const moveMultiplier = 2.5;
+                    const moveAmount = scrollY * moveMultiplier;
+                    const dgodicBaseTransform = 'translateY(-50%) ';
+
+                    if (moveAmount >= meetingMoveAmount) {
+                        dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
+                        dgodicImage.style.transform = dgodicBaseTransform + `translateX(-${meetingMoveAmount}px)`;
+                        
+                        if (!hasMetAndWaiting && !hasDisappeared) {
+                            hasMetAndWaiting = true;
+                            if (disappearanceTimeout) {
+                                clearTimeout(disappearanceTimeout);
+                            }
+                            disappearanceTimeout = setTimeout(() => {
+                                dgodicImage.style.opacity = '0';
+                                dgodicText.style.opacity = '0';
+                                dcursiveImage.style.opacity = '0';
+                                dcursiveText.style.opacity = '0';
+                                hasDisappeared = true;
+                                hasMetAndWaiting = false;
+                            }, 1000);
+                        }
+                        
+                        if (!hasDisappeared) {
+                            dgodicImage.style.opacity = '1';
+                            dgodicText.style.opacity = '1';
+                            dcursiveImage.style.opacity = '1';
+                            dcursiveText.style.opacity = '1';
+                        }
+                    } else {
+                        dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
+                        dgodicImage.style.transform = dgodicBaseTransform + `translateX(-${moveAmount}px)`;
                         dgodicImage.style.opacity = '1';
                         dgodicText.style.opacity = '1';
                         dcursiveImage.style.opacity = '1';
                         dcursiveText.style.opacity = '1';
-                    }
 
-                } else {
-                    dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
-                    dgodicImage.style.transform = `translateY(-50%) translateX(-${moveAmount}px)`;
-                    dgodicImage.style.opacity = '1';
-                    dgodicText.style.opacity = '1';
-                    dcursiveImage.style.opacity = '1';
-                    dcursiveText.style.opacity = '1';
-
-                    if (disappearanceTimeout) {
-                        clearTimeout(disappearanceTimeout);
-                        disappearanceTimeout = null;
+                        if (disappearanceTimeout) {
+                            clearTimeout(disappearanceTimeout);
+                            disappearanceTimeout = null;
+                        }
+                        hasMetAndWaiting = false;
+                        hasDisappeared = false;
                     }
-                    hasMetAndWaiting = false;
-                    hasDisappeared = false;
                 }
 
-                if (scrollY >= startScroll && scrollY <= endScroll) {
-                    const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
-                    const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
-                    const scaleY = 1 + (finalScaleY - 1) * scrollFraction;
-                    video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
-                } else if (scrollY < startScroll) {
-                    video.style.transform = 'scale(1)';
+                // Video scaling logic
+                if (window.innerWidth > 768) {
+                    if (scrollY >= startScroll && scrollY <= endScroll) {
+                        const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
+                        const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
+                        const scaleY = 1 + (finalScaleY - 1) * scrollFraction;
+                        video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
+                    } else if (scrollY < startScroll) {
+                        video.style.transform = 'scale(1)';
+                    } else {
+                        video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
+                    }
                 } else {
-                    video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
+                    video.style.transform = 'scale(1)';
                 }
                 
+                // Parallax logic
                 parallaxImages.forEach((piece, index) => {
                     const speed = parallaxSpeedFactors[index] || 0;
                     const moveY = scrollY * speed;
@@ -656,12 +796,14 @@
                 AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해,<br>
                 세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
             </div>
-            <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
-                <img src="images/instagram.png" alt="Instagram">
-            </a>
-            <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
-                <img src="images/youtube.png" alt="YouTube">
-            </a>
+            <div class="bottom-buttons-container">
+                <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
+                    <img src="images/instagram.png" alt="Instagram">
+                </a>
+                <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
+                    <img src="images/youtube.png" alt="YouTube">
+                </a>
+            </div>
         </div>
     </body>
 </html>
