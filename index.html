@@ -679,6 +679,7 @@
             const parallaxSpeedFactors = [0.3, 0.6, 0.15, -0.3, -0.2, -0.15];
 
             let desktopMeetingMoveAmount, mobileMeetingMoveAmount, endScroll, startScroll, videoContainerTop, finalScaleX, finalScaleY;
+            let isMerged = false
 
             function calculateDimensions() {
                 const dgodicInitialRect = dgodicImage.getBoundingClientRect();
@@ -711,9 +712,10 @@
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
                     
-                    if (moveAmount >= mobileMeetingMoveAmount) {
+                    if (moveAmount >= mobileMeetingMoveAmount || isMerged) {
                         dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
                         dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
+                        isMerged = true;
                     } else {
                         dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
                         dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
