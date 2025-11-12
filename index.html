@@ -63,11 +63,6 @@
                 height: 360px;
                 transition: transform 0.1s ease-in-out;
             }
-            .dgodic-text {
-                position: absolute;
-                top: calc(50% + 55px);
-                right: 80px;
-            }
             .where-imagination-becomes-reality {
                 text-align: center;
                 margin-top: 100px;              
@@ -75,32 +70,29 @@
             .dcursive-image {
                 position: absolute;
                 left: 80px;
-                top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
+                top: calc(50% - (42px));
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
             }
             .dcursive-text {
                 position: absolute;
                 left: 80px;
-                top: calc(50% + 55px);
+                top: calc(50% + (97px + 17px)); /* DGodic 이미지 높이 97 + 간격 17 */
             }
             .dgodic-image {
                 position: absolute;
-                top: 50%;            
-                transform: translateY(-50%);
+                top: 50%;
                 right: 80px;
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+            }
+            .dgodic-text {
+                position: absolute;
+                top: calc(50% + (97px + 17px)); /* DGodic 이미지 높이 97 + 간격 17 */
+                right: 80px;
             }
             .where-imagination-becomes-reality {
                 text-align: center;
                 margin-top: 100px;                
             }
-            .dcursive-image {
-                position: absolute;
-                left: 80px;
-                top: calc(50% - (42px + 48.5px)); /* 42픽셀 상단 + dgodic 이미지의 높이의 반  */
-                transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
-            }
-            
             .new-section {
                 position: relative;
                 height: 1307px;
@@ -138,12 +130,12 @@
                 opacity: 0.8;
             }
             
-            .parallax-1 { width: 200px; height: 200px; top: 10%; left: 5%; background-image: url('images/1.png'); background-size: cover; }
-            .parallax-2 { width: 300px; height: 300px; top: 0%; right: 5%; background-image: url('images/2.png'); background-size: cover; }
-            .parallax-3 { width: 250px; height: 350px; bottom: 20%; left: 10%; background-image: url('images/3.png'); background-size: cover; }
-            .parallax-4 { width: 280px; height: 400px; bottom: 5%; right: 10%; background-image: url('images/4.png'); background-size: cover; }
-            .parallax-5 { width: 350px; height: 250px; top: 50%; left: 20%; background-image: url('images/5.png'); background-size: cover; }
-            .parallax-6 { width: 320px; height: 220px; top: 30%; right: -5%; background-image: url('images/6.png'); background-size: cover; }
+            .parallax-1 { width: 216px; height: 338px; top: 10%; left: 5%; background-image: url('images/1.png'); background-size: cover; }
+            .parallax-2 { width: 273px; height: 364px; top: 0%; right: 5%; background-image: url('images/2.png'); background-size: cover; }
+            .parallax-3 { width: 282px; height: 376px; bottom: 20%; left: 10%; background-image: url('images/3.png'); background-size: cover; }
+            .parallax-4 { width: 400px; height: 600px; bottom: 5%; right: 10%; background-image: url('images/4.png'); background-size: cover; }
+            .parallax-5 { width: 341px; height: 336px; top: 50%; left: 20%; background-image: url('images/5.png'); background-size: cover; }
+            .parallax-6 { width: 352px; height: 377px; top: 30%; right: -5%; background-image: url('images/6.png'); background-size: cover; }
 
             .last-section {
                 position: relative;
@@ -462,12 +454,12 @@
                     opacity: 0.5;
                 }
 
-                .parallax-1 { width: 100px; height: 100px; top: 5%; left: 5%; }
-                .parallax-2 { width: 150px; height: 150px; top: 0%; right: 5%; }
-                .parallax-3 { width: 120px; height: 180px; bottom: 15%; left: 10%; }
-                .parallax-4 { width: 140px; height: 200px; bottom: 10%; right: 0%; }
-                .parallax-5 { width: 180px; height: 120px; top: 20%; left: 20%; }
-                .parallax-6 { width: 160px; height: 110px; top: 80%; right: 15%; display: none;}
+                .parallax-1 { width: 108px; height: 169px; top: 5%; left: 5%; }
+                .parallax-2 { width: 136px; height: 182px; top: 0%; right: 5%; }
+                .parallax-3 { width: 141px; height: 188px; bottom: 15%; left: 10%; }
+                .parallax-4 { width: 200px; height: 300px; bottom: 10%; right: 0%; }
+                .parallax-5 { width: 170px; height: 168px; top: 20%; left: 20%; }
+                .parallax-6 { width: 151px; height: 165px; top: 80%; right: 15%; display: none;}
 
 
                 .last-section {
@@ -685,114 +677,92 @@
             const parallaxImages = document.querySelectorAll('.parallax-image');
             const parallaxSpeedFactors = [0.3, 0.6, 0.15, -0.3, -0.2, -0.15];
 
-            const dgodicInitialRect = dgodicImage.getBoundingClientRect();
-            const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
-            const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
-            const meetingMoveAmount = initialGap / 2 - 50;
+            let desktopMeetingMoveAmount, mobileMeetingMoveAmount, endScroll, startScroll, videoContainerTop, finalScaleX, finalScaleY;
 
-            let disappearanceTimeout = null;
-            let hasMetAndWaiting = false;
-            let hasDisappeared = false;
+            function calculateDimensions() {
+                const dgodicInitialRect = dgodicImage.getBoundingClientRect();
+                const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
+                const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
+                
+                desktopMeetingMoveAmount = initialGap / 2 + 60;
+                mobileMeetingMoveAmount = initialGap / 2 + 24;
+                endScroll = desktopMeetingMoveAmount / 2.5;
 
-            const endScroll = meetingMoveAmount / 2.5;
-            
-            const videoContainerTop = videoContainer.offsetTop;
-            const startScroll = videoContainerTop - window.innerHeight / 2;
+                videoContainerTop = videoContainer.offsetTop;
+                startScroll = videoContainerTop - window.innerHeight / 2;
 
-            let finalScaleX = window.innerWidth / 640;
-            let finalScaleY = window.innerHeight / 360;
-            let isMerged = false;
-            
-            if (window.innerWidth <= 768) {
-                finalScaleX = 1;
-                finalScaleY = 1;
+                finalScaleX = window.innerWidth / 640;
+                finalScaleY = window.innerHeight / 360;
+                
+                if (window.innerWidth <= 768) {
+                    finalScaleX = 1;
+                    finalScaleY = 1;
+                }
             }
 
-
+            window.addEventListener('load', calculateDimensions);
+            window.addEventListener('resize', calculateDimensions);
+            
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
-
-                // 'D' images animation
+                
                 if (window.innerWidth <= 768) { // Mobile
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
-                    const mobileMeetingMoveAmount = meetingMoveAmount + 74
                     
-                    if (moveAmount >= mobileMeetingMoveAmount || isMerged) {
-                        // Merged and fixed state at the top of the video
+                    if (moveAmount >= mobileMeetingMoveAmount) {
                         dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
                         dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
-                        isMerged = true;
                     } else {
-                        // Approaching state
-                        dcursiveImage.style.transform = `translateX(${moveAmount}px)  translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
-                        dgodicImage.style.transform = `translateX(-${moveAmount}px)  translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                        dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                        dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
                     }
-                    
-                    if (disappearanceTimeout) clearTimeout(disappearanceTimeout);
-                    hasMetAndWaiting = false;
-                    hasDisappeared = false;
-
+                
                 } else { // Desktop
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
-                    const dgodicBaseTransform = 'translateY(-50%) ';
+                    const diagonalSlope = 0.53; 
 
-                    if (moveAmount >= meetingMoveAmount) {
-                        dcursiveImage.style.transform = `translateX(${meetingMoveAmount}px)`;
-                        dgodicImage.style.transform = dgodicBaseTransform + `translateX(-${meetingMoveAmount}px)`;
-                        
-                        if (!hasMetAndWaiting && !hasDisappeared) {
-                            hasMetAndWaiting = true;
-                            if (disappearanceTimeout) {
-                                clearTimeout(disappearanceTimeout);
-                            }
-                            disappearanceTimeout = setTimeout(() => {
-                                dgodicImage.style.opacity = '0';
-                                dgodicText.style.opacity = '0';
-                                dcursiveImage.style.opacity = '0';
-                                dcursiveText.style.opacity = '0';
-                                hasDisappeared = true;
-                                hasMetAndWaiting = false;
-                            }, 1000);
-                        }
-                        
-                        if (!hasDisappeared) {
-                            dgodicImage.style.opacity = '1';
-                            dgodicText.style.opacity = '1';
-                            dcursiveImage.style.opacity = '1';
-                            dcursiveText.style.opacity = '1';
-                        }
-                    } else {
-                        dcursiveImage.style.transform = `translateX(${moveAmount}px)`;
-                        dgodicImage.style.transform = dgodicBaseTransform + `translateX(-${moveAmount}px)`;
-                        dgodicImage.style.opacity = '1';
-                        dgodicText.style.opacity = '1';
-                        dcursiveImage.style.opacity = '1';
-                        dcursiveText.style.opacity = '1';
+                    if (scrollY <= endScroll) {
+                        dcursiveImage.style.position = 'absolute';
+                        dcursiveImage.style.top = 'calc(50% - (42px))';
+                        dcursiveImage.style.left = '80px';
+                        dcursiveImage.style.zIndex = 'auto';
 
-                        if (disappearanceTimeout) {
-                            clearTimeout(disappearanceTimeout);
-                            disappearanceTimeout = null;
+                        dgodicImage.style.position = 'absolute';
+                        dgodicImage.style.top = '50%';
+                        dgodicImage.style.right = '80px';
+                        dgodicImage.style.left = '';
+                        dgodicImage.style.zIndex = 'auto';
+
+                        const currentY = -moveAmount * diagonalSlope;
+                        
+                        if (moveAmount >= desktopMeetingMoveAmount) {
+                            const finalY = -desktopMeetingMoveAmount * diagonalSlope;
+                            dcursiveImage.style.transform = `translateX(${desktopMeetingMoveAmount}px) translateY(${finalY}px)`;
+                            dgodicImage.style.transform = `translateX(-${desktopMeetingMoveAmount}px) translateY(${finalY}px)`;
+                        } else {
+                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${currentY}px)`;
+                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${currentY}px)`;
                         }
-                        hasMetAndWaiting = false;
-                        hasDisappeared = false;
+                    }
+
+                    if (startScroll && endScroll) {
+                        if (scrollY >= startScroll && scrollY <= endScroll) {
+                            const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
+                            const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
+                            const scaleY = 1 + (finalScaleY - 1) * scrollFraction;
+                            video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
+                        } else if (scrollY < startScroll) {
+                            video.style.transform = 'scale(1)';
+                        } else {
+                            video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
+                        }
                     }
                 }
 
                 // Video scaling logic
-                if (window.innerWidth > 768) {
-                    if (scrollY >= startScroll && scrollY <= endScroll) {
-                        const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
-                        const scaleX = 1 + (finalScaleX - 1) * scrollFraction;
-                        const scaleY = 1 + (finalScaleY - 1) * scrollFraction;
-                        video.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
-                    } else if (scrollY < startScroll) {
-                        video.style.transform = 'scale(1)';
-                    } else {
-                        video.style.transform = `scaleX(${finalScaleX}) scaleY(${finalScaleY})`;
-                    }
-                } else {
+                if (window.innerWidth <= 768) {
                     video.style.transform = 'scale(1)';
                 }
                 
