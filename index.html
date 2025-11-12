@@ -15,6 +15,10 @@
                 height: 108px;
                 background-color: #500000;
                 text-align: center;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 100;
             }
             .top-image {
                 margin-top: 23px;
@@ -42,7 +46,7 @@
             }
             .maryd-logo {
                 text-align: center;
-                margin-top: 82px;
+                margin-top: 190px;
             }
             .where-jewelry-meets-meaning {
                 text-align: center;
@@ -299,26 +303,33 @@
 
                 .top-band {
                     display: flex;
-                    justify-content: space-between;
+                    justify-content: center;
                     align-items: center;
                     height: 80px;
                     padding: 0 20px;
                     box-sizing: border-box;
-                    display: none;
                 }
 
                 .top-image {
                     margin-top: 0;
-                    height: 40px;
+                    height: 30px;
                     order: 1;
                 }
 
                 .top-request-button {
-                    position: static;
-                    order: 2;
-                    width: 120px;
-                    height: 50px;
-                    display: none;
+                    position: absolute;
+                    right: 20px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 90px;
+                    height: 34px;
+                }
+
+                .lets-maryd {
+                    width: 100%;
+                    height: auto;
+                    padding: 0 8px;
+                    box-sizing: border-box;
                 }
 
                 .top-request-text {
@@ -330,7 +341,7 @@
                 .maryd-logo {
                     width: 257px;
                     height: 47px;
-                    margin: 42px auto;
+                    margin: 122px auto 42px;
                 }
 
                 .maryd-logo-image {
@@ -456,7 +467,7 @@
                 .parallax-3 { width: 120px; height: 180px; bottom: 15%; left: 10%; }
                 .parallax-4 { width: 140px; height: 200px; bottom: 10%; right: 0%; }
                 .parallax-5 { width: 180px; height: 120px; top: 20%; left: 20%; }
-                .parallax-6 { width: 160px; height: 110px; top: 80%; right: 15%; }
+                .parallax-6 { width: 160px; height: 110px; top: 80%; right: 15%; display: none;}
 
 
                 .last-section {
@@ -690,7 +701,8 @@
 
             let finalScaleX = window.innerWidth / 640;
             let finalScaleY = window.innerHeight / 360;
-
+            let isMerged = false;
+            
             if (window.innerWidth <= 768) {
                 finalScaleX = 1;
                 finalScaleY = 1;
@@ -705,7 +717,7 @@
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
                     const mobileMeetingMoveAmount = meetingMoveAmount + 74
-                    let isMerged = false;
+                    
                     if (moveAmount >= mobileMeetingMoveAmount || isMerged) {
                         // Merged and fixed state at the top of the video
                         dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
