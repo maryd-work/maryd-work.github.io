@@ -705,14 +705,16 @@
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
                     const mobileMeetingMoveAmount = meetingMoveAmount + 74
-                    if (moveAmount >= mobileMeetingMoveAmount) {
+                    let isMerged = false;
+                    if (moveAmount >= mobileMeetingMoveAmount || isMerged) {
                         // Merged and fixed state at the top of the video
                         dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
                         dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
+                        isMerged = true;
                     } else {
                         // Approaching state
-                        dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px)`;
-                        dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px)`;
+                        dcursiveImage.style.transform = `translateX(${moveAmount}px)  translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                        dgodicImage.style.transform = `translateX(-${moveAmount}px)  translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
                     }
                     
                     if (disappearanceTimeout) clearTimeout(disappearanceTimeout);

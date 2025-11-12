@@ -36,3 +36,5 @@ Step7: 아래 화면에서 CHECK ALL SERVICES 대신에 LET'S MARYD 텍스트를
 Step8: 모바일에 맞춘 디자인 적용
 
 <img width="181" height="1024" alt="image" src="https://github.com/user-attachments/assets/24e342c5-8669-45c7-8f42-4932c7f44bfe" />
+
+Step9: 동생에게 피드백 받은 내용 개선
