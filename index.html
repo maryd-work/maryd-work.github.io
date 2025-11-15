@@ -294,10 +294,6 @@
                     overflow-x: hidden;
                 }
 
-                .merged {
-                    position: fixed;
-                }
-
                 .top-band {
                     display: flex;
                     justify-content: center;
@@ -682,10 +678,13 @@
             const parallaxImages = document.querySelectorAll('.parallax-image');
             const parallaxSpeedFactors = [0.3, 0.6, 0.15, -0.3, -0.2, -0.15];
 
+            // 변수 선언
             let desktopMeetingMoveAmount, mobileMeetingMoveAmount, endScroll, startScroll, videoContainerTop, finalScaleX, finalScaleY;
-            let isMerged = false
-
+            let isMerged = false; // 상태 변수
+        
             function calculateDimensions() {
+                if (!dgodicImage || !dcursiveImage || !videoContainer) return;
+        
                 const dgodicInitialRect = dgodicImage.getBoundingClientRect();
                 const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
                 const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
@@ -706,12 +705,17 @@
                 }
             }
 
+            calculateDimensions();
+            
             window.addEventListener('load', calculateDimensions);
             window.addEventListener('resize', calculateDimensions);
             
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
                 
+                if (typeof mobileMeetingMoveAmount === 'undefined' || typeof desktopMeetingMoveAmount === 'undefined') {
+                    return;
+        
                 if (window.innerWidth <= 768) { // Mobile
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
@@ -720,8 +724,6 @@
                         dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
                         dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
                         isMerged = true;
-                        dcursiveImage.classList.add('merged');
-                        dgodicImage.classList.add('merged');
                     } else {
                         dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
                         dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
