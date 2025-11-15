@@ -718,16 +718,16 @@
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
                     
-                    if (moveAmount >= mobileMeetingMoveAmount || isMerged) {
+                    if (!isMerged) {
+                        if (moveAmount >= mobileMeetingMoveAmount) {
                         dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
                         dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
                         isMerged = true;
-                        dcursiveImage.classList.add('merged');
-                        dgodicImage.classList.add('merged');
                     } else {
                         dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
                         dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
                     }
+                    } 
                 
                 } else { // Desktop
                     const moveMultiplier = 2.5;
