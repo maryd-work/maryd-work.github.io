@@ -677,10 +677,9 @@
             
             const parallaxImages = document.querySelectorAll('.parallax-image');
             const parallaxSpeedFactors = [0.3, 0.6, 0.15, -0.3, -0.2, -0.15];
-
-            // 변수 선언
+        
             let desktopMeetingMoveAmount, mobileMeetingMoveAmount, endScroll, startScroll, videoContainerTop, finalScaleX, finalScaleY;
-            let isMerged = false; // 상태 변수
+            let isMerged = false;
         
             function calculateDimensions() {
                 if (!dgodicImage || !dcursiveImage || !videoContainer) return;
@@ -692,10 +691,10 @@
                 desktopMeetingMoveAmount = initialGap / 2 + 60;
                 mobileMeetingMoveAmount = initialGap / 2 + 24;
                 endScroll = desktopMeetingMoveAmount / 2.5;
-
+        
                 videoContainerTop = videoContainer.offsetTop;
                 startScroll = videoContainerTop - window.innerHeight / 2;
-
+        
                 finalScaleX = window.innerWidth / 640;
                 finalScaleY = window.innerHeight / 360;
                 
@@ -704,17 +703,16 @@
                     finalScaleY = 1;
                 }
             }
-
-            calculateDimensions();
             
-            window.addEventListener('load', calculateDimensions);
+            window.addEventListener('load', calculateDimensions); 
             window.addEventListener('resize', calculateDimensions);
             
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
-                
-                if (typeof mobileMeetingMoveAmount === 'undefined' || typeof desktopMeetingMoveAmount === 'undefined') {
+
+                if (isNaN(mobileMeetingMoveAmount) || isNaN(desktopMeetingMoveAmount)) {
                     return;
+                }
         
                 if (window.innerWidth <= 768) { // Mobile
                     const moveMultiplier = 2.5;
@@ -724,6 +722,8 @@
                         dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
                         dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
                         isMerged = true;
+                        dcursiveImage.classList.add('merged');
+                        dgodicImage.classList.add('merged');
                     } else {
                         dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
                         dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
@@ -733,19 +733,19 @@
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
                     const diagonalSlope = 0.4; 
-
+        
                     if (scrollY <= endScroll) {
                         dcursiveImage.style.position = 'absolute';
                         dcursiveImage.style.top = 'calc(50% - (42px))';
                         dcursiveImage.style.left = '80px';
                         dcursiveImage.style.zIndex = 'auto';
-
+        
                         dgodicImage.style.position = 'absolute';
                         dgodicImage.style.top = '50%';
                         dgodicImage.style.right = '80px';
                         dgodicImage.style.left = '';
                         dgodicImage.style.zIndex = 'auto';
-
+        
                         const currentY = -moveAmount * diagonalSlope;
                         
                         if (moveAmount >= desktopMeetingMoveAmount) {
@@ -757,7 +757,7 @@
                             dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${currentY}px)`;
                         }
                     }
-
+        
                     if (startScroll && endScroll) {
                         if (scrollY >= startScroll && scrollY <= endScroll) {
                             const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
@@ -771,7 +771,7 @@
                         }
                     }
                 }
-
+        
                 // Video scaling logic
                 if (window.innerWidth <= 768) {
                     video.style.transform = 'scale(1)';
