@@ -527,49 +527,33 @@
             smoothScrollToLoading();
 
             try {
-                const isStatic = location.hostname.endsWith('github.io') || location.protocol === 'file:';
-                let data;
-                if (isStatic) {
-                    // Direct client-side generation for GitHub Pages / static hosting
-                    const prompt = `A beautiful ${q1} made of ${q2} featuring ${q3}, ${q4} style, inspired by ${q5}, professional jewelry photography`;
-                    const seed = Math.floor(Math.random() * 1_000_000);
-                    const width = 1024;
-                    const height = 1024;
-                    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${width}&height=${height}&nologo=true&seed=${seed}`;
-                    data = {
-                        imageUrl,
-                        description: generateKoreanDescription({ q1, q2, q3, q4, q5 })
-                    };
-                } else {
-                    // Use server when available (local dev / own hosting)
+                const endpointUrl = 'https://node-ai-cqn3.vercel.app/api/generate-image';
+
+                const response = await fetch(endpointUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ q1, q2, q3, q4, q5 })
+                });
+
+                if (!response.ok) {
+                    let errorData;
                     try {
-                        const response = await fetch('/generate-image', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ q1, q2, q3, q4, q5 })
-                        });
-                        if (!response.ok) throw new Error('Server generation failed');
-                        data = await response.json();
+                        errorData = await response.json();
                     } catch (e) {
-                        // Any server failure (405 on GitHub Pages via custom domain, CORS, etc.) -> client fallback
-                        const prompt = `A beautiful ${q1} made of ${q2} featuring ${q3}, ${q4} style, inspired by ${q5}, professional jewelry photography`;
-                        const seed = Math.floor(Math.random() * 1_000_000);
-                        const width = 1024;
-                        const height = 1024;
-                        const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${width}&height=${height}&nologo=true&seed=${seed}`;
-                        data = {
-                            imageUrl,
-                            description: generateKoreanDescription({ q1, q2, q3, q4, q5 })
-                        };
+                        throw new Error(response.statusText || '서버에서 응답을 받지 못했습니다.');
                     }
+                    throw new Error(errorData.details || errorData.error || '이미지 생성에 실패했습니다.');
                 }
 
+                const data = await response.json();
+                
                 resultContainer.style.display = 'block';
                 resultTitle.style.display = 'block'; // 제목은 항상 보이도록
                 resultText.style.display = 'none'; // 설명은 숨김
                 resultImage.classList.add('loading-placeholder'); // 로딩 효과 추가
                 smoothScrollToResult();
 
+                // 서버에서 받은 이미지 URL을 설정
                 resultImage.src = data.imageUrl;
                 resultImage.onload = () => {
                     resultImage.classList.remove('loading-placeholder');
@@ -582,20 +566,7 @@
 
             } catch (error) {
                 console.error('Error:', error);
-                let errorMessage = '디자인 생성에 실패했습니다. 다시 시도해주세요.';
-                
-                // Try to get more specific error message from response
-                if (error.response) {
-                    try {
-                        const errorData = await error.response.json();
-                        errorMessage = errorData.error || errorMessage;
-                        if (errorData.details) {
-                            errorMessage += '\n\n상세 정보: ' + errorData.details;
-                        }
-                    } catch (e) {
-                        // If we can't parse the error response, use the default message
-                    }
-                }
+                let errorMessage = error.message || '디자인 생성에 실패했습니다. 다시 시도해주세요.';
                 
                 // 더 나은 에러 표시를 위해 모달 스타일로 변경
                 const errorDiv = document.createElement('div');
