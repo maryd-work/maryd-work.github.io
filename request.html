@@ -9,7 +9,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: #4B2323;
+            background: #662423;
             color: #fff;
             font-family: 'Noto Sans KR', 'Noto Serif', -apple-system, Roboto, Helvetica, sans-serif;
             min-height: 100vh;
@@ -17,6 +17,19 @@
             flex-direction: column;
             overflow-x: hidden;
             letter-spacing: 0.05em;
+        }
+        .top-band {
+            width: 100%;
+            height: 108px;
+            background-color: #FEFCEC;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        .top-image {
+            margin-top: 23px;
         }
         .container {
             width: 100vw;
@@ -28,15 +41,15 @@
             box-sizing: border-box;
         }
         .logo-box {
-            margin-top: 48px;
+            padding-top: 13vw;
             margin-bottom: 32px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         .logo-img {
-            width: 120px;
             height: 120px;
+            width: 102px;
             object-fit: contain;
             margin-bottom: 16px;
         }
@@ -56,7 +69,13 @@
             font-size: 1rem;
             text-align: center;
             margin-bottom: 32px;
-            line-height: 1.7;
+            margin-top: 32px;
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            line-height: 1.3;
+            letter-spacing: 0;
+            color: #FEFCEC;
         }
         .request-form textarea {
             width: 100%;
@@ -166,15 +185,22 @@
             .request-form h1 {
                 font-size: 1.5rem;
             }
-            .request-form {
-                /* Removed margin */
-            }
+            /*.request-form {
+                /* Removed margin 
+            }*/
             .container {
-                padding: 0 16px;
+                padding: 0px 16px;
             }
-            .footer-bar .sns-bar {
-                /* Removed width and margin-right */
+            .logo-box {
+                padding-top: 142px;
             }
+            .logo-img {
+                height: 120px;
+                width: 102px;
+            }
+            /* .footer-bar .sns-bar {
+                 Removed width and margin-right 
+            } */
         }
             /* Chat UI */
         .chat-wrapper { width: 100%; max-width: 600px; margin: 0 auto 24px; padding: 0 0; }
@@ -192,6 +218,23 @@
             background: #333;
             animation: pulse 1.5s infinite ease-in-out;
         }
+        .top-band {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .top-image {
+            margin-top: 0;
+            height: 30px;
+            order: 1;
+        }
+        .back {
+            width: 160px;
+            height: 30px;
+        }
         @keyframes pulse {
             0% { background-color: #333; }
             50% { background-color: #444; }
@@ -200,9 +243,12 @@
     </style>
 </head>
 <body>
+    <div class="top-band">
+        <img src="images/headerLogoSecond.png" class="top-image">
+    </div>
     <div class="container">
         <div class="logo-box">
-            <a href="index.html"><img src="images/headerLogo.png" alt="MARYD 로고" class="logo-img" /></a>
+            <a href="index.html"><img src="images/logo.png" alt="MARYD 로고" class="logo-img" /></a>
         </div>
 
         <div class="request-form">
@@ -215,8 +261,8 @@
             </div>
             <h1>AI Custom Jewelry Design</h1>
             <p>
-                아래 5가지 질문에 답변해주시면<br>
-                AI가 세상에 단 하나뿐인 액세서리 디자인을 제안해 드립니다.
+                당신의 취향을 들려주세요.<br> 
+                AI가 오직 당신만을 위한 주얼리 디자인을 제안합니다.
             </p>
             <div class="form-grid" style="display:none;">
                 <div class="form-group">
@@ -255,20 +301,26 @@
                     <textarea id="notes" placeholder="사이즈, 예산, 납기 등 추가 요청사항을 적어주세요" style="width:100%; max-width: 512px; min-height:120px; padding:12px; border-radius:8px; border:1px solid #fff; background: rgba(255,255,255,0.1); color:#fff; box-sizing: border-box;"></textarea>
                                          <button id="send-request" class="submit-btn" style="margin-top:14px;">요청하기</button>
                  </div>
-
+                 <div id="result-container" style="margin-top: 30px; display: none; text-align: center;">
+                    <h3 id="result-title" style="margin-bottom: 16px;">AI가 생성한 디자인</h3>
+                    <img id="result-image" src="" alt="AI가 생성한 주얼리 디자인 이미지" ...>
+                    
+                    <input type="hidden" id="image-base64-data" />
+                    
+                    <p id="result-text" ...></p>
+                    <div id="contact-form" ...>
+                        </div>
+                </div>
             </div>
         </div>
 
         <div class="footer-desc">
-            AI 기반 검색엔진과 매리드만의 독자적인 디자인 도구를 통해, 세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+            AI 기반 검색엔진과 매리드만의 독자적인 주얼리 프롬프트를 통해<br>세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
         </div>
         <div class="footer-bar" style="position:relative;">
             <div style="width: 100%; text-align: center;">
                 <a href="index.html" style="display:inline-block;text-decoration:none;">
-                    <svg width="240" height="96" viewBox="0 0 240 96" style="display:block;" xmlns="http://www.w3.org/2000/svg">
-                        <polygon points="70,20 170,20 200,40 120,86 40,40" fill="none" stroke="#fff" stroke-width="2"/>
-                        <text x="120" y="50" text-anchor="middle" fill="#fff" font-size="18" font-family="'Noto Sans KR', 'Noto Serif', sans-serif" font-weight="500">Back to Home</text>
-                    </svg>
+                    <img src="images/BackButton.png" class="back">
                 </a>
             </div>
             <div class="sns-bar" style="margin-top:8px; display:flex; align-self: flex-end; padding-right: 30px;">
@@ -286,7 +338,27 @@
         // Google Apps Script Web App URL (설정 시 시트로 저장됩니다). 비워두면 mailto 폴백 사용
         const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzW0Mtto5z2z_Fp6iKT75mlytKn-z4j0V7qlQPMUo95upsl7onkhgbB3oI62NWcWDhhbg/exec";
 
-        function generateKoreanDescription({ q1, q2, q3, q4, q5 }) {
+        async function fetchImageAsBase64(url) {
+            try {
+                const proxyUrl = `https://node-ai-cqn3.vercel.app/api/proxy-image?url=${encodeURIComponent(url)}`;
+                
+                const response = await fetch(proxyUrl);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch image via proxy: ${response.statusText}`);
+                }
+                
+                const blob = await response.blob();
+                
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                });
+            } catch (error) {
+                console.error("Error fetching image as Base64:", error);
+                return null;
+            }
         }
 
         async function refineDescriptionWithChatGPT({ imageUrl, q1, q2, q3, q4, q5 }) {
@@ -546,20 +618,31 @@
                 }
 
                 const data = await response.json();
+    
+                resultContainer.style.display = 'block';
+                smoothScrollToResult();
+                const imageUrl = data.imageUrl;
+                resultImage.src = imageUrl;
+                const base64Data = await fetchImageAsBase64(imageUrl);
+                
+                if (base64Data) {
+                    document.getElementById('image-base64-data').value = base64Data;
+                } else {
+                    console.warn("Base64 변환 실패. 이메일에 이미지가 첨부되지 않을 수 있습니다.");
+                }
                 
                 resultContainer.style.display = 'block';
-                resultTitle.style.display = 'block'; // 제목은 항상 보이도록
-                resultText.style.display = 'none'; // 설명은 숨김
-                resultImage.classList.add('loading-placeholder'); // 로딩 효과 추가
+                resultTitle.style.display = 'block';
+                resultText.style.display = 'none';
+                resultImage.classList.add('loading-placeholder');
                 smoothScrollToResult();
 
-                // 서버에서 받은 이미지 URL을 설정
                 resultImage.src = data.imageUrl;
                 resultImage.onload = () => {
                     resultImage.classList.remove('loading-placeholder');
-                    document.getElementById('contact-form').style.display = 'block'; // 연락처 폼 다시 보이게
+                    document.getElementById('contact-form').style.display = 'block';
                 };
-                // 가능하다면 ChatGPT로 설명 보정 시도
+                
                 refineDescriptionWithChatGPT({ 
                     imageUrl: data.imageUrl, q1, q2, q3, q4, q5 
                 });
@@ -568,7 +651,6 @@
                 console.error('Error:', error);
                 let errorMessage = error.message || '디자인 생성에 실패했습니다. 다시 시도해주세요.';
                 
-                // 더 나은 에러 표시를 위해 모달 스타일로 변경
                 const errorDiv = document.createElement('div');
                 errorDiv.style.cssText = `
                     position: fixed;

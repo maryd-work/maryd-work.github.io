@@ -38,3 +38,9 @@ Step8: 모바일에 맞춘 디자인 적용
 <img width="181" height="1024" alt="image" src="https://github.com/user-attachments/assets/24e342c5-8669-45c7-8f42-4932c7f44bfe" />
 
 Step9: 동생에게 피드백 받은 내용 개선
+
+Step10: AI 개선(기존 pollinations는 품질이 낮고 프롬포트와 다른 이미지가 나와서 DALL-E 3로 변경)
+
+Step11: request 페이지에 새로운 디자인을 피그마에 작업한 내용 반영, index.html에 디자인 이슈 수정
+
+Step12: 리펙토링(파일 분리, 함수 분리, 코드 정리)

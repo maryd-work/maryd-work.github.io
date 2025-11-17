@@ -691,10 +691,10 @@
                 desktopMeetingMoveAmount = initialGap / 2 + 60;
                 mobileMeetingMoveAmount = initialGap / 2 + 24;
                 endScroll = desktopMeetingMoveAmount / 2.5;
-        
+
                 videoContainerTop = videoContainer.offsetTop;
                 startScroll = videoContainerTop - window.innerHeight / 2;
-        
+
                 finalScaleX = window.innerWidth / 640;
                 finalScaleY = window.innerHeight / 360;
                 
@@ -733,19 +733,19 @@
                     const moveMultiplier = 2.5;
                     const moveAmount = scrollY * moveMultiplier;
                     const diagonalSlope = 0.4; 
-        
+
                     if (scrollY <= endScroll) {
                         dcursiveImage.style.position = 'absolute';
                         dcursiveImage.style.top = 'calc(50% - (42px))';
                         dcursiveImage.style.left = '80px';
                         dcursiveImage.style.zIndex = 'auto';
-        
+
                         dgodicImage.style.position = 'absolute';
                         dgodicImage.style.top = '50%';
                         dgodicImage.style.right = '80px';
                         dgodicImage.style.left = '';
                         dgodicImage.style.zIndex = 'auto';
-        
+
                         const currentY = -moveAmount * diagonalSlope;
                         
                         if (moveAmount >= desktopMeetingMoveAmount) {
@@ -757,7 +757,7 @@
                             dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${currentY}px)`;
                         }
                     }
-        
+
                     if (startScroll && endScroll) {
                         if (scrollY >= startScroll && scrollY <= endScroll) {
                             const scrollFraction = (scrollY - startScroll) / (endScroll - startScroll);
@@ -771,7 +771,7 @@
                         }
                     }
                 }
-        
+
                 // Video scaling logic
                 if (window.innerWidth <= 768) {
                     video.style.transform = 'scale(1)';
