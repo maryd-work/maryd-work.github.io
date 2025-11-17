@@ -181,13 +181,82 @@
             background: #ccc;
             cursor: not-allowed;
         }
+        .back {
+            width: 200px;
+            height: 40px;
+        }
+        .bottom-band {
+            margin-top: 63px;
+            width: 100%;
+            height: 70px;
+            background-color: #500000;
+            position: relative;
+        }
+        .bottom-logo {
+            position: absolute;
+            left: 80px;
+            top: 35%;
+            height: 20px;
+            width: auto;
+        }
+        .youtube-button {
+            position: absolute;
+            right: 57px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 155px;
+            height: 36px;
+            background-color: #FEFCEC;
+            border-radius: 51.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .youtube-button img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+
+        .instagram-button {
+            position: absolute;
+            right: 250px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 155px;
+            height: 36px;
+            background-color: #FEFCEC;
+            border-radius: 51.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .instagram-button img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+
         @media (max-width: 768px) {
             .request-form h1 {
                 font-size: 1.5rem;
             }
-            /*.request-form {
-                /* Removed margin 
-            }*/
+            .request-form {
+                /* Removed margin */
+            }
+            .top-menu {
+                position: absolute;
+                left: 31px;
+                top: 30px;
+                width: 25px;
+                height: 20px;
+            }
             .container {
                 padding: 0px 16px;
             }
@@ -198,9 +267,69 @@
                 height: 120px;
                 width: 102px;
             }
-            /* .footer-bar .sns-bar {
-                 Removed width and margin-right 
-            } */
+            .footer-bar .sns-bar {
+                /* Removed width and margin-right */
+            }
+            .top-band {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 80px;
+                padding: 0 20px;
+                box-sizing: border-box;
+            }
+            .top-image {
+                margin-top: 0;
+                height: 30px;
+                order: 1;
+            }
+            .back {
+                width: 160px;
+                height: 30px;
+            }
+            .bottom-band {
+                height: auto;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .bottom-logo {
+                position: static;
+                display: block;
+                margin: 21px auto 12px;
+                width: 101px;
+                height: 18px;
+                transform: none;
+            }
+            .bottom-buttons-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .instagram-button, .youtube-button {
+                position: static;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 10px 21px;
+                transform: none;
+                width: 80px;
+                height: 30px;
+            }
+
+            .instagram-button img {
+                max-width: 80%;
+                max-height: 100%;
+                display: block;
+            }
+            
+            .youtube-button img {
+                max-width: 70%;
+                max-height: 100%;
+                display: block;
+            }
         }
             /* Chat UI */
         .chat-wrapper { width: 100%; max-width: 600px; margin: 0 auto 24px; padding: 0 0; }
@@ -218,23 +347,6 @@
             background: #333;
             animation: pulse 1.5s infinite ease-in-out;
         }
-        .top-band {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80px;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-        .top-image {
-            margin-top: 0;
-            height: 30px;
-            order: 1;
-        }
-        .back {
-            width: 160px;
-            height: 30px;
-        }
         @keyframes pulse {
             0% { background-color: #333; }
             50% { background-color: #444; }
@@ -244,6 +356,7 @@
 </head>
 <body>
     <div class="top-band">
+        <img src="images/ThreeLineSecond.png" class="top-menu">
         <img src="images/headerLogoSecond.png" class="top-image">
     </div>
     <div class="container">
@@ -315,22 +428,26 @@
         </div>
 
         <div class="footer-desc">
-            AI 기반 검색엔진과 매리드만의 독자적인 주얼리 프롬프트를 통해<br>세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+            AI 기반 검색엔진과 매리드만의 독자적인 주얼리<br> 
+            프롬프트를 통해 세상에 단 하나뿐인<br>
+            맞춤 주얼리 제작의 기쁨을 경험해보세요.
         </div>
-        <div class="footer-bar" style="position:relative;">
-            <div style="width: 100%; text-align: center;">
-                <a href="index.html" style="display:inline-block;text-decoration:none;">
-                    <img src="images/BackButton.png" class="back">
-                </a>
-            </div>
-            <div class="sns-bar" style="margin-top:8px; display:flex; align-self: flex-end; padding-right: 30px;">
-                <a href="https://www.instagram.com/maryd.work/" class="sns-icon" target="_blank" rel="noopener" title="Instagram">
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
-                </a>
-                <a href="https://www.youtube.com/playlist?list=PLaWW74xLaCGXyNU0hH_qXIgQJiiAwdV5R" class="sns-icon" target="_blank" rel="noopener" title="YouTube">
-                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube" />
-                </a>
-            </div>
+        
+        <div style="width: 100%; text-align: center;">
+            <a href="index.html" style="display:inline-block;text-decoration:none;">
+                <img src="images/BackButton.png" class="back">
+            </a>
+        </div>
+    </div>
+    <div class="bottom-band">
+        <img src="images/MARY'D BOTTOM.png" alt="MARY'D BOTTOM" class="bottom-logo">
+        <div class="bottom-buttons-container">
+            <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
+                <img src="images/instagram.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
+                <img src="images/youtube.png" alt="YouTube">
+            </a>
         </div>
     </div>
 
