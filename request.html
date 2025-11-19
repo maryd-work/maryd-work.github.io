@@ -194,62 +194,82 @@
         }
         .back {
             margin-top: 30px;
+            margin-bottom: 50px;
             width: 200px;
             height: 40px;
         }
         .bottom-band {
-            margin-top: 63px;
             width: 100%;
-            height: 70px;
-            background-color: #500000;
+            height: 12.9vw;
+            background-color: #FEFCEC;
             position: relative;
         }
+
         .bottom-logo {
             position: absolute;
-            left: 80px;
-            top: 35%;
-            height: 20px;
-            width: auto;
+            left: 4.2vw;
+            top: 50%;
+            width: 12.8vw;
+            transform: translateY(-50%);
         }
+
+        .bottom-section-text {
+            position: absolute;
+            top: 4.9vw;
+            left: 20.6vw; 
+            text-align: left;
+
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            font-size: 18px;
+            line-height: 1.3;
+
+            letter-spacing: 0;
+            text-transform: uppercase;
+            color: #662423;
+        }
+
         .youtube-button {
             position: absolute;
-            right: 57px;
+            right: 3vw;
             top: 50%;
             transform: translateY(-50%);
-            width: 155px;
-            height: 36px;
+            width: 11.5vw;
+            height: 2.7vw;
             background-color: #FEFCEC;
-            border-radius: 51.5px;
+            border-radius: 2.7vw;
             display: flex;
             justify-content: center;
             align-items: center;
             border: none;
             cursor: pointer;
+            box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .youtube-button img {
+            width: 5.9vw;
+            height: auto;
         }
 
         .instagram-button {
             position: absolute;
-            right: 250px;
+            right: 15.9vw;
             top: 50%;
             transform: translateY(-50%);
-            width: 155px;
-            height: 36px;
+            width: 11.5vw;
+            height: 2.7vw;
             background-color: #FEFCEC;
-            border-radius: 51.5px;
+            border-radius: 2.7vw;
             display: flex;
             justify-content: center;
             align-items: center;
             border: none;
             cursor: pointer;
+            box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
         }
-
         .instagram-button img {
             width: 7.2vw;
-            height: auto;
-        }
-        
-        .youtube-button img {
-            width: 5.9vw;
             height: auto;
         }
 
@@ -309,6 +329,7 @@
                 flex-direction: column;
                 align-items: center;
             }
+
             .bottom-logo {
                 position: static;
                 display: block;
@@ -317,6 +338,25 @@
                 height: 18px;
                 transform: none;
             }
+
+            .bottom-section-text {
+                position: static;
+                width: 80%;
+                margin: 0 auto 16px;
+                text-align: center;
+                
+
+                font-family: 'Pretendard', sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 8.68px;
+                line-height: 1.3;
+
+                letter-spacing: 0;
+                text-transform: uppercase;
+                color: #662423;
+            }
+
             .bottom-buttons-container {
                 display: flex;
                 justify-content: center;
@@ -332,6 +372,7 @@
                 transform: none;
                 width: 80px;
                 height: 30px;
+                border-radius: 30px;
             }
 
             .instagram-button img {
@@ -455,7 +496,11 @@
         </div>
     </div>
     <div class="bottom-band">
-        <img src="images/MARY'D BOTTOM.png" alt="MARY'D BOTTOM" class="bottom-logo">
+        <img src="images/MARY'D.png" alt="MARY'D BOTTOM" class="bottom-logo">
+        <div class="bottom-section-text">
+            AI 기반 검색엔진과 매리드만의 독자적인 주얼리 프롬프트를 통해,<br>
+            세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+        </div>
         <div class="bottom-buttons-container">
             <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
                 <img src="images/instagram.png" alt="Instagram">

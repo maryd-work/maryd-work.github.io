@@ -604,7 +604,7 @@
                     
 
                     font-family: 'Pretendard', sans-serif;
-                    font-weight: 300;
+                    font-weight: 500;
                     font-style: normal;
                     font-size: 8.68px;
                     line-height: 1.3;
@@ -774,19 +774,19 @@
                     
                     if (!isMerged) {
                         if (moveAmount >= mobileMeetingMoveAmount) {
-                        dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
-                        dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
-                        isMerged = true;
-                    } else {
-                        dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
-                        dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
-                    }
-                    } 
+                            dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
+                            dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
+                            isMerged = true;
+                        } else {
+                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                        }
+                    }       
                 
                 } else { // Desktop
                     const moveMultiplier = 6;
                     const moveAmount = scrollY * moveMultiplier;
-                    const diagonalSlope = 0.5; 
+                    const diagonalSlope = 0.4; 
                     
                     if (scrollY <= endScroll) {
                         dcursiveImage.style.position = 'absolute';
@@ -823,7 +823,7 @@
                     let progress = moveAmount / desktopMeetingMoveAmount;
                     if (progress > 1) progress = 1;
                     if (progress < 0) progress = 0;
-                    const maxScale = window.innerWidth / video.offsetWidth;
+                    const maxScale = document.documentElement.clientWidth / video.offsetWidth;
                     const currentScale = 1 + (maxScale - 1) * progress;
 
 
