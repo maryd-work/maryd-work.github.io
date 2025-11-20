@@ -109,8 +109,8 @@
             }
             .where-imagination-becomes-reality {
                 text-align: center;
-                margin-top: 3.2vw;
-                padding-bottom: 10.5vw;
+                margin-top: 12.7vw;
+                margin-bottom: 1vw;
             }
             .where-imagination-becomes-reality-image {
                 width: 23.3vw;
@@ -168,19 +168,21 @@
                 display: flex;
                 width: 100%;
                 background: #FEFCEC;
+                align-items: stretch;
             }
 
             .last-section {
-                position: relative;
-                height: 60.5vw;
-                width: 50%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                box-sizing: border-box;
+                flex-shrink: 0;
             }
             .last-image {
-                position: absolute;
-                top: 3.8vw;
-                left: 4.2vw;
-                width: 37.6vw;
                 height: auto;
+                width: 80%;
+                object-fit: contain;
             }
             .right-section {
                 width: 50%;
@@ -500,13 +502,13 @@
                     background: #FEFCEC;
                 }
                 .last-section {
-                    width: 45%;
+                    width: 43%;
                     height: 425px;
                 }
 
                 .last-image {
                     position: absolute;
-                    top: 3.8vw;
+                    top: 1300px;
                     left: 4.2vw;
                     width: 37.6vw;
                     height: auto;
@@ -784,7 +786,7 @@
                     }       
                 
                 } else { // Desktop
-                    const moveMultiplier = 6;
+                    const moveMultiplier = 4;
                     const moveAmount = scrollY * moveMultiplier;
                     const diagonalSlope = 0.4; 
                     
@@ -817,20 +819,20 @@
                 if (window.innerWidth <= 768) {
                     video.style.transform = 'scale(1)';
                 } else {
-                    const moveAmount = scrollY * 5;
+                    const moveAmount = scrollY * 3;
                     const currentY = -moveAmount;
 
                     let progress = moveAmount / desktopMeetingMoveAmount;
                     if (progress > 1) progress = 1;
                     if (progress < 0) progress = 0;
-                    const maxScale = document.documentElement.clientWidth / video.offsetWidth;
+                    const maxScale = 2;
                     const currentScale = 1 + (maxScale - 1) * progress;
 
 
                     if (moveAmount >= desktopMeetingMoveAmount) {
                         const finalY = -desktopMeetingMoveAmount;
                         video.style.transform = `scale(${maxScale})`; 
-                    } else {
+                    } else if (currentScale < maxScale) {
                         video.style.transform = `scale(${currentScale})`;
                     }
                 }
