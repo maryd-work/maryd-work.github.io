@@ -819,21 +819,27 @@
             
             (function() {
                 const bar = document.getElementById('loadingBar');
-                const percent = document.getElementById('loadingPercent');
+                const percentEl = document.getElementById('loadingPercent');
                 const overlay = document.getElementById('loadingOverlay');
 
                 const images = document.querySelectorAll('img:not(.loading-logo)');
                 const videoEl = document.querySelector('video');
-                const totalResources = images.length + (videoEl ? 1 : 0);
-                let loaded = 0;
 
-                function updateProgress() {
-                    loaded++;
-                    const p = Math.round((loaded / totalResources) * 100);
+                let imageLoaded = 0;
+                const imageTotal = images.length;
+                let videoProgress = 0;
+                let videoReady = false;
+                const IMAGE_WEIGHT = 0.4;
+                const VIDEO_WEIGHT = 0.6;
+
+                function render() {
+                    const imagePart = imageTotal > 0 ? (imageLoaded / imageTotal) * IMAGE_WEIGHT : IMAGE_WEIGHT;
+                    const videoPart = videoEl ? videoProgress * VIDEO_WEIGHT : VIDEO_WEIGHT;
+                    const p = Math.min(Math.round((imagePart + videoPart) * 100), 100);
                     bar.style.width = p + '%';
-                    percent.textContent = p + '%';
+                    percentEl.textContent = p + '%';
 
-                    if (loaded >= totalResources) {
+                    if (imageLoaded >= imageTotal && videoReady) {
                         calculateDimensions();
                         setTimeout(() => {
                             overlay.classList.add('fade-out');
@@ -847,21 +853,40 @@
 
                 images.forEach(img => {
                     if (img.complete) {
-                        updateProgress();
+                        imageLoaded++;
                     } else {
-                        img.addEventListener('load', updateProgress);
-                        img.addEventListener('error', updateProgress);
+                        img.addEventListener('load', () => { imageLoaded++; render(); });
+                        img.addEventListener('error', () => { imageLoaded++; render(); });
                     }
                 });
 
                 if (videoEl) {
                     if (videoEl.readyState >= 3) {
-                        updateProgress();
+                        videoProgress = 1;
+                        videoReady = true;
                     } else {
-                        videoEl.addEventListener('canplaythrough', updateProgress, { once: true });
-                        videoEl.addEventListener('error', updateProgress, { once: true });
+                        videoEl.addEventListener('progress', () => {
+                            if (videoEl.buffered.length > 0 && videoEl.duration > 0) {
+                                videoProgress = videoEl.buffered.end(videoEl.buffered.length - 1) / videoEl.duration;
+                                render();
+                            }
+                        });
+                        videoEl.addEventListener('canplaythrough', () => {
+                            videoProgress = 1;
+                            videoReady = true;
+                            render();
+                        }, { once: true });
+                        videoEl.addEventListener('error', () => {
+                            videoProgress = 1;
+                            videoReady = true;
+                            render();
+                        }, { once: true });
                     }
+                } else {
+                    videoReady = true;
                 }
+
+                render();
             })();
             window.addEventListener('resize', calculateDimensions);
             
