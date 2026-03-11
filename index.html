@@ -424,19 +424,19 @@
                     width: 48px;
                     height: 41px;
                     left: 20px;
-                    top: 120px;
+                    top: 30px;
                     transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
                 }
                 .dcursive-text {
                     position: absolute;
                     left: 25px;
-                    top: 180px;
+                    top: 90px;
                     width: 51px;
                     height: 34px
                 }
                 .dgodic-image {
                     position: absolute;
-                    top: 136px;
+                    top: 46px;
                     right: 20px;
                     width: 41px;
                     height: 41px;
@@ -444,7 +444,7 @@
                 }
                 .dgodic-text {
                     position: absolute;
-                    top: 180px;
+                    top: 90px;
                     right: 24px;
                     width: 51px;
                     height: 34px;
@@ -791,12 +791,12 @@
                     
                     if (!isMerged) {
                         if (moveAmount >= mobileMeetingMoveAmount) {
-                        dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(120px)`;
-                        dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(120px)`;
+                        dcursiveImage.style.transform = `translateX(${mobileMeetingMoveAmount}px) translateY(40px)`;
+                        dgodicImage.style.transform = `translateX(-${mobileMeetingMoveAmount}px) translateY(40px)`;
                         isMerged = true;
                         } else {
-                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
-                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*120}px)`;
+                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*40}px)`;
+                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${moveAmount/mobileMeetingMoveAmount*40}px)`;
                         }
                     }
                 } else { // Desktop
