@@ -234,18 +234,17 @@
                 box-sizing: border-box;
             }
             .we-offer-an-experience-beyond-jewelry {
-                width: 34.4vw;
+                width: 28vw;
                 height: auto;
             }
             .last-section-first-text {
                 margin-top: 2.2vw;
-                text-align: left;
+                text-align: center;
                 font-family: 'Pretendard', sans-serif;
-                font-weight: 700;
+                font-weight: 500;
                 font-style: normal;
-                font-size: 24px;
+                font-size: 18px;
                 letter-spacing: 0;
-                text-transform: uppercase;
                 color: #662423;
             }
             .last-section-text {
@@ -254,10 +253,9 @@
                 font-family: 'Pretendard', sans-serif;
                 font-weight: 500;
                 font-style: normal;
-                font-size: 24px;
-                line-height: 1.2;
+                font-size: 17px;
+                line-height: 1.5;
                 letter-spacing: 0;
-                text-transform: uppercase;
                 color: #662423;
             }
             .request-button {
@@ -270,81 +268,60 @@
                 text-decoration: none;
             }
             .check {
-                width: 17.6vw;
-                height: 3.4vw;
+                width: 14vw;
+                height: 2.7vw;
             }
 
             .bottom-band {
                 width: 100%;
-                height: 12.9vw;
+                height: 8vw;
                 background-color: #662423;
-                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 3vw;
+                padding: 0 4vw;
+                box-sizing: border-box;
             }
 
             .bottom-logo {
-                position: absolute;
-                left: 4.2vw;
-                top: 50%;
-                width: 12.8vw;
-                transform: translateY(-50%);
+                width: 9vw;
+                height: auto;
+                flex-shrink: 0;
             }
 
             .bottom-section-text {
-                position: absolute;
-                top: 4.9vw;
-                left: 20.6vw; 
                 text-align: left;
-
                 font-family: 'Pretendard', sans-serif;
                 font-weight: 500;
                 font-style: normal;
-                font-size: 18px;
-                line-height: 1.3;
-
+                font-size: 14px;
+                line-height: 1.4;
                 letter-spacing: 0;
-                text-transform: uppercase;
                 color: #FEFCEC;
+                flex-shrink: 0;
             }
 
+            .bottom-buttons-container {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-shrink: 0;
+                margin-left: auto;
+            }
+
+            .instagram-button,
             .youtube-button {
-                position: absolute;
-                right: 3vw;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 11.5vw;
-                height: 2.7vw;
-                background-color: #FEFCEC;
-                border-radius: 2.7vw;
                 display: flex;
-                justify-content: center;
                 align-items: center;
+                justify-content: center;
                 border: none;
                 cursor: pointer;
+                background: none;
             }
-
-            .youtube-button img {
-                width: 5.9vw;
-                height: auto;
-            }
-
-            .instagram-button {
-                position: absolute;
-                right: 15.9vw;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 11.5vw;
-                height: 2.7vw;
-                background-color: #FEFCEC;
-                border-radius: 2.7vw;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border: none;
-                cursor: pointer;
-            }
-            .instagram-button img {
-                width: 7.2vw;
-                height: auto;
+            .instagram-button svg,
+            .youtube-button svg {
+                display: block;
             }
 
             .mobile-image {
@@ -901,10 +878,17 @@
             </div>
             <div class="bottom-buttons-container">
                 <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
-                    <img src="images/instagram.png" alt="Instagram">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FEFCEC" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="5" stroke="#FEFCEC" stroke-width="2"/>
+                        <circle cx="17.5" cy="6.5" r="1.5" fill="#FEFCEC"/>
+                    </svg>
                 </a>
                 <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
-                    <img src="images/youtube.png" alt="YouTube">
+                    <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1" y="1" width="26" height="18" rx="5" stroke="#FEFCEC" stroke-width="2"/>
+                        <path d="M11 6.5V13.5L18 10L11 6.5Z" fill="#FEFCEC"/>
+                    </svg>
                 </a>
             </div>
         </div>
