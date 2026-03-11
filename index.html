@@ -821,72 +821,35 @@
                 const bar = document.getElementById('loadingBar');
                 const percentEl = document.getElementById('loadingPercent');
                 const overlay = document.getElementById('loadingOverlay');
-
-                const images = document.querySelectorAll('img:not(.loading-logo)');
                 const videoEl = document.querySelector('video');
 
-                let imageLoaded = 0;
-                const imageTotal = images.length;
-                let videoProgress = 0;
-                let videoReady = false;
-                const IMAGE_WEIGHT = 0.4;
-                const VIDEO_WEIGHT = 0.6;
-
-                function render() {
-                    const imagePart = imageTotal > 0 ? (imageLoaded / imageTotal) * IMAGE_WEIGHT : IMAGE_WEIGHT;
-                    const videoPart = videoEl ? videoProgress * VIDEO_WEIGHT : VIDEO_WEIGHT;
-                    const p = Math.min(Math.round((imagePart + videoPart) * 100), 100);
-                    bar.style.width = p + '%';
-                    percentEl.textContent = p + '%';
-
-                    if (imageLoaded >= imageTotal && videoReady) {
-                        calculateDimensions();
+                function finish() {
+                    bar.style.width = '100%';
+                    percentEl.textContent = '100%';
+                    calculateDimensions();
+                    setTimeout(() => {
+                        overlay.classList.add('fade-out');
                         setTimeout(() => {
-                            overlay.classList.add('fade-out');
-                            setTimeout(() => {
-                                overlay.remove();
-                                document.body.classList.remove('loading');
-                            }, 600);
-                        }, 300);
-                    }
+                            overlay.remove();
+                            document.body.classList.remove('loading');
+                        }, 600);
+                    }, 300);
                 }
 
-                images.forEach(img => {
-                    if (img.complete) {
-                        imageLoaded++;
-                    } else {
-                        img.addEventListener('load', () => { imageLoaded++; render(); });
-                        img.addEventListener('error', () => { imageLoaded++; render(); });
+                if (!videoEl) { finish(); return; }
+
+                if (videoEl.readyState >= 3) { finish(); return; }
+
+                videoEl.addEventListener('progress', () => {
+                    if (videoEl.buffered.length > 0 && videoEl.duration > 0) {
+                        const p = Math.round((videoEl.buffered.end(videoEl.buffered.length - 1) / videoEl.duration) * 100);
+                        bar.style.width = p + '%';
+                        percentEl.textContent = p + '%';
                     }
                 });
 
-                if (videoEl) {
-                    if (videoEl.readyState >= 3) {
-                        videoProgress = 1;
-                        videoReady = true;
-                    } else {
-                        videoEl.addEventListener('progress', () => {
-                            if (videoEl.buffered.length > 0 && videoEl.duration > 0) {
-                                videoProgress = videoEl.buffered.end(videoEl.buffered.length - 1) / videoEl.duration;
-                                render();
-                            }
-                        });
-                        videoEl.addEventListener('canplaythrough', () => {
-                            videoProgress = 1;
-                            videoReady = true;
-                            render();
-                        }, { once: true });
-                        videoEl.addEventListener('error', () => {
-                            videoProgress = 1;
-                            videoReady = true;
-                            render();
-                        }, { once: true });
-                    }
-                } else {
-                    videoReady = true;
-                }
-
-                render();
+                videoEl.addEventListener('canplaythrough', finish, { once: true });
+                videoEl.addEventListener('error', finish, { once: true });
             })();
             window.addEventListener('resize', calculateDimensions);
             
