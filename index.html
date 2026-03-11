@@ -33,29 +33,18 @@
             .loading-logo {
                 width: 120px;
                 height: auto;
-                margin-bottom: 40px;
+                margin-bottom: 32px;
             }
-            .loading-bar-container {
-                width: 200px;
-                height: 2px;
-                background-color: #e0d8c8;
-                border-radius: 1px;
-                overflow: hidden;
-                margin-bottom: 16px;
+            .loading-spinner {
+                width: 28px;
+                height: 28px;
+                border: 2px solid #e0d8c8;
+                border-top: 2px solid #500000;
+                border-radius: 50%;
+                animation: spin 0.8s linear infinite;
             }
-            .loading-bar {
-                width: 0%;
-                height: 100%;
-                background-color: #500000;
-                border-radius: 1px;
-                transition: width 0.3s ease;
-            }
-            .loading-percent {
-                font-family: 'Pretendard', sans-serif;
-                font-weight: 400;
-                font-size: 13px;
-                color: #500000;
-                letter-spacing: 2px;
+            @keyframes spin {
+                to { transform: rotate(360deg); }
             }
             .top-band {
                 width: 100%;
@@ -701,10 +690,7 @@
     <body class="loading">
         <div class="loading-overlay" id="loadingOverlay">
             <img src="images/headerLogo.png" class="loading-logo">
-            <div class="loading-bar-container">
-                <div class="loading-bar" id="loadingBar"></div>
-            </div>
-            <div class="loading-percent" id="loadingPercent">0%</div>
+            <div class="loading-spinner"></div>
         </div>
         <div class="top-band">
             <img src="images/ThreeLine.png" class="top-menu">
@@ -817,40 +803,15 @@
                 }
             }
             
-            (function() {
-                const bar = document.getElementById('loadingBar');
-                const percentEl = document.getElementById('loadingPercent');
+            window.addEventListener('load', () => {
+                calculateDimensions();
                 const overlay = document.getElementById('loadingOverlay');
-                const videoEl = document.querySelector('video');
-
-                function finish() {
-                    bar.style.width = '100%';
-                    percentEl.textContent = '100%';
-                    calculateDimensions();
-                    setTimeout(() => {
-                        overlay.classList.add('fade-out');
-                        setTimeout(() => {
-                            overlay.remove();
-                            document.body.classList.remove('loading');
-                        }, 600);
-                    }, 300);
-                }
-
-                if (!videoEl) { finish(); return; }
-
-                if (videoEl.readyState >= 3) { finish(); return; }
-
-                videoEl.addEventListener('progress', () => {
-                    if (videoEl.buffered.length > 0 && videoEl.duration > 0) {
-                        const p = Math.round((videoEl.buffered.end(videoEl.buffered.length - 1) / videoEl.duration) * 100);
-                        bar.style.width = p + '%';
-                        percentEl.textContent = p + '%';
-                    }
-                });
-
-                videoEl.addEventListener('canplaythrough', finish, { once: true });
-                videoEl.addEventListener('error', finish, { once: true });
-            })();
+                overlay.classList.add('fade-out');
+                setTimeout(() => {
+                    overlay.remove();
+                    document.body.classList.remove('loading');
+                }, 600);
+            });
             window.addEventListener('resize', calculateDimensions);
             
             window.addEventListener('scroll', () => {
