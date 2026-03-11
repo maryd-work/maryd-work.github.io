@@ -424,9 +424,13 @@
                 </div>
             </div>
             
-            <div id="loading" style="display: none; text-align: center; margin-top: 20px;">
-                
+            <div id="loading" style="display: none; text-align: center; margin-top: 30px; margin-bottom: 30px;">
+                <div style="width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.2); border-top: 3px solid #fff; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px;"></div>
+                <p id="loading-text" style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">디자인을 생성하고 있습니다...</p>
             </div>
+            <style>
+                @keyframes spin { to { transform: rotate(360deg); } }
+            </style>
             <div id="result-container" style="margin-top: 30px; display: none; text-align: center;">
                 <h3 id="result-title" style="margin-bottom: 16px;">AI가 생성한 디자인</h3>
                 <img id="result-image" src="" alt="AI가 생성한 주얼리 디자인 이미지" style="width: 100%; max-width: 512px; height: auto; aspect-ratio: 1 / 1; object-fit: contain; border-radius: 8px; background: #333; display: block; margin: 0 auto;">
