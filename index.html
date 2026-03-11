@@ -746,7 +746,7 @@
                 const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
                 const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
                 
-                desktopMeetingMoveAmount = (initialGap / 2) + (window.innerWidth * 0.035);
+                desktopMeetingMoveAmount = (initialGap / 2) + (window.innerWidth * 0.045);
                 mobileMeetingMoveAmount = initialGap / 2 + 24;
                 endScroll = desktopMeetingMoveAmount;
 
@@ -802,19 +802,16 @@
                         dgodicImage.style.right = '4.2vw';
                         dgodicImage.style.left = '';
 
-                        const diagonalSlopeCursive = 0.15;
-                        const diagonalSlopeGodic = 0.35;
+                        const diagonalSlope = 0.1;
+                        const currentY = -moveAmount * diagonalSlope;
 
                         if (moveAmount >= desktopMeetingMoveAmount) {
-                            const finalYCursive = -desktopMeetingMoveAmount * diagonalSlopeCursive;
-                            const finalYGodic = -desktopMeetingMoveAmount * diagonalSlopeGodic;
-                            dcursiveImage.style.transform = `translateX(${desktopMeetingMoveAmount}px) translateY(${finalYCursive}px)`;
-                            dgodicImage.style.transform = `translateX(-${desktopMeetingMoveAmount}px) translateY(${finalYGodic}px)`;
+                            const finalY = -desktopMeetingMoveAmount * diagonalSlope;
+                            dcursiveImage.style.transform = `translateX(${desktopMeetingMoveAmount}px) translateY(${finalY}px)`;
+                            dgodicImage.style.transform = `translateX(-${desktopMeetingMoveAmount}px) translateY(${finalY}px)`;
                         } else {
-                            const currentYCursive = -moveAmount * diagonalSlopeCursive;
-                            const currentYGodic = -moveAmount * diagonalSlopeGodic;
-                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${currentYCursive}px)`;
-                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${currentYGodic}px)`;
+                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${currentY}px)`;
+                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${currentY}px)`;
                         }
                     }
                 }
