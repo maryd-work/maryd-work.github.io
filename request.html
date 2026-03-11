@@ -20,7 +20,7 @@
         }
         .top-band {
             width: 100%;
-            height: 5.6vw;
+            height: 4.2vw;
             background-color: #FEFCEC;
             text-align: center;
             position: fixed;
@@ -34,11 +34,11 @@
         .top-menu {
             position: absolute;
             left: 3.8vw;
-            width: 2vw;
-            height: 1.6vw;
+            width: 1.6vw;
+            height: 1.3vw;
         }
         .top-image {
-            width: 9.8vw;
+            width: 7.5vw;
             height: auto;
         }
         .container {
@@ -200,77 +200,57 @@
         }
         .bottom-band {
             width: 100%;
-            height: 12.9vw;
+            height: 8vw;
             background-color: #FEFCEC;
-            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3vw;
+            padding: 0 4vw;
+            box-sizing: border-box;
         }
 
         .bottom-logo {
-            position: absolute;
-            left: 4.2vw;
-            top: 50%;
-            width: 12.8vw;
-            transform: translateY(-50%);
+            width: 9vw;
+            height: auto;
+            flex-shrink: 0;
         }
 
         .bottom-section-text {
-            position: absolute;
-            top: 4.9vw;
-            left: 20.6vw; 
             text-align: left;
-
             font-family: 'Pretendard', sans-serif;
             font-weight: 500;
             font-style: normal;
-            font-size: 18px;
-            line-height: 1.3;
-
+            font-size: 14px;
+            line-height: 1.4;
             letter-spacing: 0;
-            text-transform: uppercase;
             color: #662423;
+            flex-shrink: 0;
         }
 
+        .bottom-buttons-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .instagram-button,
         .youtube-button {
-            position: absolute;
-            right: 3vw;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 11.5vw;
-            height: 2.7vw;
-            background-color: #FEFCEC;
-            border-radius: 2.7vw;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background-color: #662423;
             border: none;
             cursor: pointer;
-            box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
         }
-
-        .youtube-button img {
-            width: 5.9vw;
-            height: auto;
-        }
-
-        .instagram-button {
-            position: absolute;
-            right: 15.9vw;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 11.5vw;
-            height: 2.7vw;
-            background-color: #FEFCEC;
-            border-radius: 2.7vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
-        }
-        .instagram-button img {
-            width: 7.2vw;
-            height: auto;
+        .instagram-button svg,
+        .youtube-button svg {
+            display: block;
         }
 
         @media (max-width: 768px) {
@@ -368,23 +348,11 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                margin: 0 10px 21px;
+                margin: 0 6px 21px;
                 transform: none;
-                width: 80px;
-                height: 30px;
-                border-radius: 30px;
-            }
-
-            .instagram-button img {
-                width: auto;
-                height: 8px;
-                display: block;
-            }
-            
-            .youtube-button img {
-                width: auto;
-                height: 8px;
-                display: block;
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
             }
         }
             /* Chat UI */
@@ -503,10 +471,17 @@
         </div>
         <div class="bottom-buttons-container">
             <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
-                <img src="images/instagram.png" alt="Instagram">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FEFCEC" stroke-width="1.5"/>
+                    <circle cx="12" cy="12" r="5" stroke="#FEFCEC" stroke-width="1.5"/>
+                    <circle cx="17.5" cy="6.5" r="1.5" fill="#FEFCEC"/>
+                </svg>
             </a>
             <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
-                <img src="images/youtube.png" alt="YouTube">
+                <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="1" width="26" height="18" rx="5" stroke="#FEFCEC" stroke-width="1.5"/>
+                    <path d="M11 6.5V13.5L18 10L11 6.5Z" fill="#FEFCEC"/>
+                </svg>
             </a>
         </div>
     </div>
