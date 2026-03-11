@@ -88,6 +88,7 @@
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
                 height: 5.3vw;
                 width: auto;
+                z-index: 4;
             }
             .dcursive-text {
                 position: absolute;
@@ -101,6 +102,7 @@
                 transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
                 height: 4.4vw;
                 width: auto;
+                z-index: 5;
             }
             .dgodic-text {
                 position: absolute;
@@ -744,7 +746,7 @@
                 const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
                 const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
                 
-                desktopMeetingMoveAmount = (initialGap / 2) + (window.innerWidth * 0.01);
+                desktopMeetingMoveAmount = (initialGap / 2) + (window.innerWidth * 0.035);
                 mobileMeetingMoveAmount = initialGap / 2 + 24;
                 endScroll = desktopMeetingMoveAmount;
 
@@ -790,29 +792,29 @@
                 } else { // Desktop
                     const moveMultiplier = 4;
                     const moveAmount = scrollY * moveMultiplier;
-                    const diagonalSlope = 0.25;
-                    
                     if (scrollY <= endScroll) {
                         dcursiveImage.style.position = 'absolute';
                         dcursiveImage.style.top = 'calc(50% - 2.2vw)';
                         dcursiveImage.style.left = '4.2vw';
-                        dcursiveImage.style.zIndex = 'auto';
 
                         dgodicImage.style.position = 'absolute';
                         dgodicImage.style.top = '50%';
                         dgodicImage.style.right = '4.2vw';
                         dgodicImage.style.left = '';
-                        dgodicImage.style.zIndex = 'auto';
 
-                        const currentY = -moveAmount * diagonalSlope;
-                        
+                        const diagonalSlopeCursive = 0.15;
+                        const diagonalSlopeGodic = 0.35;
+
                         if (moveAmount >= desktopMeetingMoveAmount) {
-                            const finalY = -desktopMeetingMoveAmount * diagonalSlope;
-                            dcursiveImage.style.transform = `translateX(${desktopMeetingMoveAmount}px) translateY(${finalY}px)`;
-                            dgodicImage.style.transform = `translateX(-${desktopMeetingMoveAmount}px) translateY(${finalY}px)`;
+                            const finalYCursive = -desktopMeetingMoveAmount * diagonalSlopeCursive;
+                            const finalYGodic = -desktopMeetingMoveAmount * diagonalSlopeGodic;
+                            dcursiveImage.style.transform = `translateX(${desktopMeetingMoveAmount}px) translateY(${finalYCursive}px)`;
+                            dgodicImage.style.transform = `translateX(-${desktopMeetingMoveAmount}px) translateY(${finalYGodic}px)`;
                         } else {
-                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${currentY}px)`;
-                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${currentY}px)`;
+                            const currentYCursive = -moveAmount * diagonalSlopeCursive;
+                            const currentYGodic = -moveAmount * diagonalSlopeGodic;
+                            dcursiveImage.style.transform = `translateX(${moveAmount}px) translateY(${currentYCursive}px)`;
+                            dgodicImage.style.transform = `translateX(-${moveAmount}px) translateY(${currentYGodic}px)`;
                         }
                     }
                 }
