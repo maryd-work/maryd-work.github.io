@@ -11,35 +11,35 @@
             }
             .top-band {
                 width: 100%;
-                height: 5.6vw;
+                height: 4.2vw;
                 background-color: #500000;
                 text-align: center;
                 position: fixed;
                 top: 0;
                 left: 0;
                 z-index: 100;
-                display: flex;            
+                display: flex;
                 justify-content: center;
                 align-items: center;
             }
             .top-menu {
                 position: absolute;
                 left: 3.8vw;
-                width: 2vw;
-                height: 1.6vw;
+                width: 1.6vw;
+                height: 1.3vw;
             }
             .top-image {
-                width: 9.8vw;
+                width: 7.5vw;
                 height: auto;
             }
             .top-request-button {
                 position: absolute;
                 right: 2.8vw;
-                width: 11.5vw;
-                height: 2.7vw;
+                width: 9vw;
+                height: 2.1vw;
                 display: flex;
                 background-color: #FEFCEC;
-                border-radius: 2.7vw;
+                border-radius: 2.1vw;
                 justify-content: center;
                 align-items: center;
                 border: none;
@@ -47,12 +47,12 @@
                 text-decoration: none;
             }
             .lets-maryd {
-                width: 8.4vw;
+                width: 6.5vw;
                 height: auto;
             }
             .maryd-logo {
                 text-align: center;
-                margin-top: 10.7vw;
+                margin-top: 8.5vw;
             }
             .maryd-logo-image {
                 width: 30.4vw;
@@ -109,8 +109,8 @@
             }
             .where-imagination-becomes-reality {
                 text-align: center;
-                margin-top: 12.7vw;
-                margin-bottom: 1vw;
+                margin-top: 16vw;
+                margin-bottom: 4vw;
             }
             .where-imagination-becomes-reality-image {
                 width: 23.3vw;
@@ -744,7 +744,7 @@
                 const dcursiveInitialRect = dcursiveImage.getBoundingClientRect();
                 const initialGap = dgodicInitialRect.left - dcursiveInitialRect.right;
                 
-                desktopMeetingMoveAmount = (initialGap / 2) + (window.innerWidth * 0.03);
+                desktopMeetingMoveAmount = (initialGap / 2) + (window.innerWidth * 0.01);
                 mobileMeetingMoveAmount = initialGap / 2 + 24;
                 endScroll = desktopMeetingMoveAmount;
 
@@ -790,7 +790,7 @@
                 } else { // Desktop
                     const moveMultiplier = 4;
                     const moveAmount = scrollY * moveMultiplier;
-                    const diagonalSlope = 0.4; 
+                    const diagonalSlope = 0.25;
                     
                     if (scrollY <= endScroll) {
                         dcursiveImage.style.position = 'absolute';
