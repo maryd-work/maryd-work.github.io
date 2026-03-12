@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARY'D - 상품 상세</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #FEFCEC;
+            font-family: 'Pretendard', sans-serif;
+            color: #662423;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar */
+        .top-band {
+            width: 100%;
+            height: 4.2vw;
+            background-color: #500000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .top-menu {
+            position: absolute;
+            left: 3.8vw;
+            width: 1.6vw;
+            height: 1.3vw;
+            cursor: pointer;
+        }
+        .top-image {
+            width: 7.5vw;
+            height: auto;
+        }
+
+        /* Menu Overlay */
+        .menu-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: #500000;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .menu-close {
+            position: absolute;
+            top: 1.2vw; right: 3vw;
+            width: 28px; height: 28px;
+            cursor: pointer;
+            background: none; border: none; padding: 0;
+        }
+        .menu-close::before,
+        .menu-close::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 0;
+            width: 100%; height: 2px;
+            background: #FEFCEC;
+        }
+        .menu-close::before { transform: rotate(45deg); }
+        .menu-close::after { transform: rotate(-45deg); }
+        .menu-nav {
+            list-style: none; padding: 0; margin: 0;
+            text-align: center;
+        }
+        .menu-nav li { margin: 24px 0; }
+        .menu-nav a {
+            font-family: 'Pretendard', sans-serif;
+            font-size: 28px; font-weight: 500;
+            color: #FEFCEC;
+            text-decoration: none;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+        .menu-nav a:hover { opacity: 0.7; }
+        .menu-nav a.active {
+            border-bottom: 2px solid #FEFCEC;
+            padding-bottom: 4px;
+        }
+
+        /* Main */
+        .main-content {
+            flex: 1;
+            margin-top: 4.2vw;
+            padding: 48px 6vw 80px;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #999;
+            text-decoration: none;
+            margin-bottom: 32px;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #662423; }
+        .back-link svg {
+            width: 16px; height: 16px;
+        }
+
+        .product-detail {
+            display: flex;
+            gap: 48px;
+            align-items: flex-start;
+        }
+
+        /* Image Gallery */
+        .gallery {
+            flex: 1;
+            max-width: 520px;
+        }
+        .gallery-main {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f0ead6;
+            margin-bottom: 12px;
+        }
+        .gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .gallery-thumbs {
+            display: flex;
+            gap: 8px;
+        }
+        .gallery-thumb {
+            width: 72px;
+            height: 72px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.2s;
+            background: #f0ead6;
+        }
+        .gallery-thumb.active {
+            border-color: #662423;
+        }
+        .gallery-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Product Info */
+        .product-info-section {
+            flex: 1;
+            max-width: 480px;
+        }
+        .product-category {
+            font-size: 13px;
+            font-weight: 500;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+        .product-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #662423;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+        .product-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #500000;
+            margin-bottom: 32px;
+        }
+        .product-divider {
+            width: 100%;
+            height: 1px;
+            background: #e0d8c8;
+            margin-bottom: 24px;
+        }
+        .product-desc-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #662423;
+            margin-bottom: 12px;
+        }
+        .product-description {
+            font-size: 15px;
+            font-weight: 400;
+            color: #555;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 100px 20px;
+            color: #999;
+            font-size: 16px;
+        }
+
+        /* Footer */
+        .bottom-band {
+            width: 100%;
+            height: 8vw;
+            background-color: #662423;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3vw;
+            padding: 0 4vw;
+            box-sizing: border-box;
+        }
+        .bottom-logo { width: 9vw; height: auto; flex-shrink: 0; }
+        .bottom-section-text {
+            text-align: left;
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 500; font-size: 14px;
+            line-height: 1.4; color: #FEFCEC;
+            flex-shrink: 0;
+        }
+        .bottom-buttons-container {
+            display: flex; align-items: center;
+            gap: 12px; flex-shrink: 0; margin-left: auto;
+        }
+        .instagram-button, .youtube-button {
+            display: flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px;
+            border-radius: 10px; background-color: #FEFCEC;
+            border: none; cursor: pointer; text-decoration: none;
+        }
+        .instagram-button svg, .youtube-button svg { display: block; }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .top-band {
+                height: 80px;
+                padding: 0 20px;
+            }
+            .top-image {
+                width: auto; height: 30px;
+            }
+            .top-menu {
+                position: absolute;
+                left: 24px; top: 50%;
+                transform: translateY(-50%);
+                width: 20px; height: 16px;
+            }
+            .menu-close {
+                top: 28px; right: 24px;
+                width: 24px; height: 24px;
+            }
+            .menu-nav a { font-size: 22px; }
+
+            .main-content {
+                margin-top: 80px;
+                padding: 24px 16px 60px;
+            }
+            .product-detail {
+                flex-direction: column;
+                gap: 28px;
+            }
+            .gallery {
+                max-width: 100%;
+            }
+            .gallery-thumb {
+                width: 56px; height: 56px;
+            }
+            .product-info-section {
+                max-width: 100%;
+            }
+            .product-title { font-size: 22px; }
+            .product-price { font-size: 20px; margin-bottom: 24px; }
+
+            .bottom-band {
+                height: auto;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 24px;
+                gap: 12px;
+            }
+            .bottom-logo { width: 80px; }
+            .bottom-section-text {
+                text-align: center; font-size: 10px;
+            }
+            .bottom-buttons-container {
+                justify-content: center;
+                margin-left: 0; gap: 10px;
+            }
+            .instagram-button, .youtube-button {
+                width: 36px; height: 36px;
+                border-radius: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay">
+        <button class="menu-close" id="menuClose"></button>
+        <ul class="menu-nav">
+            <li><a href="index.html">About</a></li>
+            <li><a href="shop.html" class="active">Shop</a></li>
+            <li><a href="projects.html">Projects</a></li>
+        </ul>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="top-band">
+        <img src="images/ThreeLine.png" class="top-menu" id="menuToggle">
+        <a href="index.html"><img src="images/headerLogo.png" class="top-image" alt="MARY'D"></a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <a href="shop.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            목록으로 돌아가기
+        </a>
+
+        <div id="productDetail"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bottom-band">
+        <img src="images/MARY'D BOTTOM.png" alt="MARY'D" class="bottom-logo">
+        <div class="bottom-section-text">
+            AI 기반 검색엔진과 매리드만의 독자적인 주얼리 프롬프트를 통해,<br>
+            세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+        </div>
+        <div class="bottom-buttons-container">
+            <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="20" height="20" rx="5" stroke="#662423" stroke-width="1.5"/>
+                    <circle cx="12" cy="12" r="5" stroke="#662423" stroke-width="1.5"/>
+                    <circle cx="17.5" cy="6.5" r="1.5" fill="#662423"/>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
+                <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="1" width="26" height="18" rx="5" stroke="#662423" stroke-width="1.5"/>
+                    <path d="M11 6.5V13.5L18 10L11 6.5Z" fill="#662423"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Menu toggle
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.getElementById('menuOverlay').classList.add('active');
+        });
+        document.getElementById('menuClose').addEventListener('click', () => {
+            document.getElementById('menuOverlay').classList.remove('active');
+        });
+
+        // Get product ID from URL
+        const params = new URLSearchParams(window.location.search);
+        const productId = Number(params.get('id'));
+
+        function getProducts() {
+            try {
+                return JSON.parse(localStorage.getItem('maryd_products')) || [];
+            } catch { return []; }
+        }
+
+        function formatPrice(n) {
+            return Number(n).toLocaleString('ko-KR') + '원';
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function render() {
+            const container = document.getElementById('productDetail');
+            const products = getProducts();
+            const product = products.find(p => p.id === productId);
+
+            if (!product) {
+                container.innerHTML = '<div class="not-found">상품을 찾을 수 없습니다.</div>';
+                return;
+            }
+
+            document.title = `MARY'D - ${product.name}`;
+
+            const images = (product.images && product.images.length > 0) ? product.images : (product.image ? [product.image] : []);
+
+            let galleryHtml = '';
+            if (images.length > 0) {
+                galleryHtml = `
+                    <div class="gallery-main">
+                        <img id="mainImage" src="${images[0]}" alt="${escapeHtml(product.name)}">
+                    </div>
+                    ${images.length > 1 ? `
+                        <div class="gallery-thumbs">
+                            ${images.map((img, i) => `
+                                <div class="gallery-thumb ${i === 0 ? 'active' : ''}" onclick="selectImage(${i})">
+                                    <img src="${img}" alt="">
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="product-detail">
+                    <div class="gallery">${galleryHtml}</div>
+                    <div class="product-info-section">
+                        <div class="product-category">${escapeHtml(product.category || '')}</div>
+                        <div class="product-title">${escapeHtml(product.name)}</div>
+                        <div class="product-price">${formatPrice(product.price)}</div>
+                        ${product.description ? `
+                            <div class="product-divider"></div>
+                            <div class="product-desc-label">상품 설명</div>
+                            <div class="product-description">${escapeHtml(product.description)}</div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            // Store images for gallery interaction
+            window._productImages = images;
+        }
+
+        function selectImage(index) {
+            const images = window._productImages;
+            if (!images || !images[index]) return;
+            document.getElementById('mainImage').src = images[index];
+            document.querySelectorAll('.gallery-thumb').forEach((el, i) => {
+                el.classList.toggle('active', i === index);
+            });
+        }
+
+        render();
+    </script>
+</body>
+</html>

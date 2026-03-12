@@ -605,18 +605,20 @@
                 return;
             }
 
-            grid.innerHTML = filtered.map(product => `
-                <div class="product-card" data-id="${product.id}">
+            grid.innerHTML = filtered.map(product => {
+                const thumb = (product.images && product.images.length > 0) ? product.images[0] : (product.image || '');
+                return `
+                <a href="shop-detail.html?id=${product.id}" class="product-card" data-id="${product.id}" style="text-decoration:none; color:inherit;">
                     <div class="product-image-wrapper">
-                        <img src="${product.image}" alt="${product.name}" loading="lazy"
+                        <img src="${thumb}" alt="${product.name}" loading="lazy"
                              onerror="this.style.display='none'">
                     </div>
                     <div class="product-info">
                         <div class="product-name">${product.name}</div>
                         <div class="product-price">${formatPrice(product.price)}</div>
                     </div>
-                </div>
-            `).join('');
+                </a>`;
+            }).join('');
         }
 
         // ===== Category Button Handlers =====
