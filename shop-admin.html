@@ -131,6 +131,36 @@
             letter-spacing: 0.05em;
         }
 
+        .admin-tabs {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            position: absolute;
+            right: 2.5vw;
+        }
+
+        .admin-tab {
+            padding: 0.4em 1.2em;
+            border-radius: 20px;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 0.85vw;
+            font-weight: 500;
+            text-decoration: none;
+            color: rgba(254, 252, 236, 0.6);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .admin-tab:hover {
+            color: #FEFCEC;
+            background: rgba(254, 252, 236, 0.1);
+        }
+
+        .admin-tab.active {
+            color: #500000;
+            background: #FEFCEC;
+            font-weight: 600;
+        }
+
         /* ── Main Content ── */
         .main-content {
             margin-top: 4.2vw;
@@ -396,6 +426,16 @@
                 font-size: 16px;
             }
 
+            .admin-tabs {
+                right: 20px;
+                gap: 2px;
+            }
+
+            .admin-tab {
+                font-size: 12px;
+                padding: 5px 12px;
+            }
+
             .main-content {
                 margin-top: 80px;
                 padding: 20px 16px;
@@ -490,6 +530,10 @@
             </svg>
         </a>
         <span class="top-bar-title">상품 관리</span>
+        <div class="admin-tabs">
+            <a href="shop-admin.html" class="admin-tab active">상품 관리</a>
+            <a href="projects-admin.html" class="admin-tab">게시글 관리</a>
+        </div>
     </div>
 
     <!-- Main Content -->
