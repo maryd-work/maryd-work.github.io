@@ -672,7 +672,12 @@
         }
 
         function saveProducts(products) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+            } catch (e) {
+                alert('저장 용량을 초과했습니다. 이미지 수를 줄이거나 더 작은 이미지를 사용해주세요.');
+                throw e;
+            }
         }
 
         function getNextId() {
@@ -730,18 +735,38 @@
             fieldImageFile.value = '';
         });
 
-        function handleImageFiles(files) {
-            const remaining = 10 - uploadedImages.length;
-            if (remaining <= 0) return;
-            const toProcess = Array.from(files).filter(f => f.type.startsWith('image/')).slice(0, remaining);
-            toProcess.forEach(file => {
+        function compressImage(file, maxWidth = 800, quality = 0.7) {
+            return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    uploadedImages.push(e.target.result);
-                    renderImagePreviews();
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        if (w > maxWidth) {
+                            h = Math.round(h * maxWidth / w);
+                            w = maxWidth;
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             });
+        }
+
+        async function handleImageFiles(files) {
+            const remaining = 10 - uploadedImages.length;
+            if (remaining <= 0) return;
+            const toProcess = Array.from(files).filter(f => f.type.startsWith('image/')).slice(0, remaining);
+            for (const file of toProcess) {
+                const compressed = await compressImage(file);
+                uploadedImages.push(compressed);
+                renderImagePreviews();
+            }
         }
 
         function renderImagePreviews() {
