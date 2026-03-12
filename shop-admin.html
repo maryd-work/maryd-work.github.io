@@ -589,8 +589,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="fieldImage">이미지 URL</label>
-                    <input type="text" id="fieldImage" placeholder="https://example.com/image.jpg">
+                    <label for="fieldImageFile">이미지</label>
+                    <input type="file" id="fieldImageFile" accept="image/*" style="display:none;">
+                    <input type="hidden" id="fieldImage">
+                    <div id="imageUploadArea" style="border: 2px dashed #d6d0c0; border-radius: 8px; padding: 24px; text-align: center; cursor: pointer; transition: border-color 0.2s; background: #fff;">
+                        <div id="imagePreview" style="display:none; margin-bottom: 12px;">
+                            <img id="previewImg" style="max-width: 200px; max-height: 200px; border-radius: 6px; object-fit: cover;">
+                        </div>
+                        <div id="uploadText" style="color: #999; font-size: 14px;">클릭하여 이미지를 선택하세요<br><span style="font-size: 12px; color: #bbb;">JPG, PNG 파일</span></div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -696,6 +703,52 @@
 
         let deleteTargetId = null;
 
+        // ── Image Upload ──
+        const imageUploadArea = document.getElementById('imageUploadArea');
+        const fieldImageFile = document.getElementById('fieldImageFile');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const uploadText = document.getElementById('uploadText');
+
+        imageUploadArea.addEventListener('click', () => fieldImageFile.click());
+
+        imageUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageUploadArea.style.borderColor = '#662423';
+        });
+        imageUploadArea.addEventListener('dragleave', () => {
+            imageUploadArea.style.borderColor = '#d6d0c0';
+        });
+        imageUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageUploadArea.style.borderColor = '#d6d0c0';
+            if (e.dataTransfer.files.length) handleImageFile(e.dataTransfer.files[0]);
+        });
+
+        fieldImageFile.addEventListener('change', () => {
+            if (fieldImageFile.files.length) handleImageFile(fieldImageFile.files[0]);
+        });
+
+        function handleImageFile(file) {
+            if (!file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                fieldImage.value = e.target.result;
+                previewImg.src = e.target.result;
+                imagePreview.style.display = 'block';
+                uploadText.innerHTML = '클릭하여 이미지를 변경하세요';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function resetImageUpload() {
+            fieldImage.value = '';
+            fieldImageFile.value = '';
+            imagePreview.style.display = 'none';
+            previewImg.src = '';
+            uploadText.innerHTML = '클릭하여 이미지를 선택하세요<br><span style="font-size: 12px; color: #bbb;">JPG, PNG 파일</span>';
+        }
+
         // ── Render product list ──
         function renderTable() {
             const products = getProducts();
@@ -742,6 +795,7 @@
             modalOverlay.classList.remove('active');
             productForm.reset();
             editIdField.value = '';
+            resetImageUpload();
         }
 
         // Add button
@@ -749,6 +803,7 @@
             modalTitle.textContent = '상품 추가';
             editIdField.value = '';
             productForm.reset();
+            resetImageUpload();
             openModal();
         });
 
@@ -771,8 +826,16 @@
             fieldName.value = product.name;
             fieldPrice.value = product.price;
             fieldCategory.value = product.category;
-            fieldImage.value = product.image || '';
             fieldDesc.value = product.description || '';
+            // Show existing image in preview
+            if (product.image) {
+                fieldImage.value = product.image;
+                previewImg.src = product.image;
+                imagePreview.style.display = 'block';
+                uploadText.innerHTML = '클릭하여 이미지를 변경하세요';
+            } else {
+                resetImageUpload();
+            }
             openModal();
         }
 
