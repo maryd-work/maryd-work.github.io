@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARY'D - Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #FEFCEC;
+            font-family: 'Pretendard', sans-serif;
+            color: #662423;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== Top Bar ===== */
+        .top-band {
+            width: 100%;
+            height: 4.2vw;
+            background-color: #500000;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .top-menu {
+            position: absolute;
+            left: 3.8vw;
+            width: 1.6vw;
+            height: 1.3vw;
+            cursor: pointer;
+        }
+
+        .top-image {
+            width: 7.5vw;
+            height: auto;
+        }
+
+        /* ===== Menu Overlay ===== */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #500000;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-close {
+            position: absolute;
+            top: 1.4vw;
+            right: 3.8vw;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .menu-close::before,
+        .menu-close::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 2px;
+            background: #FEFCEC;
+        }
+
+        .menu-close::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .menu-close::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        .menu-links {
+            list-style: none;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .menu-links a {
+            color: #FEFCEC;
+            text-decoration: none;
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            transition: opacity 0.2s ease;
+        }
+
+        .menu-links a:hover {
+            opacity: 0.7;
+        }
+
+        .menu-links a.active {
+            text-decoration: underline;
+            text-underline-offset: 8px;
+        }
+
+        /* ===== Main Content ===== */
+        .main-content {
+            flex: 1;
+            margin-top: 4.2vw;
+            padding: 60px 6vw 80px;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            color: #662423;
+            margin-bottom: 40px;
+        }
+
+        /* ===== Filters ===== */
+        .filters-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 8px 20px;
+            border: 1.5px solid #662423;
+            border-radius: 24px;
+            background: transparent;
+            color: #662423;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .category-btn:hover {
+            background: #662423;
+            color: #FEFCEC;
+        }
+
+        .category-btn.active {
+            background: #662423;
+            color: #FEFCEC;
+        }
+
+        .sort-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-count {
+            font-size: 14px;
+            font-weight: 500;
+            color: #662423;
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 16px;
+        }
+
+        .sort-btn {
+            background: none;
+            border: none;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            color: #999;
+            cursor: pointer;
+            padding: 4px 0;
+            transition: color 0.2s ease;
+        }
+
+        .sort-btn:hover {
+            color: #662423;
+        }
+
+        .sort-btn.active {
+            color: #662423;
+            font-weight: 600;
+        }
+
+        /* ===== Product Grid ===== */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px 24px;
+            margin-top: 32px;
+        }
+
+        .product-card {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .product-image-wrapper {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f0ead6;
+        }
+
+        .product-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-info {
+            padding: 12px 4px 0;
+        }
+
+        .product-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #662423;
+            margin-bottom: 6px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 15px;
+            font-weight: 600;
+            color: #500000;
+        }
+
+        /* ===== Empty State ===== */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #999;
+            font-size: 16px;
+            font-weight: 400;
+            grid-column: 1 / -1;
+        }
+
+        /* ===== Footer ===== */
+        .bottom-band {
+            width: 100%;
+            height: 8vw;
+            background-color: #662423;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3vw;
+            padding: 0 4vw;
+            box-sizing: border-box;
+        }
+
+        .bottom-logo {
+            width: 9vw;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        .bottom-section-text {
+            text-align: left;
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            font-size: 14px;
+            line-height: 1.4;
+            letter-spacing: 0;
+            color: #FEFCEC;
+            flex-shrink: 0;
+        }
+
+        .bottom-buttons-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .instagram-button,
+        .youtube-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background-color: #FEFCEC;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .instagram-button svg,
+        .youtube-button svg {
+            display: block;
+        }
+
+        /* ===== Mobile ===== */
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            .top-band {
+                height: 80px;
+                padding: 0 20px;
+            }
+
+            .top-image {
+                width: auto;
+                height: 30px;
+            }
+
+            .top-menu {
+                position: absolute;
+                left: 24px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 20px;
+                height: 16px;
+            }
+
+            .menu-close {
+                top: 28px;
+                right: 24px;
+            }
+
+            .menu-links a {
+                font-size: 22px;
+            }
+
+            .menu-links {
+                gap: 32px;
+            }
+
+            .main-content {
+                margin-top: 80px;
+                padding: 32px 16px 60px;
+            }
+
+            .page-title {
+                font-size: 24px;
+                margin-bottom: 28px;
+            }
+
+            .category-filters {
+                gap: 8px;
+            }
+
+            .category-btn {
+                padding: 6px 16px;
+                font-size: 13px;
+            }
+
+            .sort-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .sort-options {
+                gap: 12px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px 12px;
+                margin-top: 24px;
+            }
+
+            .product-name {
+                font-size: 13px;
+            }
+
+            .product-price {
+                font-size: 13px;
+            }
+
+            .product-info {
+                padding: 8px 2px 0;
+            }
+
+            .bottom-band {
+                height: auto;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 24px;
+                gap: 12px;
+            }
+
+            .bottom-logo {
+                width: 80px;
+                height: auto;
+            }
+
+            .bottom-section-text {
+                text-align: center;
+                font-size: 10px;
+            }
+
+            .bottom-buttons-container {
+                justify-content: center;
+                margin-left: 0;
+                gap: 10px;
+            }
+
+            .instagram-button,
+            .youtube-button {
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-band">
+        <img src="images/ThreeLine.png" class="top-menu" id="menuOpen" alt="Menu">
+        <a href="index.html"><img src="images/headerLogo.png" class="top-image" alt="MARY'D"></a>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay">
+        <button class="menu-close" id="menuClose" aria-label="Close menu"></button>
+        <ul class="menu-links">
+            <li><a href="index.html">About</a></li>
+            <li><a href="shop.html" class="active">Shop</a></li>
+            <li><a href="projects.html">Projects</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="page-title">SHOP</h1>
+
+        <div class="filters-section">
+            <div class="category-filters" id="categoryFilters">
+                <button class="category-btn active" data-category="all">전체</button>
+                <button class="category-btn" data-category="반지">반지</button>
+                <button class="category-btn" data-category="목걸이">목걸이</button>
+                <button class="category-btn" data-category="귀걸이">귀걸이</button>
+                <button class="category-btn" data-category="팔찌">팔찌</button>
+            </div>
+            <div class="sort-section">
+                <span class="product-count" id="productCount">0개의 상품</span>
+                <div class="sort-options" id="sortOptions">
+                    <button class="sort-btn active" data-sort="newest">최신순</button>
+                    <button class="sort-btn" data-sort="price-low">낮은 가격순</button>
+                    <button class="sort-btn" data-sort="price-high">높은 가격순</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+            <!-- Products rendered via JS -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bottom-band">
+        <img src="images/MARY'D BOTTOM.png" alt="MARY'D" class="bottom-logo">
+        <div class="bottom-section-text">
+            AI 기반 검색엔진과 매리드만의 독자적인 주얼리 프롬프트를 통해,<br>
+            세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+        </div>
+        <div class="bottom-buttons-container">
+            <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="20" height="20" rx="5" stroke="#662423" stroke-width="1.5"/>
+                    <circle cx="12" cy="12" r="5" stroke="#662423" stroke-width="1.5"/>
+                    <circle cx="17.5" cy="6.5" r="1.5" fill="#662423"/>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
+                <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="1" width="26" height="18" rx="5" stroke="#662423" stroke-width="1.5"/>
+                    <path d="M11 6.5V13.5L18 10L11 6.5Z" fill="#662423"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // ===== Menu Toggle =====
+        const menuOpen = document.getElementById('menuOpen');
+        const menuClose = document.getElementById('menuClose');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        menuOpen.addEventListener('click', () => {
+            menuOverlay.classList.add('active');
+        });
+
+        menuClose.addEventListener('click', () => {
+            menuOverlay.classList.remove('active');
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                menuOverlay.classList.remove('active');
+            }
+        });
+
+        // ===== State =====
+        let currentCategory = 'all';
+        let currentSort = 'newest';
+
+        // ===== Format price with commas =====
+        function formatPrice(price) {
+            return Number(price).toLocaleString('ko-KR') + '원';
+        }
+
+        // ===== Load products from localStorage =====
+        function getProducts() {
+            try {
+                const data = localStorage.getItem('maryd_products');
+                if (!data) return [];
+                const products = JSON.parse(data);
+                return Array.isArray(products) ? products : [];
+            } catch (e) {
+                console.error('Failed to load products:', e);
+                return [];
+            }
+        }
+
+        // ===== Filter & Sort =====
+        function filterAndSort(products) {
+            let filtered = products;
+
+            // Category filter
+            if (currentCategory !== 'all') {
+                filtered = filtered.filter(p => p.category === currentCategory);
+            }
+
+            // Sort
+            if (currentSort === 'newest') {
+                filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            } else if (currentSort === 'price-low') {
+                filtered.sort((a, b) => Number(a.price) - Number(b.price));
+            } else if (currentSort === 'price-high') {
+                filtered.sort((a, b) => Number(b.price) - Number(a.price));
+            }
+
+            return filtered;
+        }
+
+        // ===== Render =====
+        function render() {
+            const products = getProducts();
+            const filtered = filterAndSort(products);
+            const grid = document.getElementById('productGrid');
+            const countEl = document.getElementById('productCount');
+
+            countEl.textContent = filtered.length + '개의 상품';
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-state">등록된 상품이 없습니다.</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(product => `
+                <div class="product-card" data-id="${product.id}">
+                    <div class="product-image-wrapper">
+                        <img src="${product.image}" alt="${product.name}" loading="lazy"
+                             onerror="this.style.display='none'">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">${formatPrice(product.price)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== Category Button Handlers =====
+        document.getElementById('categoryFilters').addEventListener('click', (e) => {
+            const btn = e.target.closest('.category-btn');
+            if (!btn) return;
+
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentCategory = btn.dataset.category;
+            render();
+        });
+
+        // ===== Sort Button Handlers =====
+        document.getElementById('sortOptions').addEventListener('click', (e) => {
+            const btn = e.target.closest('.sort-btn');
+            if (!btn) return;
+
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSort = btn.dataset.sort;
+            render();
+        });
+
+        // ===== Initial Render =====
+        render();
+    </script>
+</body>
+</html>

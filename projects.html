@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARY'D - Projects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #FEFCEC;
+            font-family: 'Pretendard', sans-serif;
+            color: #662423;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Top Bar ── */
+        .top-band {
+            width: 100%;
+            height: 4.2vw;
+            background-color: #500000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .top-menu {
+            position: absolute;
+            left: 3.8vw;
+            width: 1.6vw;
+            height: 1.3vw;
+            cursor: pointer;
+        }
+        .top-image {
+            width: 7.5vw;
+            height: auto;
+        }
+
+        /* ── Menu Overlay ── */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #500000;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .menu-close {
+            position: absolute;
+            top: 1.4vw;
+            right: 3.8vw;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .menu-close::before,
+        .menu-close::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #FEFCEC;
+        }
+        .menu-close::before { transform: rotate(45deg); }
+        .menu-close::after  { transform: rotate(-45deg); }
+        .menu-nav {
+            list-style: none;
+            text-align: center;
+        }
+        .menu-nav li {
+            margin: 24px 0;
+        }
+        .menu-nav a {
+            color: #FEFCEC;
+            text-decoration: none;
+            font-size: 1.6rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            transition: opacity 0.2s;
+        }
+        .menu-nav a:hover {
+            opacity: 0.7;
+        }
+        .menu-nav a.active {
+            border-bottom: 2px solid #FEFCEC;
+            padding-bottom: 4px;
+        }
+
+        /* ── Page Content ── */
+        .page-wrapper {
+            flex: 1;
+            margin-top: 4.2vw;
+            padding: 60px 6vw 40px;
+        }
+        .page-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            color: #500000;
+            margin-bottom: 40px;
+        }
+
+        /* ── Post Table (Desktop) ── */
+        .post-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        .post-table thead th {
+            background: #500000;
+            color: #FEFCEC;
+            padding: 12px 14px;
+            font-weight: 500;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .post-table thead th:nth-child(2) {
+            text-align: left;
+        }
+        .post-table tbody tr {
+            border-bottom: 1px solid #d6c9a8;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .post-table tbody tr:hover {
+            background: rgba(80, 0, 0, 0.04);
+        }
+        .post-table tbody td {
+            padding: 13px 14px;
+            text-align: center;
+            vertical-align: top;
+        }
+        .post-table tbody td:nth-child(2) {
+            text-align: left;
+            font-weight: 500;
+        }
+        .post-table .col-num   { width: 60px; }
+        .post-table .col-title { width: auto; }
+        .post-table .col-author{ width: 100px; }
+        .post-table .col-date  { width: 110px; }
+        .post-table .col-views { width: 70px; }
+
+        /* ── Expanded Content Row ── */
+        .post-content-row td {
+            padding: 20px 24px 28px !important;
+            background: #faf6e0;
+            cursor: default;
+        }
+        .post-content-row:hover {
+            background: #faf6e0 !important;
+        }
+        .post-content-body {
+            white-space: pre-wrap;
+            line-height: 1.7;
+            font-size: 0.93rem;
+            color: #4a3030;
+        }
+
+        /* ── Mobile Card Layout ── */
+        .post-cards {
+            display: none;
+        }
+        .post-card {
+            background: #fff;
+            border: 1px solid #d6c9a8;
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: box-shadow 0.15s;
+        }
+        .post-card:hover {
+            box-shadow: 0 2px 10px rgba(80,0,0,0.08);
+        }
+        .post-card-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #500000;
+            margin-bottom: 8px;
+        }
+        .post-card-meta {
+            font-size: 0.82rem;
+            color: #999;
+            display: flex;
+            gap: 14px;
+        }
+        .post-card-content {
+            display: none;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #e8dfc4;
+            white-space: pre-wrap;
+            line-height: 1.7;
+            font-size: 0.9rem;
+            color: #4a3030;
+        }
+        .post-card-content.open {
+            display: block;
+        }
+
+        /* ── Empty State ── */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #aaa;
+            font-size: 1.05rem;
+        }
+
+        /* ── Pagination ── */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+        .pagination button {
+            min-width: 36px;
+            height: 36px;
+            border: 1px solid #d6c9a8;
+            background: #FEFCEC;
+            color: #662423;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Pretendard', sans-serif;
+            transition: background 0.15s, color 0.15s;
+        }
+        .pagination button:hover {
+            background: #500000;
+            color: #FEFCEC;
+        }
+        .pagination button.active {
+            background: #500000;
+            color: #FEFCEC;
+            border-color: #500000;
+            font-weight: 600;
+        }
+        .pagination button:disabled {
+            opacity: 0.4;
+            cursor: default;
+            background: #FEFCEC;
+            color: #662423;
+        }
+
+        /* ── Footer ── */
+        .bottom-band {
+            width: 100%;
+            height: 8vw;
+            background-color: #662423;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3vw;
+            padding: 0 4vw;
+            box-sizing: border-box;
+        }
+        .bottom-logo {
+            width: 9vw;
+            height: auto;
+            flex-shrink: 0;
+        }
+        .bottom-section-text {
+            text-align: left;
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #FEFCEC;
+            flex-shrink: 0;
+        }
+        .bottom-buttons-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+        .instagram-button,
+        .youtube-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background-color: #FEFCEC;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .instagram-button svg,
+        .youtube-button svg {
+            display: block;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 768px) {
+            body { overflow-x: hidden; }
+
+            .top-band {
+                height: 80px;
+                padding: 0 20px;
+            }
+            .top-image {
+                width: auto;
+                height: 30px;
+            }
+            .top-menu {
+                position: absolute;
+                left: 24px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 20px;
+                height: 16px;
+            }
+            .menu-close {
+                top: 28px;
+                right: 24px;
+            }
+
+            .page-wrapper {
+                margin-top: 80px;
+                padding: 36px 16px 28px;
+            }
+            .page-title {
+                font-size: 1.4rem;
+                margin-bottom: 24px;
+            }
+
+            /* Hide desktop table, show cards */
+            .post-table { display: none; }
+            .post-cards  { display: block; }
+
+            /* Footer */
+            .bottom-band {
+                height: auto;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 24px;
+                gap: 12px;
+            }
+            .bottom-logo {
+                width: 80px;
+            }
+            .bottom-section-text {
+                text-align: center;
+                font-size: 10px;
+            }
+            .bottom-buttons-container {
+                justify-content: center;
+                margin-left: 0;
+                gap: 10px;
+            }
+            .instagram-button,
+            .youtube-button {
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Top Bar ── -->
+    <div class="top-band">
+        <img src="images/ThreeLine.png" class="top-menu" id="menuOpen" alt="Menu">
+        <a href="index.html"><img src="images/headerLogo.png" class="top-image" alt="MARY'D"></a>
+    </div>
+
+    <!-- ── Menu Overlay ── -->
+    <div class="menu-overlay" id="menuOverlay">
+        <button class="menu-close" id="menuClose" aria-label="Close menu"></button>
+        <ul class="menu-nav">
+            <li><a href="index.html">About</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="projects.html" class="active">Projects</a></li>
+        </ul>
+    </div>
+
+    <!-- ── Page Content ── -->
+    <div class="page-wrapper">
+        <h1 class="page-title">PROJECTS</h1>
+
+        <!-- Desktop: table -->
+        <table class="post-table" id="postTable">
+            <thead>
+                <tr>
+                    <th class="col-num">번호</th>
+                    <th class="col-title">제목</th>
+                    <th class="col-author">작성자</th>
+                    <th class="col-date">날짜</th>
+                    <th class="col-views">조회</th>
+                </tr>
+            </thead>
+            <tbody id="postTableBody"></tbody>
+        </table>
+
+        <!-- Mobile: cards -->
+        <div class="post-cards" id="postCards"></div>
+
+        <!-- Empty state -->
+        <div class="empty-state" id="emptyState" style="display:none;">
+            등록된 게시글이 없습니다.
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <div class="bottom-band">
+        <img src="images/MARY'D BOTTOM.png" alt="MARY'D BOTTOM" class="bottom-logo">
+        <div class="bottom-section-text">
+            AI 기반 검색엔진과 매리드만의 독자적인 주얼리 프롬프트를 통해,<br>
+            세상에 단 하나뿐인 맞춤 주얼리 제작의 기쁨을 경험해보세요.
+        </div>
+        <div class="bottom-buttons-container">
+            <a href="https://www.instagram.com/maryd.work/" target="_blank" class="instagram-button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="20" height="20" rx="5" stroke="#662423" stroke-width="1.5"/>
+                    <circle cx="12" cy="12" r="5" stroke="#662423" stroke-width="1.5"/>
+                    <circle cx="17.5" cy="6.5" r="1.5" fill="#662423"/>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com/@byMARYD" target="_blank" class="youtube-button">
+                <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="1" width="26" height="18" rx="5" stroke="#662423" stroke-width="1.5"/>
+                    <path d="M11 6.5V13.5L18 10L11 6.5Z" fill="#662423"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        /* ── Menu Toggle ── */
+        const menuOpen = document.getElementById('menuOpen');
+        const menuClose = document.getElementById('menuClose');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        menuOpen.addEventListener('click', () => menuOverlay.classList.add('active'));
+        menuClose.addEventListener('click', () => menuOverlay.classList.remove('active'));
+        menuOverlay.addEventListener('click', (e) => {
+            if (e.target === menuOverlay) menuOverlay.classList.remove('active');
+        });
+
+        /* ── Data ── */
+        const STORAGE_KEY = 'maryd_posts';
+        const PER_PAGE = 10;
+        let currentPage = 1;
+        let expandedPostId = null;
+
+        function getPosts() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return [];
+                const parsed = JSON.parse(raw);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function savePosts(posts) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+        }
+
+        function incrementViews(postId) {
+            const posts = getPosts();
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.views = (post.views || 0) + 1;
+                savePosts(posts);
+            }
+            return post;
+        }
+
+        /* ── Rendering ── */
+        function render() {
+            const posts = getPosts();
+            const tableBody = document.getElementById('postTableBody');
+            const cardsEl = document.getElementById('postCards');
+            const emptyEl = document.getElementById('emptyState');
+            const paginationEl = document.getElementById('pagination');
+
+            tableBody.innerHTML = '';
+            cardsEl.innerHTML = '';
+            paginationEl.innerHTML = '';
+
+            if (posts.length === 0) {
+                emptyEl.style.display = 'block';
+                return;
+            }
+            emptyEl.style.display = 'none';
+
+            // Sort by id descending (newest first)
+            const sorted = [...posts].sort((a, b) => b.id - a.id);
+
+            const totalPages = Math.ceil(sorted.length / PER_PAGE);
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const start = (currentPage - 1) * PER_PAGE;
+            const pageItems = sorted.slice(start, start + PER_PAGE);
+
+            // ── Desktop Table ──
+            pageItems.forEach((post, idx) => {
+                const displayNum = sorted.length - start - idx;
+
+                // Title row
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${displayNum}</td>
+                    <td>${escapeHtml(post.title)}</td>
+                    <td>${escapeHtml(post.author || '')}</td>
+                    <td>${escapeHtml(post.date || '')}</td>
+                    <td>${post.views || 0}</td>
+                `;
+                tr.addEventListener('click', () => togglePost(post.id));
+                tableBody.appendChild(tr);
+
+                // Expanded content row
+                if (expandedPostId === post.id) {
+                    const contentTr = document.createElement('tr');
+                    contentTr.className = 'post-content-row';
+                    contentTr.innerHTML = `<td colspan="5"><div class="post-content-body">${escapeHtml(post.content || '')}</div></td>`;
+                    tableBody.appendChild(contentTr);
+                }
+            });
+
+            // ── Mobile Cards ──
+            pageItems.forEach((post) => {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    <div class="post-card-title">${escapeHtml(post.title)}</div>
+                    <div class="post-card-meta">
+                        <span>${escapeHtml(post.author || '')}</span>
+                        <span>${escapeHtml(post.date || '')}</span>
+                    </div>
+                    <div class="post-card-content ${expandedPostId === post.id ? 'open' : ''}">${escapeHtml(post.content || '')}</div>
+                `;
+                card.addEventListener('click', () => togglePost(post.id));
+                cardsEl.appendChild(card);
+            });
+
+            // ── Pagination ──
+            if (totalPages > 1) {
+                // Previous
+                const prevBtn = document.createElement('button');
+                prevBtn.textContent = '\u2039';
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.addEventListener('click', () => { currentPage--; render(); });
+                paginationEl.appendChild(prevBtn);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.textContent = i;
+                    if (i === currentPage) btn.classList.add('active');
+                    btn.addEventListener('click', () => { currentPage = i; render(); });
+                    paginationEl.appendChild(btn);
+                }
+
+                // Next
+                const nextBtn = document.createElement('button');
+                nextBtn.textContent = '\u203A';
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.addEventListener('click', () => { currentPage++; render(); });
+                paginationEl.appendChild(nextBtn);
+            }
+        }
+
+        function togglePost(postId) {
+            if (expandedPostId === postId) {
+                expandedPostId = null;
+            } else {
+                incrementViews(postId);
+                expandedPostId = postId;
+            }
+            render();
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
+
+        /* ── Init ── */
+        render();
+    </script>
+</body>
+</html>

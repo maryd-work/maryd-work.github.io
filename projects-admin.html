@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 관리 - MARY'D</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #FEFCEC;
+            color: #333;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            width: 100%;
+            height: 4.2vw;
+            background-color: #500000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            padding: 0 3vw;
+        }
+
+        .top-bar-back {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: #FEFCEC;
+            gap: 0.6vw;
+        }
+
+        .top-bar-back svg {
+            width: 1.4vw;
+            height: 1.4vw;
+        }
+
+        .top-bar-title {
+            color: #FEFCEC;
+            font-size: 1.1vw;
+            font-weight: 600;
+            margin-left: 1.5vw;
+            letter-spacing: 0.03em;
+        }
+
+        /* Main Content */
+        .admin-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-top: calc(4.2vw + 40px);
+            padding-left: 24px;
+            padding-right: 24px;
+            padding-bottom: 60px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .admin-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #662423;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.88;
+        }
+
+        .btn-primary {
+            background-color: #662423;
+            color: #FEFCEC;
+        }
+
+        .btn-secondary {
+            background-color: #e0d8c8;
+            color: #333;
+        }
+
+        .btn-danger {
+            background-color: #b33a3a;
+            color: #fff;
+        }
+
+        .btn-small {
+            padding: 6px 14px;
+            font-size: 13px;
+        }
+
+        /* Post Table */
+        .post-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #e0d8c8;
+            background-color: #fff;
+        }
+
+        .post-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 640px;
+        }
+
+        .post-table thead {
+            background-color: #662423;
+        }
+
+        .post-table thead th {
+            color: #FEFCEC;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 14px 12px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .post-table tbody tr {
+            border-bottom: 1px solid #f0e8d8;
+            transition: background-color 0.15s;
+        }
+
+        .post-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .post-table tbody tr:hover {
+            background-color: #fdf8e8;
+        }
+
+        .post-table tbody td {
+            padding: 12px 12px;
+            font-size: 14px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .post-table .col-id {
+            width: 60px;
+        }
+
+        .post-table .col-title {
+            text-align: left;
+            min-width: 200px;
+        }
+
+        .post-table .col-author {
+            width: 100px;
+        }
+
+        .post-table .col-date {
+            width: 110px;
+            white-space: nowrap;
+        }
+
+        .post-table .col-views {
+            width: 70px;
+        }
+
+        .post-table .col-actions {
+            width: 140px;
+            white-space: nowrap;
+        }
+
+        .post-table .col-actions .btn {
+            margin: 0 3px;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 48px 16px;
+            color: #999;
+            font-size: 15px;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.45);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background-color: #FEFCEC;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 620px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .modal h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #662423;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 6px;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d6ceb8;
+            border-radius: 6px;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 14px;
+            background-color: #fff;
+            color: #333;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus {
+            border-color: #662423;
+        }
+
+        .form-group textarea {
+            min-height: 200px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        /* Responsive - Mobile */
+        @media (max-width: 768px) {
+            .top-bar {
+                height: 80px;
+                padding: 0 16px;
+            }
+
+            .top-bar-back svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .top-bar-title {
+                font-size: 16px;
+                margin-left: 12px;
+            }
+
+            .admin-container {
+                padding-top: 110px;
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-bottom: 40px;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+            }
+
+            .admin-header h2 {
+                font-size: 18px;
+            }
+
+            .admin-header .btn {
+                width: 100%;
+            }
+
+            .post-table-wrapper {
+                border-radius: 6px;
+            }
+
+            .post-table thead th {
+                font-size: 12px;
+                padding: 12px 8px;
+            }
+
+            .post-table tbody td {
+                font-size: 13px;
+                padding: 10px 8px;
+            }
+
+            .modal {
+                padding: 24px 18px;
+                max-height: 85vh;
+            }
+
+            .modal h3 {
+                font-size: 18px;
+                margin-bottom: 18px;
+            }
+
+            .form-group textarea {
+                min-height: 160px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <a href="index.html" class="top-bar-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </a>
+        <span class="top-bar-title">게시글 관리</span>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-container">
+        <div class="admin-header">
+            <h2>게시글 목록</h2>
+            <button class="btn btn-primary" onclick="openCreateModal()">+ 게시글 작성</button>
+        </div>
+
+        <div class="post-table-wrapper">
+            <table class="post-table">
+                <thead>
+                    <tr>
+                        <th class="col-id">번호</th>
+                        <th class="col-title">제목</th>
+                        <th class="col-author">작성자</th>
+                        <th class="col-date">날짜</th>
+                        <th class="col-views">조회수</th>
+                        <th class="col-actions">관리</th>
+                    </tr>
+                </thead>
+                <tbody id="postTableBody">
+                </tbody>
+            </table>
+            <div class="empty-message" id="emptyMessage" style="display:none;">
+                등록된 게시글이 없습니다.
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3 id="modalTitle">게시글 작성</h3>
+            <form id="postForm" onsubmit="handleSubmit(event)">
+                <input type="hidden" id="postId">
+                <div class="form-group">
+                    <label for="postTitleInput">제목</label>
+                    <input type="text" id="postTitleInput" placeholder="제목을 입력하세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="postAuthorInput">작성자</label>
+                    <input type="text" id="postAuthorInput" placeholder="작성자를 입력하세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="postContentInput">내용</label>
+                    <textarea id="postContentInput" placeholder="내용을 입력하세요" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">취소</button>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'maryd_posts';
+
+        // --- Data Layer ---
+        function getPosts() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function savePosts(posts) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+        }
+
+        function getNextId() {
+            const posts = getPosts();
+            if (posts.length === 0) return 1;
+            return Math.max(...posts.map(p => p.id)) + 1;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            return dateStr;
+        }
+
+        function getTodayString() {
+            const d = new Date();
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            return yyyy + '-' + mm + '-' + dd;
+        }
+
+        // --- Rendering ---
+        function renderPosts() {
+            const tbody = document.getElementById('postTableBody');
+            const emptyMsg = document.getElementById('emptyMessage');
+            const posts = getPosts();
+
+            if (posts.length === 0) {
+                tbody.innerHTML = '';
+                emptyMsg.style.display = 'block';
+                return;
+            }
+
+            emptyMsg.style.display = 'none';
+
+            // Show newest first
+            const sorted = [...posts].sort((a, b) => b.id - a.id);
+
+            tbody.innerHTML = sorted.map(post => {
+                const escapedTitle = escapeHtml(post.title);
+                const escapedAuthor = escapeHtml(post.author);
+                return `
+                    <tr>
+                        <td class="col-id">${post.id}</td>
+                        <td class="col-title">${escapedTitle}</td>
+                        <td class="col-author">${escapedAuthor}</td>
+                        <td class="col-date">${formatDate(post.date)}</td>
+                        <td class="col-views">${post.views || 0}</td>
+                        <td class="col-actions">
+                            <button class="btn btn-secondary btn-small" onclick="openEditModal(${post.id})">수정</button>
+                            <button class="btn btn-danger btn-small" onclick="deletePost(${post.id})">삭제</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // --- Modal ---
+        function openCreateModal() {
+            document.getElementById('modalTitle').textContent = '게시글 작성';
+            document.getElementById('postId').value = '';
+            document.getElementById('postTitleInput').value = '';
+            document.getElementById('postAuthorInput').value = '';
+            document.getElementById('postContentInput').value = '';
+            document.getElementById('modalOverlay').classList.add('active');
+            document.getElementById('postTitleInput').focus();
+        }
+
+        function openEditModal(id) {
+            const posts = getPosts();
+            const post = posts.find(p => p.id === id);
+            if (!post) return;
+
+            document.getElementById('modalTitle').textContent = '게시글 수정';
+            document.getElementById('postId').value = post.id;
+            document.getElementById('postTitleInput').value = post.title;
+            document.getElementById('postAuthorInput').value = post.author;
+            document.getElementById('postContentInput').value = post.content;
+            document.getElementById('modalOverlay').classList.add('active');
+            document.getElementById('postTitleInput').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // --- CRUD ---
+        function handleSubmit(e) {
+            e.preventDefault();
+
+            const idField = document.getElementById('postId').value;
+            const title = document.getElementById('postTitleInput').value.trim();
+            const author = document.getElementById('postAuthorInput').value.trim();
+            const content = document.getElementById('postContentInput').value.trim();
+
+            if (!title || !author || !content) return;
+
+            const posts = getPosts();
+
+            if (idField) {
+                // Edit existing
+                const id = parseInt(idField, 10);
+                const index = posts.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    posts[index].title = title;
+                    posts[index].author = author;
+                    posts[index].content = content;
+                }
+            } else {
+                // Create new
+                const newPost = {
+                    id: getNextId(),
+                    title: title,
+                    author: author,
+                    content: content,
+                    date: getTodayString(),
+                    views: 0
+                };
+                posts.push(newPost);
+            }
+
+            savePosts(posts);
+            closeModal();
+            renderPosts();
+        }
+
+        function deletePost(id) {
+            if (!confirm('이 게시글을 삭제하시겠습니까?')) return;
+
+            let posts = getPosts();
+            posts = posts.filter(p => p.id !== id);
+            savePosts(posts);
+            renderPosts();
+        }
+
+        // --- Init ---
+        renderPosts();
+    </script>
+</body>
+</html>

@@ -18,6 +18,71 @@
             overflow-x: hidden;
             letter-spacing: 0.05em;
         }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #500000;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .menu-close {
+            position: absolute;
+            top: 1.2vw;
+            right: 3vw;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .menu-close::before,
+        .menu-close::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #FEFCEC;
+        }
+        .menu-close::before { transform: rotate(45deg); }
+        .menu-close::after { transform: rotate(-45deg); }
+        .menu-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+        .menu-nav li {
+            margin: 24px 0;
+        }
+        .menu-nav a {
+            font-family: 'Pretendard', sans-serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: #FEFCEC;
+            text-decoration: none;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+        .menu-nav a:hover {
+            opacity: 0.7;
+        }
         .top-band {
             width: 100%;
             height: 4.2vw;
@@ -36,6 +101,7 @@
             left: 3.8vw;
             width: 1.6vw;
             height: 1.3vw;
+            cursor: pointer;
         }
         .top-image {
             width: 7.5vw;
@@ -254,6 +320,15 @@
         }
 
         @media (max-width: 768px) {
+            .menu-close {
+                top: 28px;
+                right: 24px;
+                width: 24px;
+                height: 24px;
+            }
+            .menu-nav a {
+                font-size: 22px;
+            }
             .request-form h1 {
                 font-size: 1.5rem;
             }
@@ -368,8 +443,16 @@
     </style>
 </head>
 <body>
+    <div class="menu-overlay" id="menuOverlay">
+        <button class="menu-close" id="menuClose"></button>
+        <ul class="menu-nav">
+            <li><a href="index.html">About</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="projects.html">Projects</a></li>
+        </ul>
+    </div>
     <div class="top-band">
-        <img src="images/ThreeLineSecond.png" class="top-menu">
+        <img src="images/ThreeLineSecond.png" class="top-menu" id="menuToggle">
         <a href="index.html"><img src="images/headerLogoSecond.png" class="top-image"></a>
     </div>
     <div class="container">
@@ -481,6 +564,13 @@
     </div>
 
     <script>
+        // Menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuCloseBtn = document.getElementById('menuClose');
+        menuToggle.addEventListener('click', () => menuOverlay.classList.add('active'));
+        menuCloseBtn.addEventListener('click', () => menuOverlay.classList.remove('active'));
+
         // Google Apps Script Web App URL (설정 시 시트로 저장됩니다). 비워두면 mailto 폴백 사용
         const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzW0Mtto5z2z_Fp6iKT75mlytKn-z4j0V7qlQPMUo95upsl7onkhgbB3oI62NWcWDhhbg/exec";
 

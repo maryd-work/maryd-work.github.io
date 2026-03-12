@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARY'D - 상품 관리</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #FEFCEC;
+            color: #333;
+        }
+
+        /* ── Top Bar ── */
+        .top-bar {
+            width: 100%;
+            height: 4.2vw;
+            background-color: #500000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            padding: 0 2.5vw;
+        }
+
+        .top-bar-back {
+            color: #FEFCEC;
+            text-decoration: none;
+            font-size: 1.4vw;
+            display: flex;
+            align-items: center;
+            gap: 0.5vw;
+            cursor: pointer;
+        }
+
+        .top-bar-back svg {
+            width: 1.4vw;
+            height: 1.4vw;
+            fill: #FEFCEC;
+        }
+
+        .top-bar-title {
+            color: #FEFCEC;
+            font-size: 1.3vw;
+            font-weight: 600;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Main Content ── */
+        .main-content {
+            margin-top: 4.2vw;
+            padding: 2.5vw 4vw;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2vw;
+        }
+
+        .page-header h2 {
+            font-size: 1.4vw;
+            font-weight: 700;
+            color: #662423;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4em;
+            padding: 0.6em 1.4em;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 0.95vw;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        .btn-primary {
+            background-color: #662423;
+            color: #FEFCEC;
+        }
+
+        .btn-secondary {
+            background-color: #e0d8c8;
+            color: #333;
+        }
+
+        .btn-danger {
+            background-color: #a03030;
+            color: #fff;
+        }
+
+        .btn-small {
+            padding: 0.35em 0.9em;
+            font-size: 0.85vw;
+        }
+
+        /* ── Table ── */
+        .product-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+
+        .product-table thead {
+            background-color: #662423;
+            color: #FEFCEC;
+        }
+
+        .product-table th {
+            padding: 0.9em 1em;
+            text-align: left;
+            font-size: 0.9vw;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .product-table td {
+            padding: 0.75em 1em;
+            font-size: 0.88vw;
+            border-bottom: 1px solid #f0ece0;
+            vertical-align: middle;
+        }
+
+        .product-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .product-table tbody tr:hover {
+            background-color: #faf7e8;
+        }
+
+        .thumb {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #f0ece0;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5em;
+        }
+
+        .empty-msg {
+            text-align: center;
+            padding: 3em 1em;
+            color: #999;
+            font-size: 0.95vw;
+        }
+
+        /* ── Modal Overlay ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #FEFCEC;
+            border-radius: 12px;
+            width: 520px;
+            max-width: 92vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 2em 2.2em;
+        }
+
+        .modal h3 {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: #662423;
+            margin-bottom: 1.2em;
+        }
+
+        .form-group {
+            margin-bottom: 1em;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.88em;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.35em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6em 0.8em;
+            border: 1px solid #d6d0c0;
+            border-radius: 6px;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 0.92em;
+            background: #fff;
+            color: #333;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #662423;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.7em;
+            margin-top: 1.5em;
+        }
+
+        .modal-actions .btn {
+            font-size: 0.92em;
+        }
+
+        /* ── Confirm Dialog ── */
+        .confirm-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .confirm-overlay.active {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: #FEFCEC;
+            border-radius: 10px;
+            padding: 2em 2.2em;
+            text-align: center;
+            max-width: 380px;
+            width: 90vw;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        }
+
+        .confirm-box p {
+            font-size: 1em;
+            margin-bottom: 1.4em;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .confirm-box .confirm-actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.8em;
+        }
+
+        /* ── Responsive: Mobile ── */
+        @media (max-width: 768px) {
+            .top-bar {
+                height: 80px;
+                padding: 0 20px;
+            }
+
+            .top-bar-back {
+                font-size: 16px;
+                gap: 6px;
+            }
+
+            .top-bar-back svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .top-bar-title {
+                font-size: 16px;
+            }
+
+            .main-content {
+                margin-top: 80px;
+                padding: 20px 16px;
+            }
+
+            .page-header {
+                margin-bottom: 16px;
+            }
+
+            .page-header h2 {
+                font-size: 16px;
+            }
+
+            .btn {
+                font-size: 13px;
+                padding: 8px 16px;
+            }
+
+            .btn-small {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+
+            .product-table th {
+                font-size: 12px;
+                padding: 10px 8px;
+            }
+
+            .product-table td {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .thumb {
+                width: 36px;
+                height: 36px;
+            }
+
+            .actions {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .empty-msg {
+                font-size: 13px;
+            }
+
+            .modal {
+                padding: 1.4em 1.2em;
+                border-radius: 10px;
+            }
+
+            .modal h3 {
+                font-size: 1.05em;
+            }
+
+            .form-group label {
+                font-size: 13px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+
+            .modal-actions .btn {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <a class="top-bar-back" href="index.html">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+        </a>
+        <span class="top-bar-title">상품 관리</span>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2>등록된 상품</h2>
+            <button class="btn btn-primary" id="btnAddProduct">+ 상품 추가</button>
+        </div>
+
+        <div class="product-table-wrap">
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>이미지</th>
+                        <th>상품명</th>
+                        <th>가격</th>
+                        <th>카테고리</th>
+                        <th>관리</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add / Edit Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3 id="modalTitle">상품 추가</h3>
+            <form id="productForm" autocomplete="off">
+                <input type="hidden" id="editId" value="">
+
+                <div class="form-group">
+                    <label for="fieldName">상품명</label>
+                    <input type="text" id="fieldName" required placeholder="상품 이름을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="fieldPrice">가격</label>
+                    <input type="number" id="fieldPrice" required min="0" placeholder="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="fieldCategory">카테고리</label>
+                    <select id="fieldCategory" required>
+                        <option value="">선택하세요</option>
+                        <option value="반지">반지</option>
+                        <option value="목걸이">목걸이</option>
+                        <option value="귀걸이">귀걸이</option>
+                        <option value="팔찌">팔찌</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="fieldImage">이미지 URL</label>
+                    <input type="text" id="fieldImage" placeholder="https://example.com/image.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label for="fieldDesc">상품 설명</label>
+                    <textarea id="fieldDesc" placeholder="상품에 대한 설명을 입력하세요"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancel">취소</button>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Dialog -->
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-box">
+            <p>이 상품을 삭제하시겠습니까?<br>삭제 후 복구할 수 없습니다.</p>
+            <div class="confirm-actions">
+                <button class="btn btn-secondary" id="btnConfirmCancel">취소</button>
+                <button class="btn btn-danger" id="btnConfirmDelete">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'maryd_products';
+
+        // ── Data helpers ──
+        function getProducts() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveProducts(products) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+        }
+
+        function getNextId() {
+            const products = getProducts();
+            if (products.length === 0) return 1;
+            return Math.max(...products.map(p => p.id)) + 1;
+        }
+
+        function formatPrice(n) {
+            return Number(n).toLocaleString('ko-KR') + '원';
+        }
+
+        // ── DOM refs ──
+        const tableBody = document.getElementById('productTableBody');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const productForm = document.getElementById('productForm');
+        const editIdField = document.getElementById('editId');
+        const fieldName = document.getElementById('fieldName');
+        const fieldPrice = document.getElementById('fieldPrice');
+        const fieldCategory = document.getElementById('fieldCategory');
+        const fieldImage = document.getElementById('fieldImage');
+        const fieldDesc = document.getElementById('fieldDesc');
+        const confirmOverlay = document.getElementById('confirmOverlay');
+
+        let deleteTargetId = null;
+
+        // ── Render product list ──
+        function renderTable() {
+            const products = getProducts();
+
+            if (products.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" class="empty-msg">등록된 상품이 없습니다.</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = products.map(p => `
+                <tr>
+                    <td>
+                        <img class="thumb"
+                             src="${escapeHtml(p.image || '')}"
+                             alt="${escapeHtml(p.name)}"
+                             onerror="this.style.display='none'">
+                    </td>
+                    <td>${escapeHtml(p.name)}</td>
+                    <td>${formatPrice(p.price)}</td>
+                    <td>${escapeHtml(p.category)}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-secondary btn-small" onclick="openEdit(${p.id})">수정</button>
+                            <button class="btn btn-danger btn-small" onclick="confirmDelete(${p.id})">삭제</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // ── Modal open / close ──
+        function openModal() {
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            productForm.reset();
+            editIdField.value = '';
+        }
+
+        // Add button
+        document.getElementById('btnAddProduct').addEventListener('click', () => {
+            modalTitle.textContent = '상품 추가';
+            editIdField.value = '';
+            productForm.reset();
+            openModal();
+        });
+
+        // Cancel button
+        document.getElementById('btnCancel').addEventListener('click', closeModal);
+
+        // Close modal on overlay click
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // ── Edit ──
+        function openEdit(id) {
+            const products = getProducts();
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            modalTitle.textContent = '상품 수정';
+            editIdField.value = id;
+            fieldName.value = product.name;
+            fieldPrice.value = product.price;
+            fieldCategory.value = product.category;
+            fieldImage.value = product.image || '';
+            fieldDesc.value = product.description || '';
+            openModal();
+        }
+
+        // ── Save (add or update) ──
+        productForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const products = getProducts();
+            const editId = editIdField.value ? Number(editIdField.value) : null;
+
+            const productData = {
+                name: fieldName.value.trim(),
+                price: Number(fieldPrice.value),
+                category: fieldCategory.value,
+                image: fieldImage.value.trim(),
+                description: fieldDesc.value.trim(),
+            };
+
+            if (editId) {
+                // Update existing
+                const idx = products.findIndex(p => p.id === editId);
+                if (idx !== -1) {
+                    products[idx] = { ...products[idx], ...productData };
+                }
+            } else {
+                // Add new
+                products.push({
+                    id: getNextId(),
+                    ...productData,
+                    createdAt: new Date().toISOString(),
+                });
+            }
+
+            saveProducts(products);
+            closeModal();
+            renderTable();
+        });
+
+        // ── Delete ──
+        function confirmDelete(id) {
+            deleteTargetId = id;
+            confirmOverlay.classList.add('active');
+        }
+
+        document.getElementById('btnConfirmCancel').addEventListener('click', () => {
+            deleteTargetId = null;
+            confirmOverlay.classList.remove('active');
+        });
+
+        document.getElementById('btnConfirmDelete').addEventListener('click', () => {
+            if (deleteTargetId !== null) {
+                let products = getProducts();
+                products = products.filter(p => p.id !== deleteTargetId);
+                saveProducts(products);
+                renderTable();
+            }
+            deleteTargetId = null;
+            confirmOverlay.classList.remove('active');
+        });
+
+        confirmOverlay.addEventListener('click', (e) => {
+            if (e.target === confirmOverlay) {
+                deleteTargetId = null;
+                confirmOverlay.classList.remove('active');
+            }
+        });
+
+        // ── Keyboard: Escape closes modals ──
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (confirmOverlay.classList.contains('active')) {
+                    deleteTargetId = null;
+                    confirmOverlay.classList.remove('active');
+                } else if (modalOverlay.classList.contains('active')) {
+                    closeModal();
+                }
+            }
+        });
+
+        // ── Init ──
+        renderTable();
+    </script>
+</body>
+</html>

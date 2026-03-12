@@ -46,6 +46,86 @@
             @keyframes spin {
                 to { transform: rotate(360deg); }
             }
+            .menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #500000;
+                z-index: 200;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+            .menu-overlay.active {
+                opacity: 1;
+                pointer-events: all;
+            }
+            .menu-close {
+                position: absolute;
+                top: 1.2vw;
+                right: 3vw;
+                width: 28px;
+                height: 28px;
+                cursor: pointer;
+                background: none;
+                border: none;
+                padding: 0;
+            }
+            .menu-close::before,
+            .menu-close::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background: #FEFCEC;
+            }
+            .menu-close::before { transform: rotate(45deg); }
+            .menu-close::after { transform: rotate(-45deg); }
+            .menu-nav {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                text-align: center;
+            }
+            .menu-nav li {
+                margin: 24px 0;
+            }
+            .menu-nav a {
+                font-family: 'Pretendard', sans-serif;
+                font-size: 28px;
+                font-weight: 500;
+                color: #FEFCEC;
+                text-decoration: none;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                transition: opacity 0.2s;
+            }
+            .menu-nav a:hover {
+                opacity: 0.7;
+            }
+            .menu-nav a.active {
+                border-bottom: 2px solid #FEFCEC;
+                padding-bottom: 4px;
+            }
+            @media (max-width: 768px) {
+                .menu-close {
+                    top: 28px;
+                    right: 24px;
+                    width: 24px;
+                    height: 24px;
+                }
+                .menu-nav a {
+                    font-size: 22px;
+                }
+            }
             .top-band {
                 width: 100%;
                 height: 4.2vw;
@@ -653,8 +733,16 @@
             <img src="images/headerLogo.png" class="loading-logo">
             <div class="loading-spinner"></div>
         </div>
+        <div class="menu-overlay" id="menuOverlay">
+            <button class="menu-close" id="menuClose"></button>
+            <ul class="menu-nav">
+                <li><a href="index.html" class="active">About</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="projects.html">Projects</a></li>
+            </ul>
+        </div>
         <div class="top-band">
-            <img src="images/ThreeLine.png" class="top-menu">
+            <img src="images/ThreeLine.png" class="top-menu" id="menuToggle" style="cursor: pointer;">
             <img src="images/headerLogo.png" class="top-image">
             <a href="request.html" class="top-request-button">
                 <img src="images/lET’S MARY’D.png" class="lets-maryd">
@@ -854,6 +942,18 @@
                     const moveY = scrollY * speed;
                     piece.style.transform = `translateY(${moveY}px)`;
                 });
+            });
+
+            // Menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const menuOverlay = document.getElementById('menuOverlay');
+            const menuClose = document.getElementById('menuClose');
+
+            menuToggle.addEventListener('click', () => {
+                menuOverlay.classList.add('active');
+            });
+            menuClose.addEventListener('click', () => {
+                menuOverlay.classList.remove('active');
             });
         </script>
         <div class="bottom-band">
